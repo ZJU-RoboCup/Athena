@@ -1,0 +1,8 @@
+$#include "HttpServer.h"
+
+class CHttpServer{
+	CHttpServer();
+	void setToWebData(char* r, int num);
+	char* getCurPlay();
+	void clearCurPlay();
+};

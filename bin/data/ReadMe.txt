@@ -1,0 +1,4 @@
+这个目录存放战术文件。
+可以用我们的战术编辑器(TacticEditor)编辑。
+robotPredictor.txt 是用来预测我方机器人位置的神经网络数据
+getBallTime.txt 是用来预测拿球时间的神经网络数据

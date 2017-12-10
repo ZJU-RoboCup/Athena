@@ -1,0 +1,23 @@
+$#include "defence/DefenceInfo.h"
+
+class CDefenceInfo
+{
+	CDefenceInfo();
+	~CDefenceInfo();
+	void initialization();
+	void updateDefenceInfo(const CVisionModule *pVision);
+	void changeAttrSet(CAttributeSet& as);
+	int getAttackNum(){return _attackerNum;}
+	int getAttackOppNumByPri(int i);
+	int getSteadyAttackOppNumByPri(int i);
+	bool queryMarked(int i);
+	int getOurMarkDenfender(const int enemyNum);	
+	bool getTriggerState();
+	void setMarkList(const CVisionModule* pVision,int myNum,int enemyNum);
+	void setNoMarkingField(CGeoPoint upLeft, CGeoPoint downRight);
+	void clearNoMarkingField(CGeoPoint upLeft, CGeoPoint downRight);
+	void clearAll();
+	void setNoChangeFlag();
+	void clearNoChangeFlag();
+	void resetMarkingInfo();
+};

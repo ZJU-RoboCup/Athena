@@ -1,0 +1,12 @@
+$#include "GetLuaData.h"
+
+class CGetLuaData {
+
+	CGetLuaData();
+	~CGetLuaData() ;
+	void getData(double _speed_in, double _shoot_dir, double _out_dir) ;
+	void getAdjustData(double _v_out_dir, double _player2pos , double _speed_in, double _shoot_dir);
+	void getKickParamData(bool isFinished, int playerNum);
+	int updateKickParamPower(int newPower);
+	int getKickParamPower();
+};

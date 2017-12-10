@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<Project Name="ZeusLua.luaprj" >
+    <LuaFile RelativePath=".\..\Config.lua" />
+    <LuaFile RelativePath=".\..\Play.lua" />
+    <LuaFile RelativePath=".\..\RoleMatch.lua" />
+    <LuaFile RelativePath=".\..\SelectPlay.lua" />
+    <LuaFile RelativePath=".\..\Skill.lua" />
+    <LuaFile RelativePath=".\..\StartZeus.lua" />
+    <Filter Name="play" >
+        <LuaFile RelativePath=".\..\play\Cha_Goto.lua" />
+        <LuaFile RelativePath=".\..\play\TestSkillPlay.lua" />
+        <LuaFile RelativePath=".\..\play\TheirIndirectKick.lua" />
+        <Filter Name="OurPenaltyKick" >
+            <LuaFile RelativePath=".\..\play\Ref\Ref_PenaltyKickV1.lua" />
+            <LuaFile RelativePath=".\..\play\Ref\OurPenaltyKick.lua" />
+        </Filter>
+        <Filter Name="OurKickOff" >
+            <LuaFile RelativePath=".\..\play\Ref\OurKickOff.lua" />
+            <LuaFile RelativePath=".\..\play\Ref\Ref_KickOffV1.lua" />
+        </Filter>
+        <Filter Name="OurIndirectKick" >
+            <LuaFile RelativePath=".\..\play\Ref\OurIndirectKick.lua" />
+            <LuaFile RelativePath=".\..\play\Ref\Ref_CornerKickV1.lua" />
+            <LuaFile RelativePath=".\..\play\Ref\Ref_CornerKickV2.lua" />
+            <LuaFile RelativePath=".\..\play\Ref\Ref_ImmortalkickV1.lua" />
+        </Filter>
+        <Filter Name="GameStop" >
+            <LuaFile RelativePath=".\..\play\Ref\Ref_StopV1.lua" />
+            <LuaFile RelativePath=".\..\play\Ref\GameStop.lua" />
+        </Filter>
+        <Filter Name="GameHalt" >
+            <LuaFile RelativePath=".\..\play\Ref\GameHalt.lua" />
+            <LuaFile RelativePath=".\..\play\Ref\Ref_HaltV1.lua" />
+        </Filter>
+        <Filter Name="GameOver" >
+            <LuaFile RelativePath=".\..\play\Ref\GameOver.lua" />
+        </Filter>
+        <Filter Name="OurTimeout" >
+            <LuaFile RelativePath=".\..\play\Ref\OurTimeout.lua" />
+        </Filter>
+        <LuaFile RelativePath=".\..\play\TestPathPlanning.lua" />
+        <LuaFile RelativePath=".\..\play\RunHeartShape.lua" />
+        <Filter Name="NormalPlay" >
+            <LuaFile RelativePath=".\..\play\Nor\Nor_PassAndShoot.lua" />
+        </Filter>
+        <LuaFile RelativePath=".\..\play\TestCompensate.lua" />
+        <LuaFile RelativePath=".\..\play\RecordChipData.lua" />
+        <LuaFile RelativePath=".\..\play\TestGoAndTurnKick.lua" />
+        <Filter Name="OurFrontKick" >
+            <LuaFile RelativePath=".\..\play\Ref\Ref_FrontkickV1.lua" />
+        </Filter>
+        <LuaFile RelativePath=".\..\play\TestPassRecv.lua" />
+        <LuaFile RelativePath=".\..\play\TestOnePassShoot.lua" />
+        <LuaFile RelativePath=".\..\play\TestImmortalKick.lua" />
+        <Filter Name="OurBackKick" >
+            <LuaFile RelativePath=".\..\play\Ref\Ref_BackKickV1.lua" />
+        </Filter>
+        <LuaFile RelativePath=".\..\play\TestAvoidShootLine.lua" />
+        <LuaFile RelativePath=".\..\play\TestDribbleBackPass.lua" />
+    </Filter>
+    <Filter Name="skill" >
+        <LuaFile RelativePath=".\..\skill\PenaltyKick.lua" />
+        <LuaFile RelativePath=".\..\skill\RunMultiPos.lua" />
+        <LuaFile RelativePath=".\..\skill\SimpleGoto.lua" />
+        <LuaFile RelativePath=".\..\skill\SmartGoto.lua" />
+        <LuaFile RelativePath=".\..\skill\Stop.lua" />
+        <LuaFile RelativePath=".\..\skill\interKickBall.lua" />
+        <LuaFile RelativePath=".\..\skill\ShootBall.lua" />
+        <LuaFile RelativePath=".\..\skill\GetBall.lua" />
+        <LuaFile RelativePath=".\..\skill\StaticGetBall.lua" />
+        <LuaFile RelativePath=".\..\skill\GoAndTurnKick.lua" />
+        <LuaFile RelativePath=".\..\skill\TouchKick.lua" />
+        <LuaFile RelativePath=".\..\skill\SlowGetBall.lua" />
+        <LuaFile RelativePath=".\..\skill\ChaseKick.lua" />
+        <LuaFile RelativePath=".\..\skill\AdvanceBall.lua" />
+        <LuaFile RelativePath=".\..\skill\ChaseKickV2.lua" />
+        <LuaFile RelativePath=".\..\skill\ReceivePass.lua" />
+        <LuaFile RelativePath=".\..\skill\Goalie2013.lua" />
+        <Filter Name="learn" >
+            <LuaFile RelativePath=".\..\skill\Learn\RoundBallTest.lua" />
+        </Filter>
+        <LuaFile RelativePath=".\..\skill\GoAndTurnKickV3.lua" />
+    </Filter>
+    <Filter Name="worldmodel" >
+        <LuaFile RelativePath=".\..\worldmodel\cond.lua" />
+        <LuaFile RelativePath=".\..\worldmodel\dir.lua" />
+        <LuaFile RelativePath=".\..\worldmodel\flag.lua" />
+        <LuaFile RelativePath=".\..\worldmodel\param.lua" />
+        <LuaFile RelativePath=".\..\worldmodel\pos.lua" />
+        <LuaFile RelativePath=".\..\worldmodel\ball.lua" />
+        <LuaFile RelativePath=".\..\worldmodel\enemy.lua" />
+        <LuaFile RelativePath=".\..\worldmodel\player.lua" />
+        <LuaFile RelativePath=".\..\worldmodel\pre.lua" />
+        <LuaFile RelativePath=".\..\worldmodel\cp.lua" />
+        <LuaFile RelativePath=".\..\worldmodel\kp.lua" />
+        <LuaFile RelativePath=".\..\worldmodel\kick.lua" />
+        <LuaFile RelativePath=".\..\worldmodel\task.lua" />
+    </Filter>
+    <LuaFile RelativePath=".\..\Zeus.lua" />
+</Project>

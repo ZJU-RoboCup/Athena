@@ -1,0 +1,27 @@
+$#include "IndirectDefender.h"
+
+typedef struct
+{
+	CGeoPoint onePos;
+	CGeoPoint anotherPos;
+	CGeoPoint getOnePos(){return onePos;}
+	CGeoPoint getAnotherPos(){return anotherPos;}
+} TwoKickPos;
+
+typedef struct
+{
+	CGeoPoint _Left;
+	CGeoPoint _Right;
+	double baseDir;
+	double radius;
+}KickOffArea;
+
+class CIndirectDefender
+{
+	CIndirectDefender();
+	~CIndirectDefender();
+
+	TwoKickPos getTwoDefPos(const CVisionModule* pVision,double radius1,CGeoPoint left1,CGeoPoint right1,double radius2,CGeoPoint left2,CGeoPoint right2);
+
+};
+

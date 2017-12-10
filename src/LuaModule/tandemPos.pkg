@@ -1,0 +1,12 @@
+$#include "TandemPos.h"
+
+class CTandemPos
+{
+	CTandemPos();
+	~CTandemPos();	
+
+   	void generatePos();
+
+	CGeoPoint getTandemPos();
+};
+

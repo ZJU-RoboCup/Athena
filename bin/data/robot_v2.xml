@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RobotV2 Radius="9" Weight="0.7" Height="13">
+	<Skelecton Length="17.3867" Width="4.6587" Height="13" X="0" Y="0" Z="0" RX="0" RY="0" RZ="1" RA="0.7854" />
+	<Skelecton Length="17.3867" Width="4.6587" Height="13" X="0" Y="0" Z="0" RX="0" RY="0" RZ="1" RA="1.3090" />
+	<Skelecton Length="17.3867" Width="4.6587" Height="13" X="0" Y="0" Z="0" RX="0" RY="0" RZ="1" RA="-1.3090" />
+	<Skelecton Length="17.3867" Width="4.6587" Height="13" X="0" Y="0" Z="0" RX="0" RY="0" RZ="1" RA="-0.7854" />
+	<Skelecton Length="8.6933" Width="4.6587" Height="13" X="-4.1986" Y="-1.1250" Z="0" RX="0" RY="0" RZ="1" RA="0.2618" />
+	<Skelecton Length="8.6933" Width="4.6587" Height="13" X="-4.1986" Y="1.1250" Z="0" RX="0" RY="0" RZ="1" RA="-0.2618" />
+	<Skelecton Length="15.5885" Width="9" Height="10" X="0" Y="0" Z="1.5" RX="0" RY="0" RZ="0" RA="0" />
+	<Skelecton Length="1" Width="9" Height="3" X="6.293" Y="0" Z="-4.5" RX="0" RY="1" RZ="0" RA="0.6" />
+	<Wheel Radius="1.7" Angle="1.0472" Distance="8" Weight="0.5"/>
+	<Wheel Radius="1.7" Angle="-1.0472" Distance="8" Weight="0.5"/>
+	<Wheel Radius="1.7" Angle="2.0944" Distance="8" Weight="0.5"/>
+	<Wheel Radius="1.7" Angle="-2.0944" Distance="8" Weight="0.5"/>
+</RobotV2>
