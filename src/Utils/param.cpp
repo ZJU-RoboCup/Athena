@@ -43,7 +43,7 @@ namespace Param{
 			const double PLAYER_SIZE = 9;
 			const double PLAYER_FRONT_TO_CENTER = 8.0;
 			const double PLAYER_CENTER_TO_BALL_CENTER = 9.93;
-			const double KICK_ANGLE = ::Param::Math::PI*17/180; // 可以击球的最大相对身体角度
+			const double KICK_ANGLE = ::Param::Math::PI*30/180; // 可以击球的最大相对身体角度
 			const double DRIBBLE_SIZE = PLAYER_FRONT_TO_CENTER + ::Param::Field::BALL_SIZE; // 带球时离球的距离
 			const double DRIBBLE_ANGLE = ::Param::Math::PI*17/180; // 可以带球的最大相对身体角度
 			const double HEAD_ANGLE = 57*Param::Math::PI/180; // 前面的开口角度
