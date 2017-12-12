@@ -9,7 +9,7 @@
 std::string CParamReader::_paramFileName = "zeus2005";
 namespace {
 	int MAX_CNT_FOR_TURN = 6;
-	double RESPONSE_TIME = 0.4;
+	double RESPONSE_TIME = 0.35;
 	double FRICTION;
 }
 
@@ -93,6 +93,7 @@ void CInterceptBallV6::plan(const CVisionModule * pVision)
 		}
 	}
 	else if (abs(ball.Vel().mod()) < 30) {				//球近似静止
+			/*
 			if (abs(Utils::Normalize(me2Ball.dir() - me.Dir())) > Param::Math::PI / 3 * 2 && me2Ball.mod() < 30) {
 				chase_kick_task.player.pos = ball.RawPos() + Utils::Polar2Vector(30, me2Ball.dir() + Param::Math::PI / 2);
 			}
@@ -101,9 +102,11 @@ void CInterceptBallV6::plan(const CVisionModule * pVision)
 			}
 			chase_kick_task.player.angle = me2Ball.dir();
 			setSubTask(TaskFactoryV2::Instance()->GotoPosition(chase_kick_task));
+			*/
+			setSubTask(TaskFactoryV2::Instance()->NoneTrajGetBall(chase_kick_task));
 		}
-		else if (me.RawPos().dist(ballLineProjection) < 23 && me2Ball.mod()<100 &&
-		abs(Utils::Normalize(ball2Projection.dir()-ball.Vel().dir()))<0.1) {
+		else if (me.RawPos().dist(ballLineProjection) < 15 && me2Ball.mod()<60 &&
+		abs(Utils::Normalize(ball2Projection.dir()-ball.Vel().dir()))<0.1) {			//到截球线上等着
 			if (abs(Utils::Normalize(me2Ball.dir() - ball.Vel().dir())) > Param::Math::PI / 3 * 2)
 			{
 				chase_kick_task.player.pos = ballLineProjection;
@@ -130,7 +133,7 @@ void CInterceptBallV6::plan(const CVisionModule * pVision)
 			chase_kick_task.player.angle = testpoint2Ball.dir();
 			lastAngle = testpoint2Ball.dir();
 
-			if (abs(Utils::Normalize(me2Ball.dir() - ball.Vel().dir())) < Param::Math::PI / 2 && me2Ball.mod() <= 40)
+			if (abs(Utils::Normalize(me2Ball.dir() - ball.Vel().dir())) < Param::Math::PI / 2 && me2Ball.mod() <= 25)
 			{
 				chase_kick_task.player.pos = testPoint + (projection2Me / projection2Me.mod() * 30);
 			}
