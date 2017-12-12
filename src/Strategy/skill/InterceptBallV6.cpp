@@ -53,9 +53,10 @@ void CInterceptBallV6::plan(const CVisionModule * pVision)
 	double testVel = ball.Vel().mod();
 
 
-	if (needDribble) {					//发送吸球指令
+	if (me2Ball.mod()<100) {					//距车1m，发送吸球指令
 		DribbleStatus::Instance()->setDribbleCommand(robotNum, 3);
 	}
+	/*
 	if (me2Ball.mod() < 15) {
 		cnt++;
 		needDribble = true;
@@ -63,9 +64,9 @@ void CInterceptBallV6::plan(const CVisionModule * pVision)
 	else {
 		needDribble = false;
 		cnt = 0;
-	}
-	if (cnt > MAX_CNT_FOR_TURN && me2Ball.mod() < 11) {//&& isSensored
-		if (abs(me.Dir() - finalAngel) < 3*Param::Math::PI / 180) {			//need shoot  ball2Goal.dir())
+	}*/
+	if (me2Ball.mod() < 11 && abs(Utils::Normalize(ball.Vel().dir() - me2Ball.dir())) < Param::Math::PI / 4) {//已经吸球
+		if (abs(me.Dir() - finalAngel) < 3 * Param::Math::PI / 180) {			//need shoot  ball2Goal.dir())
 			cnt = 0;
 			needDribble = false;
 			//For kick status
@@ -91,9 +92,9 @@ void CInterceptBallV6::plan(const CVisionModule * pVision)
 			setSubTask(TaskFactoryV2::Instance()->OpenSpeed(chase_kick_task));
 		}
 	}
-	else if (abs(testVel) < 30) {				//球近似静止
+	else if (abs(ball.Vel().mod()) < 30) {				//球近似静止
 			if (abs(Utils::Normalize(me2Ball.dir() - me.Dir())) > Param::Math::PI / 3 * 2 && me2Ball.mod() < 30) {
-				chase_kick_task.player.pos = ball.RawPos() + Utils::Polar2Vector(30, me.Dir() + Param::Math::PI / 2);
+				chase_kick_task.player.pos = ball.RawPos() + Utils::Polar2Vector(30, me2Ball.dir() + Param::Math::PI / 2);
 			}
 			else {
 				chase_kick_task.player.pos = ball.RawPos();
@@ -102,19 +103,19 @@ void CInterceptBallV6::plan(const CVisionModule * pVision)
 			setSubTask(TaskFactoryV2::Instance()->GotoPosition(chase_kick_task));
 		}
 		else if (me.RawPos().dist(ballLineProjection) < 23 && me2Ball.mod()<100 &&
-		abs(Utils::Normalize(ball2Projection.dir()) - Utils::Normalize(ball.Vel().dir()))<0.1) {
+		abs(Utils::Normalize(ball2Projection.dir()-ball.Vel().dir()))<0.1) {
 			if (abs(Utils::Normalize(me2Ball.dir() - ball.Vel().dir())) > Param::Math::PI / 3 * 2)
 			{
 				chase_kick_task.player.pos = ballLineProjection;
 			}
 			else
 			{
-				chase_kick_task.player.pos = ballLineProjection + ball.Vel() * 2;
+				chase_kick_task.player.pos = ballLineProjection + ball.Vel() * 2.5;
 			}
-			chase_kick_task.player.angle = lastAngle;
+			chase_kick_task.player.angle =  me2Ball.dir();
 			setSubTask(TaskFactoryV2::Instance()->GotoPosition(chase_kick_task));
 		}
-		else {							//计算
+		else {							//计算接球点
 			do {
 				ballArriveTime += testMinFrame * 1.0 / 60.0;
 				testVel = ball.Vel().mod() - ballAcc*ballArriveTime;
