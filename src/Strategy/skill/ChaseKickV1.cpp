@@ -42,7 +42,8 @@ namespace
 	//预测相关
 	const double MAX_TIME = 5; // 最长拦截时间(/s)
 	double CM_PREDICT_FACTOR = 1.5;
-	const double Ball_Moving_Fast_Speed = 80;	//1m/s
+	const double Ball_Moving_Fast_Speed = 50;	//1m/s
+	const double Ball_Slow = 100;
 												//
 	const double speed_factor = 0.7;
 
@@ -137,7 +138,7 @@ void CChaseKickV1::plan(const CVisionModule* pVision)
 	const double dAngDiffRaw = Utils::Normalize(self2rawball.dir() - finalKickDir);		//小车到当前球 - 踢球方向 夹角	TSB
 	const CVector ballVel = ball.Vel();
 	const double ballSpeed = ballVel.mod();
-	bool isBallSpeedFast = (ballSpeed >= Ball_Moving_Fast_Speed) ? true : false;		//根据设定的阈值判断球速是否足够大
+	bool isBallSpeedFast = (ballSpeed >= Ball_Slow) ? true : false;		//根据设定的阈值判断球速是否足够大
 
 	double allowInfrontAngleBuffer = (dist2ball / (Param::Vehicle::V2::PLAYER_SIZE))*Param::Vehicle::V2::KICK_ANGLE < Param::Math::PI / 5.0 ?
 		(dist2ball / (Param::Vehicle::V2::PLAYER_SIZE))*Param::Vehicle::V2::KICK_ANGLE : Param::Math::PI / 5.0;
@@ -317,7 +318,7 @@ void CChaseKickV1::plan(const CVisionModule* pVision)
 			predict_factor = predict_factor>0.75 ? 0.75 : predict_factor;
 			predict_factor = predict_factor<0.25 ? 0.25 : predict_factor;
 		}
-		CVector extra_ball_vel = rawBall2predictBall * predict_factor;
+		CVector extra_ball_vel = rawBall2predictBall * 1.45;// predict_factor;
 		///////////////////??
 		if (fabs(Utils::Normalize(extra_ball_vel.dir() - ball.Vel().dir())) > Param::Math::PI / 3.0) {
 			extra_ball_vel = extra_ball_vel * (-1.0);
@@ -331,7 +332,9 @@ void CChaseKickV1::plan(const CVisionModule* pVision)
 		double gokickFactor = 1.0;
 		double myVelSpeedRelative2Final = me.Vel().mod()*cos(Utils::Normalize(me.Vel().dir() - finalKickDir));
 		TaskT chase_kick_task(task());
+		//cout << state() << endl;
 		chase_kick_task.player.flag |= (PlayerStatus::ALLOW_DSS | PlayerStatus::DODGE_BALL);
+
 		switch (state())
 		{
 		case RUSH_TO_BALL:
@@ -387,13 +390,12 @@ void CChaseKickV1::plan(const CVisionModule* pVision)
 		case FOLLOW_BALL:
 			//cout<<"FOLLOW_BALL"<<endl;
 			GDebugEngine::Instance()->gui_debug_msg(ball.Pos(), "FOLLOW_BALL");
-			projDist = (projDist < Param::Vehicle::V2::PLAYER_SIZE + Param::Field::BALL_SIZE + 5) ?
+			/*projDist = (projDist < Param::Vehicle::V2::PLAYER_SIZE + Param::Field::BALL_SIZE + 5) ?
 				Param::Vehicle::V2::PLAYER_SIZE + Param::Field::BALL_SIZE + 5 : projDist - 3;
 			projDist = (projDist > 1.5*Param::Vehicle::V2::PLAYER_SIZE + Param::Field::BALL_SIZE) ?
-				1.5*Param::Vehicle::V2::PLAYER_SIZE + Param::Field::BALL_SIZE : projDist - 2;
+				1.5*Param::Vehicle::V2::PLAYER_SIZE + Param::Field::BALL_SIZE : projDist - 2;*/
 			if (!isBallInFront && ballSpeed <= 50) {
-				projDist = 1.5*Param::Vehicle::V2::PLAYER_SIZE;
-				chase_kick_task.player.pos = ball.Pos() + Utils::Polar2Vector(projDist, reverse_finalDir);
+				chase_kick_task.player.pos = ball.RawPos() + Utils::Polar2Vector(1.5*Param::Vehicle::V2::PLAYER_SIZE, reverse_finalDir);
 			}
 			else {
 				chase_kick_task.player.pos = real_predict_ballPos + Utils::Polar2Vector(projDist, reverse_finalDir);
