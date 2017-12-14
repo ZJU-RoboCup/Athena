@@ -39,6 +39,7 @@
 #include "Tandem.h"
 #include "WaitTouch.h"
 #include "WaitTouch2016.h"
+#include "StaticGetBallNew.h"
 #include "GetBallV3.h"
 #include "GetBallV4.h"
 #include "SlowGetBall.h"
@@ -116,6 +117,10 @@ CPlayerTask	* CTaskFactoryV2::Speed(const TaskT& task) {
 
 CPlayerTask	* CTaskFactoryV2::OpenSpeed(const TaskT& task) {
 	return MakeTask< COpenSpeed >(task);
+}
+
+CPlayerTask* CTaskFactoryV2::StaticGetBall(const TaskT& task) {
+	return MakeTask< CStaticGetBallNew >(task);
 }
 
 CPlayerTask* CTaskFactoryV2::NoneTrajGetBall(const TaskT& task) {
@@ -447,6 +452,18 @@ namespace PlayerRole {
 		return TaskFactoryV2::Instance()->OpenSpeed(playerTask);
 	}
 
+	CPlayerTask* makeItStaticGetBall(const int num, const double dir, CVector finalVel, int flags, double StopDist, CTRL_METHOD mode)
+	{
+		static TaskT playerTask;
+		playerTask.executor = num;
+		playerTask.player.angle = dir;
+		playerTask.player.vel = finalVel;
+		playerTask.player.flag = flags;
+		playerTask.player.rotvel = StopDist;
+		playerTask.player.specified_ctrl_method = mode;
+		return TaskFactoryV2::Instance()->StaticGetBall(playerTask);
+	}
+
 	CPlayerTask* makeItNoneTrajGetBall(const int num,const double dir,CVector finalVel,int flags,double StopDist,CTRL_METHOD mode)
 	{
 		static TaskT playerTask;
@@ -517,6 +534,15 @@ namespace PlayerRole {
 		//playerTask.player.ischipkick = isChip;
 		playerTask.player.flag = flags;
 		return TaskFactoryV2::Instance()->ChaseKickV2(playerTask);
+	}
+
+	CPlayerTask* makeItChaseKickV3(const int num, double faceDir, int flags)
+	{
+		static TaskT playerTask;
+		playerTask.executor = num;
+		playerTask.player.angle = faceDir;
+		playerTask.player.flag = flags;
+		return TaskFactoryV2::Instance()->NoneTrajGetBallNew(playerTask);
 	}
 
 	CPlayerTask* makeItProtectBall(const int num,const int flags)

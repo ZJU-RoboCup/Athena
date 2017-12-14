@@ -423,7 +423,7 @@ extern "C" int Skill_StaticGetBall(lua_State *L)
 	int runner = LuaModule::Instance()->GetNumberArgument(1,NULL);
 	double angle = LuaModule::Instance()->GetNumberArgument(2,NULL);
 	int flag = LuaModule::Instance()->GetNumberArgument(3,NULL); 
-	CPlayerTask* pTask = PlayerRole::makeItNoneTrajGetBall(runner, angle, CVector(0,0), flag, 12);
+	CPlayerTask* pTask = PlayerRole::makeItStaticGetBall(runner, angle, CVector(0,0), flag, 12, CMU_TRAJ);
 	TaskMediator::Instance()->setPlayerTask(runner, pTask, 1);
 	return 0;
 }
@@ -525,6 +525,15 @@ extern "C" int Skill_ChaseKickV2(lua_State *L)
 	return 0;
 }
 
+extern "C" int Skill_ChaseKickV3(lua_State *L)
+{
+	int runner = LuaModule::Instance()->GetNumberArgument(1, NULL);
+	double angle = LuaModule::Instance()->GetNumberArgument(2, NULL);
+	int flag = LuaModule::Instance()->GetNumberArgument(3, NULL);
+	CPlayerTask* pTask = PlayerRole::makeItChaseKickV3(runner, angle, flag);
+	TaskMediator::Instance()->setPlayerTask(runner, pTask, 1);
+	return 0;
+}
 
 extern "C" int Skill_DriftKick(lua_State *L)
 {
@@ -1215,6 +1224,7 @@ luaDef GUIGlue[] =
 	{"CForceStartRush",		Skill_ForceStartRush},
 	{"CChaseKick",			Skill_ChaseKick},
 	{"CChaseKickV2",		Skill_ChaseKickV2},
+	{"CChaseKickV3",		Skill_ChaseKickV3},
 	{"CDriftKick",			Skill_DriftKick},
 	{"CInterKick",			Skill_InterKick},
 	{"CInterKickV2",		Skill_InterKickV2 },
