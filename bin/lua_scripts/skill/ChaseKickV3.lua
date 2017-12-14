@@ -8,7 +8,7 @@ function ChaseKickV3(task)
 		else
 			mdir = task.dir
 		end
-		return CChaseKickV2(runner, mdir,mflag)
+		return CChaseKickV3(runner, mdir,mflag)
 	end
 
 	matchPos = function()

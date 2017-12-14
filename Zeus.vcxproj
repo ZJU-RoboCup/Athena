@@ -156,6 +156,7 @@
     <ClCompile Include="src\Strategy\skill\SlowGetBall.cpp" />
     <ClCompile Include="src\Strategy\skill\SmartGotoPosition.cpp" />
     <ClCompile Include="src\Strategy\skill\Speed.cpp" />
+    <ClCompile Include="src\Strategy\skill\StaticGetBallNew.cpp" />
     <ClCompile Include="src\Strategy\skill\StopRobot.cpp" />
     <ClCompile Include="src\Strategy\skill\Tandem.cpp" />
     <ClCompile Include="src\Strategy\skill\TestCircleBall.cpp" />
@@ -379,6 +380,7 @@
     <ClInclude Include="src\Strategy\skill\SlowGetBall.h" />
     <ClInclude Include="src\Strategy\skill\SmartGotoPosition.h" />
     <ClInclude Include="src\Strategy\skill\Speed.h" />
+    <ClInclude Include="src\Strategy\skill\StaticGetBallNew.h" />
     <ClInclude Include="src\Strategy\skill\StopRobot.h" />
     <ClInclude Include="src\Strategy\skill\Tandem.h" />
     <ClInclude Include="src\Strategy\skill\TestCircleBall.h" />

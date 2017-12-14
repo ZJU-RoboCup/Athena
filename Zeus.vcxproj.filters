@@ -178,12 +178,6 @@
     <ClCompile Include="src\Vision\mediator\utils\munkres.cpp" />
     <ClCompile Include="src\Vision\mediator\utils\winsocket\Socket.cpp" />
     <ClCompile Include="src\Vision\mediator\utils\winsocket\UDPSocket_vm.cpp" />
-    <ClCompile Include="src\Algorithm\SituationJudge.cpp">
-      <Filter>Algorithm</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Algorithm\BallAdvanceDecision.cpp">
-      <Filter>Algorithm</Filter>
-    </ClCompile>
     <ClCompile Include="src\Vision\RobotPredictError.cpp" />
     <ClCompile Include="src\Vision\RobotPredictor.cpp" />
     <ClCompile Include="src\Vision\RobotsCollision.cpp" />
@@ -206,6 +200,9 @@
     <ClCompile Include="src\WorldModel\WorldModel_lua.cpp" />
     <ClCompile Include="src\WorldModel\WorldModel_utils.cpp" />
     <ClCompile Include="src\Strategy\skill\InterceptBallV6.cpp" />
+    <ClCompile Include="src\Algorithm\BallAdvanceDecision.cpp" />
+    <ClCompile Include="src\Algorithm\SituationJudge.cpp" />
+    <ClCompile Include="src\Strategy\skill\StaticGetBallNew.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -417,17 +414,11 @@
     <ClInclude Include="src\Vision\mediator\utils\winsocket\Socket.h" />
     <ClInclude Include="src\Vision\mediator\utils\winsocket\UDPSocket_vm.h" />
     <ClInclude Include="src\Utils\Semaphore.h" />
-    <ClInclude Include="src\Algorithm\SituationJudge.h">
-      <Filter>Algorithm</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Algorithm\BallAdvanceDecision.h">
-      <Filter>Algorithm</Filter>
-    </ClInclude>
+    <ClInclude Include="src\Algorithm\BallAdvanceDecision.h" />
+    <ClInclude Include="src\Algorithm\SituationJudge.h" />
+    <ClInclude Include="src\Strategy\skill\StaticGetBallNew.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\RefereeBox\referee.proto">
-      <Filter>RefereeBox</Filter>
-    </None>
     <None Include="bin\params\zeus2005.xml" />
     <None Include="bin\params\KickParam.cfg" />
     <None Include="src\LuaModule\bestalg.pkg" />
@@ -461,6 +452,7 @@
     <ClInclude Include="src\WorldModel\WorldDefine.h" />
     <ClInclude Include="src\WorldModel\WorldModel.h" />
     <ClInclude Include="src\Strategy\skill\InterceptBallV6.h" />
+    <None Include="src\RefereeBox\referee.proto" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Zeus.rc" />

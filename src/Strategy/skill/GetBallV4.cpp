@@ -115,11 +115,11 @@ void CGetBallV4::plan(const CVisionModule* pVision)
 	//////////////////////////////////////////////////////////////////////////
 	//决策执行
 
+	canShoot = canShootBall(pVision);
 	//getBallMode = STATICBALL;
 	// chase kick
 	if (getBallMode == CHASEBALL) {
 		if (Verbose) GDebugEngine::Instance()->gui_debug_msg(CGeoPoint(160, -150), "CHASE", COLOR_CYAN);
-		canShoot = canShootBall(pVision);
 		canForwardShoot = judgeShootMode(pVision);
 
 		//else {
@@ -233,6 +233,8 @@ void CGetBallV4::plan(const CVisionModule* pVision)
 		if (Verbose) GDebugEngine::Instance()->gui_debug_msg(CGeoPoint(120, 150), "SHOOT", COLOR_CYAN);
 		getballTask.player.pos = getBallPredictPos(pVision);
 		getballTask.player.vel = getShootVel(pVision);
+		getballTask.player.angle = KickDirection::Instance()->getRealKickDir();
+		KickStatus::Instance()->setKick(robotNum, 800);
 	}
 
 		// 防止守门员往球门里冲
@@ -245,9 +247,7 @@ void CGetBallV4::plan(const CVisionModule* pVision)
 		}
 	}
 
-	if (getBallMode == STATICBALL)
-		setSubTask(TaskFactoryV2::Instance()->SmartGotoPosition(getballTask));
-	else setSubTask(TaskFactoryV2::Instance()->GotoPosition(getballTask));
+	setSubTask(TaskFactoryV2::Instance()->GotoPosition(getballTask));
 
 	_lastCycle = pVision->Cycle();
 	CStatedTask::plan(pVision);
@@ -294,19 +294,25 @@ void CGetBallV4::judgeMode(const CVisionModule * pVision)
 	double ball2MeDirDiff = Utils::Normalize(me.Dir() - me2Ball.dir());
 	bool isBallMoving2Final = fabs(ballVel2FInalDirDiff) < Param::Math::PI * 3 / 5;
 	bool meInFrontOfBall = fabs(ball2MeDirDiff) > Param::Math::PI / 2;
+	bool meRightInFrontOfBall = fabs(ball2MeDirDiff) > Param::Math::PI * 5 / 6;
 	bool ballMovingOurSide = ball.Vel().x() < 0;
+
+	if (meInFrontOfBall && me2Ball.mod() < 30) {
+		getBallMode = STATICBALL;
+		return;
+	}
 
 	if (canShoot) {
 		getBallMode = CHASEBALL;
 		return;
 	}
 
-	if (meInFrontOfBall && ballMovingOurSide) {
+	if ((meInFrontOfBall && ballMovingOurSide) || (meRightInFrontOfBall && ball.Vel().mod() > 30)) {
 		getBallMode = INTERBALL;
 		return;
 	}
 
-	if (ball.Vel().mod() < 50) getBallMode = STATICBALL;
+	if (ball.Vel().mod() < 30) getBallMode = STATICBALL;
 	else if (isBallMoving2Final) getBallMode = CHASEBALL;
 	else getBallMode = INTERBALL;
 }
@@ -326,8 +332,6 @@ bool CGetBallV4::canShootBall(const CVisionModule * pVision)
 	CVector me2Ball = ball.Pos() - me.Pos();
 	CVector ball2Me = me.Pos() - ball.Pos();
 
-	//bool meFaceGoal = me.Dir() < me2RightGoal.dir() && me.Dir() > me2LeftGoal.dir();  // 朝向球门
-
 	double chasePrecise = 0.15;
 	if (me.Pos().x() > 0) chasePrecise = ball.Vel().mod() < 80 ? 0.1 : 0.15;
 	else chasePrecise = 0.1;
@@ -336,13 +340,13 @@ bool CGetBallV4::canShootBall(const CVisionModule * pVision)
 
 	double finalDir = task().player.angle;
 	double tmp2FinalDirDiff = Utils::Normalize(me2Ball.dir() - finalDir);
-	bool behindBall = fabs(tmp2FinalDirDiff) < Param::Math::PI / 2;  // 在球后面
+	bool behindBall = fabs(tmp2FinalDirDiff) < Param::Math::PI / 4;  // 在球后面
 	bool inGetBallCircle = me2Ball.mod() < getBallDist;  // 离球在getball距离内
 	bool para2BallVelLine = (ball.Vel().mod() && me2Ball.mod() > getBallDist / 2) ? (fabs(Utils::Normalize(me.Vel().dir() - ball.Vel().dir())) < 0.2) : 1;  // 与球速线平行
 
-	bool canGetBall = behindBall && inGetBallCircle && para2BallVelLine;  // 可以冲上去拿球
+	bool canGetBall = behindBall && inGetBallCircle;  // 可以冲上去拿球
 
-	return /*meFaceGoal &&*/ meFaceFinalDir && canGetBall;
+	return meFaceFinalDir && canGetBall;
 }
 
 bool CGetBallV4::judgeShootMode(const CVisionModule * pVision)
@@ -376,13 +380,13 @@ CGeoPoint CGetBallV4::getBallPredictPos(const CVisionModule * pVision)
 
 	CGeoPoint finalPoint = ball.Pos();
 	CVector me2Ball = ball.Pos() - me.Pos();
-	bool meBehindBall = fabs(Utils::Normalize(me2Ball.dir() - ball.Vel().dir())) < Param::Math::PI * 2 / 5;
+	bool meBehindBall = fabs(Utils::Normalize(me2Ball.dir() - ball.Vel().dir())) < Param::Math::PI * 4 / 9;
 	double me2BallTime = predictedTime(me, ball.Pos());
 	if (meBehindBall) {
 		finalPoint = ball.Pos() + Utils::Polar2Vector(ball.Vel().mod() * me2BallTime, ball.Vel().dir());
 	}
 	else {
-		finalPoint = ball.Pos() + Utils::Polar2Vector(ball.Vel().mod() * me2BallTime / 3, ball.Vel().dir());
+		finalPoint = ball.Pos() + Utils::Polar2Vector(ball.Vel().mod() * me2BallTime / 2, ball.Vel().dir());
 	}
 
 	return finalPoint;

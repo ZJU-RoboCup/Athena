@@ -163,7 +163,7 @@ CPlayerCommand* CGotoPositionV2::execute(const CVisionModule* pVision)
 	}
 
 	// 所有车都不能进对方禁区
-	CGeoPoint vecPos4TheirPenalty = vecPos + Utils::Polar2Vector(self.Vel().mod() * Param::Vision::FRAME_RATE * 5, self.Vel().dir());
+	CGeoPoint vecPos4TheirPenalty = vecPos + Utils::Polar2Vector(self.Vel().mod() / Param::Vision::FRAME_RATE * 5, self.Vel().dir());
 	bool isMeInTheirPenaltyArea = Utils::InTheirPenaltyArea(vecPos4TheirPenalty, 0);
 	bool isTargetInTheirPenaltyArea = Utils::InTheirPenaltyArea(target, 0);
 	if (isMeInTheirPenaltyArea == true) {

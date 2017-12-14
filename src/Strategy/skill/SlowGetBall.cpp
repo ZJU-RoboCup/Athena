@@ -214,7 +214,7 @@ void CSlowGetBall::plan(const CVisionModule* pVision)
 	{
 	case S_GETBALL:
 		actionCount++;
-		setSubTask(PlayerRole::makeItNoneTrajGetBall(robotNum,finalDir,CVector(0,0),flags,stopDist));
+		setSubTask(PlayerRole::makeItStaticGetBall(robotNum,finalDir,CVector(0,0),flags,stopDist, CMU_TRAJ));
 		break;
 	case S_GOTOWARD:
 		actionCount++;

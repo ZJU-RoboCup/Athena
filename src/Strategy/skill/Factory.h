@@ -43,6 +43,7 @@ public:
 	CPlayerTask* AdvanceBallV2(const TaskT& task);
 	CPlayerTask* Tandem(const TaskT& task);
 	CPlayerTask* GoAndTurnKick(const TaskT& task);
+	CPlayerTask* StaticGetBall(const TaskT& task);
 	CPlayerTask* GetBallV4(const TaskT& task);
 	CPlayerTask* CircleAndPass(const TaskT& task);
 	CPlayerTask* GoAndTurnKickV3(const TaskT& task);
@@ -112,6 +113,7 @@ namespace PlayerRole{
 	CPlayerTask* makeItChaseKickV1(const int num, double faceDir, int flags = 0);
 	CPlayerTask* makeItChaseKickV1(const int num, double faceDir, int flags,bool isChip);//жиди add by gty 17-3-26
 	CPlayerTask* makeItChaseKickV2(const int num, double faceDir, int flags = 0);
+	CPlayerTask* makeItChaseKickV3(const int num, double faceDir, int flags = 0);
 	CPlayerTask* makeItDriftKick(const int num,double faceDir,int flags = 0);
 	CPlayerTask* makeItProtectBall(const int num,int flags=0);
 	CPlayerTask* makeItTouchKick(const int num,double kickDir, bool isPass = false, int flags=0);
@@ -121,6 +123,7 @@ namespace PlayerRole{
 	CPlayerTask* makeItAdvanceBallV2(const int num, const int flags = 0,  const int tendemNum = 0);
 	CPlayerTask* makeItTandem(const int num, const int robber = 1, const int flags = 0);
 	CPlayerTask* makeItGoAndTurnKick(const int num, const double targetdir, const int itype, const int power);
+	CPlayerTask* makeItStaticGetBall(const int num, const double dir, CVector finalVel, int flags, double StopDist, CTRL_METHOD mode);
 	CPlayerTask* makeItGetBallV4(const int num, const int flag = 0);
 	CPlayerTask* makeItCircleAndPass(const int num, const double targetdir, const int itype, const int power);
 	CPlayerTask* makeItGoAndTurnKickV3(const int num ,const double targetdir,int circleNum,const double fixAngle,const double maxAcc,const int radius,const int numPerCir,const double gotoPre,const double gotoDist,const double adjustPre,const double kickprecision = Param::Math::PI*5/180,const int flags = 0);
