@@ -121,7 +121,7 @@ namespace PlayerRole{
 	CPlayerTask* makeItAdvanceBallV2(const int num, const int flags = 0,  const int tendemNum = 0);
 	CPlayerTask* makeItTandem(const int num, const int robber = 1, const int flags = 0);
 	CPlayerTask* makeItGoAndTurnKick(const int num, const double targetdir, const int itype, const int power);
-	CPlayerTask* makeItGetBallV4(const int num, const int flag = 0);
+	CPlayerTask* makeItGetBallV4(const int num, const double targetDir ,const int flag = 0);
 	CPlayerTask* makeItCircleAndPass(const int num, const double targetdir, const int itype, const int power);
 	CPlayerTask* makeItGoAndTurnKickV3(const int num ,const double targetdir,int circleNum,const double fixAngle,const double maxAcc,const int radius,const int numPerCir,const double gotoPre,const double gotoDist,const double adjustPre,const double kickprecision = Param::Math::PI*5/180,const int flags = 0);
 

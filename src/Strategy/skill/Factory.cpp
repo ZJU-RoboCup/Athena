@@ -664,11 +664,12 @@ namespace PlayerRole {
 		return TaskFactoryV2::Instance()->GoAndTurnKick(playerTask);
 	}
 
-	CPlayerTask* makeItGetBallV4(const int num, const int flag)
+	CPlayerTask* makeItGetBallV4(const int num, const double targetdir, const int flag)
 	{
 		static TaskT playerTask;
 		playerTask.executor = num;
 		playerTask.player.flag = flag;
+		playerTask.player.angle = targetdir;
 		return TaskFactoryV2::Instance()->GetBallV4(playerTask);
 	}
 
