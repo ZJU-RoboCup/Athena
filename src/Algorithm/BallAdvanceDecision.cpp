@@ -42,7 +42,7 @@ namespace {
 	bool& changeLeaderFlag = GPUBestAlgThread::Instance()->changeLeaderFlag;
 	const CGeoRectangle* runArea = GPUBestAlgThread::Instance()->getRunArea();
 	bool& changeLeaderOverFlag = GPUBestAlgThread::Instance()->changeLeaderOverFlag;
-	int formation[13][3] = { {3,7,9},{7,8,9},{1,9,7},{3,8,9},{1,8,3},{1,8,7},{1,9,3},{1,3,9},{3,7,1},{5,7,9},{1,9,5},{4,5,6},{3,7,5} };
+	int formation[13][3] = { {3,7,9},{8,4,6},{1,9,7},{3,8,9},{1,8,3},{1,8,7},{1,9,3},{1,3,9},{3,7,1},{5,7,9},{1,9,5},{4,5,6},{3,7,5} };
 };
 
 CBallAdvanceDecision::CBallAdvanceDecision(){
@@ -222,7 +222,7 @@ string CBallAdvanceDecision::generateAttackDecision(const CVisionModule* pVision
 			confirmLeader();
 		}
 		else if (needRushToBall) {
-			new_state = RUSH_TO_BALL;
+			new_state = COMPUTE;
 		}
 		break;
 	case RECEIVE:
@@ -672,7 +672,7 @@ void CBallAdvanceDecision::generateRunPosition() {
 		cout << "ballArea " << ballArea << endl;
 		cout << "The runArea is ";
 	}
-	for (int i = 0; i < attackerAmount - 1; i++) {
+	for (int i = 0; i <= 2; i++) {
 		runPos[i] = GPUBestAlgThread::Instance()->generateRunPos(formation[ballArea - 1][i]);
 		if (DEBUG)
 			cout << formation[ballArea - 1][i] << " ";

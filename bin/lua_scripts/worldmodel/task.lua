@@ -532,7 +532,11 @@ function chipPass(p, c, f, anti)
 			ipower = cp.toTarget(ball.antiYPos(p))
 		elseif type(p) == "function" then
 			if f == false or f == nil then
-				ipower = cp.toTarget(ball.antiYPos(p))
+				if anti == true then
+					ipower = cp.toTarget(ball.antiYPos(p))
+				else
+					ipower = cp.toTarget(p())
+				end
 			end
 		end
 	elseif type(c) == "number" then
@@ -1238,31 +1242,38 @@ function universal()
 		--print("universal : ",decision)
 		local PassPos = pos.getShootPos()
 		if decision == "LightKick" then
-			debugEngine:gui_debug_msg(CGeoPoint:new_local(-470, 200), "flatPass")
-			return flatPass(CGeoPoint:new_local(450, 0),80)
+			debugEngine:gui_debug_msg(CGeoPoint:new_local(430, 200), "flatPass")
+			return flatPass(CGeoPoint:new_local(450, 0),50)
 		elseif decision == "LightChip" then
-			debugEngine:gui_debug_msg(CGeoPoint:new_local(-470, 200), "chipPass")
+			debugEngine:gui_debug_msg(CGeoPoint:new_local(430, 200), "chipPass")
 			return chipPass(CGeoPoint:new_local(450, 0),30)
 		elseif decision == "GetBall" then
-			debugEngine:gui_debug_msg(CGeoPoint:new_local(-470, 200), "advance")
+			debugEngine:gui_debug_msg(CGeoPoint:new_local(430, 200), "advance")
 			return advance()
 		elseif decision == "Pass" then
-			debugEngine:gui_debug_msg(CGeoPoint:new_local(-470, 200), "flatPass")
-			return flatPass(PassPos())--return flatPass(PassPos)
+			debugEngine:gui_debug_msg(CGeoPoint:new_local(430, 200), "flatPass")
+			if player.canFlatPassToPos("Leader",PassPos) then
+				return flatPass(PassPos)
+			else
+				return chipPass(PassPos,_,false,false)
+			end
 		elseif decision == "Receive" or decision == "Compute" then
-			debugEngine:gui_debug_msg(CGeoPoint:new_local(-470, 200), "receivePass")
+			debugEngine:gui_debug_msg(CGeoPoint:new_local(430, 200), "receivePass")
 			return receivePass(ball.pos(),0)
 		elseif decision == "ReceivePass" then
-			debugEngine:gui_debug_msg(CGeoPoint:new_local(-470, 200), "receivePass")
+			debugEngine:gui_debug_msg(CGeoPoint:new_local(430, 200), "receivePass")
 			return receivePass(PassPos)
 		elseif decision == "ReceiveShoot" then
-			debugEngine:gui_debug_msg(CGeoPoint:new_local(-470, 200), "receiveShoot")
+			debugEngine:gui_debug_msg(CGeoPoint:new_local(430, 200), "receiveShoot")
 			return  receiveShoot()
 		elseif decision == "WaitTouch" then
-			debugEngine:gui_debug_msg(CGeoPoint:new_local(-470, 200), "WaitTouch")
+			debugEngine:gui_debug_msg(CGeoPoint:new_local(430, 200), "WaitTouch")
 			return waitTouchNew()
+		elseif decision == "Shoot" then
+			debugEngine:gui_debug_msg(CGeoPoint:new_local(430, 200), "shoot")
+			return shoot()
 		else
-			debugEngine:gui_debug_msg(CGeoPoint:new_local(-470, 200), "advance")
+			debugEngine:gui_debug_msg(CGeoPoint:new_local(430, 200), "advance")
 			return advance()
 		end
 	end

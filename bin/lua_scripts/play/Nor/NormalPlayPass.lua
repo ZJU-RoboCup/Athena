@@ -9,6 +9,9 @@ end
 
 local RunPos1,RunPos2,RunPos3,RunPos4 = pos.getRunPos()
 local confirmPos1,confirmPos2,confirmPos3,confirmPos4 = pos.confirmPos()
+local avoid_our_vehicle = bit:_or(flag.allow_dss,flag.not_avoid_their_vehicle)
+local avoid_ball_and_shoot_line = bit:_or(flag.dodge_ball,flag.avoid_shoot_line)
+local DSS = bit:_or(avoid_our_vehicle,avoid_ball_and_shoot_line)
 
 local function updateOurBallAction()
 	if bufcnt(not cond.canShootOnBallPos("Leader") and 
@@ -255,7 +258,7 @@ firstState = "OurBall2",
 		return ourBallJumpCond()
 	end,
 	Leader   = task.universal(),
-	Special  = task.goCmuRush(RunPos1,player.toBallDir),
+	Special  = task.goCmuRush(RunPos1,player.toBallDir,_,DSS),
 	Middle   = task.defendMiddle(),
 	Defender = task.leftBack(),
 	Assister = task.rightBack(),
@@ -270,8 +273,8 @@ firstState = "OurBall2",
 		return ourBallJumpCond()
 	end,
 	Leader   = task.universal(),
-	Special  = task.goCmuRush(RunPos1,player.toBallDir),
-	Middle   = task.goCmuRush(RunPos2,player.toBallDir),
+	Special  = task.goCmuRush(RunPos1,player.toBallDir,_,DSS),
+	Middle   = task.goCmuRush(RunPos2,player.toBallDir,_,DSS),
 	Defender = task.leftBack(),
 	Assister = task.rightBack(),
 	Goalie   = task.goalie(),
@@ -285,9 +288,9 @@ firstState = "OurBall2",
 		return ourBallJumpCond()
 	end,
 	Leader   = task.universal(),
-	Special  = task.goCmuRush(RunPos1,player.toBallDir),
-	Middle   = task.goCmuRush(RunPos2,player.toBallDir),
-	Defender = task.goCmuRush(RunPos3,player.toBallDir),
+	Special  = task.goCmuRush(RunPos1,player.toBallDir,_,DSS),
+	Middle   = task.goCmuRush(RunPos2,player.toBallDir,_,DSS),
+	Defender = task.goCmuRush(RunPos3,player.toBallDir,_,DSS),
 	Assister = task.rightBack(), 
 	Goalie   = task.goalie(),
 	match    = "{L}[A][SMD]"
