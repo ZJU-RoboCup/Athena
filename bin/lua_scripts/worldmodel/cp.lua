@@ -33,7 +33,7 @@ function toTarget(p)
 		end
 
 		local dist = ball.toPointDist(tmpP)
-		if IS_SIMULATION then
+		--[[if IS_SIMULATION then
 			return dist*dist/980.0
 		else
 			dist = dist * 0.6 - 38
@@ -42,6 +42,7 @@ function toTarget(p)
 				dist = 60
 			end
 			return dist
-		end
+		end--]]
+		return dist * 0.8
 	end
 end

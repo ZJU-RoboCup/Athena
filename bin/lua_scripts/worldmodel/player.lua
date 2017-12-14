@@ -312,7 +312,12 @@ end
 --for dynamicKick
 function canFlatPassToPos(role, targetpos)
 	local p1 = player.pos(role)
-	local p2 = targetpos
+	local p2
+	if type(targetpos) == "function" then
+		p2 = targetpos()
+	else
+		p2 = targetpos
+	end
 	local seg = CGeoSegment:new_local(p1, p2)
 	for i = 1, param.maxPlayer do
 		if enemy.valid(i) then
