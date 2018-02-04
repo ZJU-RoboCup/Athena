@@ -10,7 +10,8 @@ gRoleNum = {
 	["Tier"] = 0,
 	["Breaker"] = 0,
 	["Fronter"] = 0,
-	["Receiver"] = 0
+	["Receiver"] = 0,
+	["Center"] = 0
 }
 
 gLastRoleNum = {
@@ -42,7 +43,8 @@ gRoleLookUpTable = {
 ["M"] = "Middle",
 ["L"] = "Leader",
 ["B"] = "Breaker",
-["F"] = "Fronter"
+["F"] = "Fronter",
+["C"] = "Center"
 }
 
 function DecodeMatchStr(str)

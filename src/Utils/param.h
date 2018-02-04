@@ -16,7 +16,7 @@ namespace Param{
 	namespace Field{
 		const int POS_SIDE_LEFT = 1;
 		const int POS_SIDE_RIGHT = -1;
-		const int MAX_PLAYER = 6;
+		const int MAX_PLAYER = 8; //2018.2.4
 
 		/* 长度单位均为厘米,时间单位均为秒,质量单位为克,角度单位为弧度 */
 		/* Ball */

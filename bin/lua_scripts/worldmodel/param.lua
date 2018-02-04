@@ -1,6 +1,6 @@
 module(..., package.seeall)
 
-maxPlayer   = 6
+maxPlayer   = 8
 pitchLength = 900
 pitchWidth  = 600
 goalWidth = 100

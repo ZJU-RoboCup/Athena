@@ -105,8 +105,8 @@ void CInterceptBallV6::plan(const CVisionModule * pVision)
 			*/
 			chase_kick_task.player.pos = ball.RawPos();
 			chase_kick_task.player.angle = finalAngel;
-			setSubTask(TaskFactoryV2::Instance()->StaticGetballNew(chase_kick_task));
-			//setSubTask(TaskFactoryV2::Instance()->NoneTrajGetBall(chase_kick_task));
+			//setSubTask(TaskFactoryV2::Instance()->StaticGetballNew(chase_kick_task));
+			setSubTask(TaskFactoryV2::Instance()->NoneTrajGetBall(chase_kick_task));
 		}
 		else if (me.RawPos().dist(ballLineProjection) < 15 && me2Ball.mod()<60 &&
 		abs(Utils::Normalize(ball2Projection.dir()-ball.Vel().dir()))<0.1) {			//到截球线上等着
