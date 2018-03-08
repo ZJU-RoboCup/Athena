@@ -1,8 +1,0 @@
-close all
-Tsample = 1/60;
-speedResponse =20;
-start = 1;
-final = 30;
-Pos = 0:Tsample:10;
-Pos = Pos'+ rand(size(Pos,2), size(Pos,1))/10;
-ballEstimatedx=filtDesignVel(Pos,Tsample,speedResponse);

@@ -12,9 +12,6 @@
 
 # Qt-es
 
-object_script.*.Release
-object_script.*.Debug
-*_plugin_import.cpp
 /.qmake.cache
 /.qmake.stash
 *.pro.user
@@ -23,15 +20,10 @@ object_script.*.Debug
 *.qbs.user.*
 *.moc
 moc_*.cpp
-moc_*.h
 qrc_*.cpp
 ui_*.h
 Makefile*
 *build-*
-
-# Qt unit tests
-target_wrapper.*
-
 
 # QtCreator
 
@@ -42,7 +34,5 @@ target_wrapper.*
 *.qmlproject.user.*
 
 # QtCtreator CMake
-CMakeLists.txt.user*
+CMakeLists.txt.user
 
-# Protobuf
-*.pb.*

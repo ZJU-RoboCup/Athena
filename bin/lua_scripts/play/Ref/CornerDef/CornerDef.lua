@@ -1,1 +1,0 @@
-gCurrentPlay = gOppoConfig.CornerDef

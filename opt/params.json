@@ -1,0 +1,61 @@
+{
+    "canvas":{
+        "width":1080,
+        "height":720
+    },
+    "bigField":{
+        "canvas_width":9900,
+        "canvas_height":6600,
+        "field":{
+            "width":9000,
+            "height":6000,
+            "goalWidth":1200,
+            "goalDepth":200,
+            "penaltyRadius":1000,
+            "penaltyCenterLength":500,
+            "centerCircleRadius":500
+        }
+    },
+    "smallField":{
+        "canvas_width":6600,
+        "canvas_height":4400,
+        "field":{
+            "width":6000,
+            "height":4000,
+            "goalWidth":700,
+            "goalDepth":200,
+            "penaltyRadius":800,
+            "penaltyCenterLength":500,
+            "centerCircleRadius":500
+        }
+    },
+    "numberSize":150,
+    "car":{
+        "diameter": 179,
+        "faceWidth" : 120
+    },
+    "ball":{
+        "diameter": 79
+    },
+    "crazy":{
+        "port":"",
+        "frequency":0
+    },
+    "vision":{
+        "address":"224.5.23.2",
+        "port":{
+            "small":10002,
+            "big":10005
+        },
+        "minAddFrame":3,
+        "minLostFrame":10,
+        "ballMaxSpeed":1000,
+        "robotMaxSpeed":700,
+        "send":{
+            "address":"127.0.0.1",
+            "port":54321,
+            "address2":"127.0.0.1",
+            "port2":12345
+        }
+    }
+}

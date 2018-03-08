@@ -1,8 +1,0 @@
-$#include "NormalPlayUtils.h"
-$#include "gpuBestAlgThread.h"
-$#include "TaskMediator.h"
-
-namespace NormalPlayUtils{
-	bool generateTwoPassPoint(CGeoPoint ball,CGeoPoint& passPosOne,CGeoPoint& passPosTwo);
-	bool isEnemyBlockShootLine(CGeoPoint ball,double shootDir,double range);
-}

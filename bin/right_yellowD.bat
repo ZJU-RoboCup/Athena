@@ -1,1 +1,0 @@
-ZeusD.exe cy sr

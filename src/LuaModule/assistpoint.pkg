@@ -1,9 +1,0 @@
-$#include "AssistPoint.h"
-
-class CAssistPoint {
-	CAssistPoint();
-	~CAssistPoint();
-
-	CGeoPoint getBestAssistPoint(const CVisionModule* pVision,int leaderNum,int assistNum);
-	void generateBestPoint(const CVisionModule* pVision,int leadNum);
-};
