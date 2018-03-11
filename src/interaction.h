@@ -9,7 +9,7 @@ class Interaction : public QObject
 public:
     explicit Interaction(QObject *parent = 0);
     Q_INVOKABLE void setVision(bool);
-    Q_INVOKABLE int getCameraNumber() { return PARAM::CAMERA; }
+    Q_INVOKABLE int  getCameraNumber() { return PARAM::CAMERA; }
     Q_INVOKABLE void controlCamera(int,bool);
     Q_INVOKABLE void controlProcess(int,bool);
     ~Interaction();

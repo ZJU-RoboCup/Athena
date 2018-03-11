@@ -13,7 +13,8 @@
 #include "immortals/Source/Reality/Vision/WorldState.h"
 namespace {
     double POWED_DIS(double a,double b,double c,double d) { return (((a-c)*(a-c))+((b-d)*(b-d))); }
-    const int CAM_COUNT = 4;
+    //change for 2018
+    const int CAM_COUNT = 8;
 
     const double PREDICT_STEPS = 5.0f;
 

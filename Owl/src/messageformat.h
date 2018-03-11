@@ -31,7 +31,7 @@ namespace {
         }
         bool fill(const Robot& robot){
             return fill(robot.id,robot.pos.x,robot.pos.y,robot.angel);
-        }
+        }//why same name??
     };
 }
 const int BLUE = 0;

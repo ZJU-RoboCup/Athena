@@ -6,7 +6,7 @@
 #include "modelfix.h"
 #include "montage.h"
 #include "immortals/immortalsvision.h"
-#include "proto/messages_robocup_ssl_wrapper.pb.h"
+#include "proto/messages_robocup_ssl_wrapper.pb.h"  // what for?
 #include <QtDebug>
 CVisionModule::CVisionModule(QObject *parent)
     : QObject(parent)
