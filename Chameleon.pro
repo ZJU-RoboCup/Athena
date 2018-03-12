@@ -32,7 +32,9 @@ SOURCES += \
     immortals/Source/Reality/Vision/Protobuf/ImmortalsProtocols.pb.cc \
     immortals/Source/Reality/Vision/Protobuf/aidebug.pb.cc \
     immortals/Source/Reality/Vision/VisionBall.cpp \
-    immortals/Source/Reality/Vision/VisionRobot.cpp
+    immortals/Source/Reality/Vision/VisionRobot.cpp \
+    Owl/src/visionrobot.cpp \
+    Owl/src/visionball.cpp
 
 DISTFILES += \
     opt/params.json
@@ -66,7 +68,9 @@ HEADERS += \
     immortals/Source/Common/MATHS_REGRESSION_PARABOLIC.h \
     immortals/Source/Reality/Vision/WorldState.h \
     immortals/Source/Reality/Vision/Protobuf/ImmortalsProtocols.pb.h \
-    immortals/Source/Reality/Vision/Protobuf/aidebug.pb.h
+    immortals/Source/Reality/Vision/Protobuf/aidebug.pb.h \
+    Owl/src/visionrobot.h \
+    Owl/src/visionball.h
 
 INCLUDEPATH += \
     $$PWD/src/utils \

@@ -1,6 +1,9 @@
 #include "transform.h"
 #include "staticparams.h"
 #include "globaldata.h"
+#include "visionmodule.h"
+
+
 CTransform::CTransform(){
 
 }

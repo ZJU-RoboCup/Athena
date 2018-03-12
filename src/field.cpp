@@ -1,6 +1,7 @@
 #include "field.h"
 #include "singleparams.h"
 #include "visionmodule.h"
+#include "transform.h"
 #include "globaldata.h"
 #include <QColor>
 #include <QtMath>
@@ -61,6 +62,7 @@ Field::Field(QQuickItem *parent)
     canvasHeight = SingleParams::instance()->_("canvas.height");
     canvasWidth  = SingleParams::instance()->_("canvas.width");
     connect(VisionModule::instance(),SIGNAL(needDraw()),this,SLOT(draw()));
+    connect(Transform::instance(),SIGNAL(needDrawT()),this,SLOT(draw()));
     setImplicitWidth(canvasWidth);
     setImplicitHeight(canvasHeight);
     pixmap = new QPixmap(QSize(canvasWidth,canvasHeight));
@@ -92,7 +94,7 @@ void Field::changeMode(bool ifBig){
     this->update(area);
 }
 
-void Field::draw(){
+void Field::draw(){                     //change here!!!!!!!
     pixmap->fill(COLOR_DARKGREEN);
     pixmapPainter.strokePath(painterPath, pen);
     switch(_type){

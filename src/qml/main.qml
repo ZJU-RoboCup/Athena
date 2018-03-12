@@ -25,7 +25,7 @@ Window {
             width:1080;
             height:740;
             Repeater{
-                model:["Origin","Transformed","ModelFixed","Montaged","Immortals"];
+                model:["Origin","Ball-Transformed","Robot-ModelFixed","Final-Montaged","Immortals"];
                 Tab{
                     anchors.fill: parent;
                     title:modelData;

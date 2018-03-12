@@ -38,7 +38,7 @@ void CVisionModule::storeData(){
     }
     if (collectNewVision()) {
         std::fill_n(GlobalData::instance()->cameraUpdate,PARAM::CAMERA,false);
-        //dealWithData();
+        dealWithData();
         immortalsVision();
         emit needDraw();
     }
