@@ -33,8 +33,9 @@ SOURCES += \
     immortals/Source/Reality/Vision/Protobuf/aidebug.pb.cc \
     immortals/Source/Reality/Vision/VisionBall.cpp \
     immortals/Source/Reality/Vision/VisionRobot.cpp \
-    Owl/src/visionrobot.cpp \
-    Owl/src/visionball.cpp
+    Owl/src/transform.cpp \
+    Owl/src/dealball.cpp \
+    Owl/src/dealrobot.cpp
 
 DISTFILES += \
     opt/params.json
@@ -69,8 +70,8 @@ HEADERS += \
     immortals/Source/Reality/Vision/WorldState.h \
     immortals/Source/Reality/Vision/Protobuf/ImmortalsProtocols.pb.h \
     immortals/Source/Reality/Vision/Protobuf/aidebug.pb.h \
-    Owl/src/visionrobot.h \
-    Owl/src/visionball.h
+    Owl/src/dealball.h \
+    Owl/src/dealrobot.h
 
 INCLUDEPATH += \
     $$PWD/src/utils \

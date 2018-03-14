@@ -27,6 +27,8 @@ private:
                   ,bool ifDrawNum = true,const QColor& textColor = Qt::white);
     void paintBall(const QColor& color,qreal x,qreal y);
     void drawOriginVision(int);
+    void drawBallFixedVision(int);
+    void drawRobotFixedVision(int);
     void drawTransformedVision(int);
     void drawModelFixedVision(int);
     void drawProcessedVision(int);

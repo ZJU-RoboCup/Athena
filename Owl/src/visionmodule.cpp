@@ -5,6 +5,8 @@
 #include "transform.h"
 #include "modelfix.h"
 #include "montage.h"
+#include "dealball.h"
+#include "dealrobot.h"
 #include "immortals/immortalsvision.h"
 #include "proto/messages_robocup_ssl_wrapper.pb.h"  // what for?
 #include <QtDebug>
@@ -81,8 +83,8 @@ bool CVisionModule::collectNewVision(){
 }
 
 bool CVisionModule::dealWithData(){
-    Transform::instance()->run(GlobalData::instance()->processControl[0]);
-    ModelFix::instance()->run(GlobalData::instance()->processControl[1]);
+    Dealball::instance()->run(GlobalData::instance()->processControl[0]);
+    Dealrobot::instance()->run(GlobalData::instance()->processControl[1]);
     Montage::instance()->run(GlobalData::instance()->processControl[2]);
     return true;
 }

@@ -11,6 +11,8 @@ public:
     bool cameraControl[PARAM::CAMERA];
     bool processControl[3];
     DataQueue<ReceiveVisionMessage> camera[PARAM::CAMERA];
+    DataQueue<ReceiveVisionMessage> processBall[PARAM::CAMERA];
+    DataQueue<ReceiveVisionMessage> processRobot[PARAM::CAMERA];
     DataQueue<ReceiveVisionMessage> transformed[PARAM::CAMERA];
     DataQueue<ReceiveVisionMessage> modelFixed[PARAM::CAMERA];
     DataQueue<OriginMessage> vision;

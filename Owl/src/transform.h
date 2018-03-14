@@ -8,7 +8,7 @@ public:
     void run(bool);
 
 signals:
-    void needDrawT();
+    void needDraw();
 };
 typedef Singleton<CTransform> Transform;
 #endif // TRANSFORM_H

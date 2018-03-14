@@ -101,9 +101,9 @@ void Field::draw(){                     //change here!!!!!!!
     case 1:
         drawOriginVision(0);break;
     case 2:
-        drawTransformedVision(0);break;
+        drawBallFixedVision(0);break;
     case 3:
-        drawModelFixedVision(0);break;
+        drawRobotFixedVision(0);break;
     case 4:
         drawProcessedVision(0);break;
     case 5:
@@ -142,6 +142,16 @@ void Field::drawOriginVision(int index){
 void Field::drawTransformedVision(int index){
     for(int i=0;i<PARAM::CAMERA;i++){
         drawVision(GlobalData::instance()->transformed[i][index]);
+    }
+}
+void Field::drawBallFixedVision(int index){
+    for (int i=0;i<PARAM::CAMERA;i++){
+        drawVision(GlobalData::instance()->processBall[i][index]);
+    }
+}
+void Field::drawRobotFixedVision(int index){
+    for (int i=0;i<PARAM::CAMERA;i++){
+        drawVision(GlobalData::instance()->processRobot[i][index]);
     }
 }
 void Field::drawModelFixedVision(int index) {

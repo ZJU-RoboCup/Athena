@@ -9,7 +9,9 @@ CTransform::CTransform(){
 }
 void CTransform::run(bool sw){
     if(sw){
-
+        for(int i=0;i<PARAM::CAMERA;i++){
+            GlobalData::instance()->transformed[i].push(GlobalData::instance()->camera[i][0]);
+        }
     }else{
         for(int i=0;i<PARAM::CAMERA;i++){
             GlobalData::instance()->transformed[i].push(GlobalData::instance()->camera[i][0]);
