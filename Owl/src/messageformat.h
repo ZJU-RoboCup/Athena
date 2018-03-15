@@ -33,6 +33,12 @@ namespace {
             return fill(robot.id,robot.pos.x,robot.pos.y,robot.angel);
         }//why same name??
     };
+    struct SingleCamera{
+        unsigned short id;
+        Pos2d pos;
+        double height;
+        SingleCamera():height(300){}//set 300cm as an example
+    };
 }
 const int BLUE = 0;
 const int YELLOW = 1;

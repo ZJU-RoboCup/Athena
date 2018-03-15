@@ -35,7 +35,8 @@ SOURCES += \
     immortals/Source/Reality/Vision/VisionRobot.cpp \
     Owl/src/transform.cpp \
     Owl/src/dealball.cpp \
-    Owl/src/dealrobot.cpp
+    Owl/src/dealrobot.cpp \
+    Owl/src/maintain.cpp
 
 DISTFILES += \
     opt/params.json
@@ -71,7 +72,8 @@ HEADERS += \
     immortals/Source/Reality/Vision/Protobuf/ImmortalsProtocols.pb.h \
     immortals/Source/Reality/Vision/Protobuf/aidebug.pb.h \
     Owl/src/dealball.h \
-    Owl/src/dealrobot.h
+    Owl/src/dealrobot.h \
+    Owl/src/maintain.h
 
 INCLUDEPATH += \
     $$PWD/src/utils \

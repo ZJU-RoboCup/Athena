@@ -7,5 +7,7 @@ namespace PARAM{
     const int ROBOTNUM = 11;//6
     const int ROBOTMAXID = 12;
     const int BALLNUM = 20;
+    const int BLUE=0;
+    const int YELLOW=0;
 }
 #endif // STATICPARAMS_H

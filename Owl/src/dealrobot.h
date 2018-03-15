@@ -7,6 +7,11 @@ class CDealrobot
 public:
     CDealrobot();
     void run (bool);
+    void mergeRobot();//
+    void selectRobot();//
+
+private:
+
 };
 typedef Singleton <CDealrobot> Dealrobot;
 

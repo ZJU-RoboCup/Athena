@@ -10,6 +10,8 @@ public:
     bool cameraUpdate[PARAM::CAMERA];
     bool cameraControl[PARAM::CAMERA];
     bool processControl[3];
+    int cameraID[PARAM::CAMERA];//show the mapping of cameras  id
+    SingleCamera cameraMatrix[PARAM::CAMERA];
     DataQueue<ReceiveVisionMessage> camera[PARAM::CAMERA];
     DataQueue<ReceiveVisionMessage> processBall[PARAM::CAMERA];
     DataQueue<ReceiveVisionMessage> processRobot[PARAM::CAMERA];
