@@ -6,6 +6,10 @@ class CMaintain
 {
 public:
     CMaintain();
+    void CollisionDetection();
+    void ChipPrediction();
+    void StateMachine();
+
 };
 typedef Singleton<CMaintain> Maintain;
 

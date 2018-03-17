@@ -54,7 +54,7 @@ int CImmortalsVision::MergeBalls ( int num )
 				num --;
 
 				j --;
-			}
+            }
 		}
 		balls_num ++;
 	}

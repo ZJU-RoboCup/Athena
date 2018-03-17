@@ -1,13 +1,14 @@
 #ifndef DEALROBOT_H
 #define DEALROBOT_H
 #include <singleton.hpp>
+#include <messageformat.h>
 
 class CDealrobot
 {
 public:
     CDealrobot();
     void run (bool);
-    void mergeRobot();//
+    ReceiveVisionMessage mergeRobot(ReceiveVisionMessage,ReceiveVisionMessage);//
     void selectRobot();//
 
 private:
