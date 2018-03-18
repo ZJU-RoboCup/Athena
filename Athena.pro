@@ -7,7 +7,7 @@ CONFIG += c++11
 
 QT += qml quick
 
-TARGET = Chameleon
+TARGET = Athena
 
 SOURCES += \
     src/main.cpp \
@@ -42,7 +42,7 @@ DISTFILES += \
     opt/params.json
 
 RESOURCES += \
-    Chameleon.qrc
+    Athena.qrc
 
 HEADERS += \
     Owl/src/visionmodule.h \

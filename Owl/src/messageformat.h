@@ -7,13 +7,19 @@ namespace {
         double x;
         double y;
         Pos2d():x(-9999),y(-9999){}
+        bool fill(double x,double y){
+            this->x=x;
+            this->y=y;
+            return true;
+        }
     };
     struct Ball{
         Pos2d pos;
         double height;
+        int cameraID;
         Ball():pos(),height(0){}
-        bool fill(double x,double y,double height = 0){
-            pos.x = x; pos.y = y; this->height = height;
+        bool fill(double x,double y,double height = 0,int id=-1){
+            pos.x = x; pos.y = y; this->height = height;this->cameraID=id;
             return true;
         }
         bool fill(const Ball& ball){
@@ -60,8 +66,8 @@ public:
         robotSize[BLUE] = robotSize[YELLOW] = ballSize = 0;
         std::fill_n(&robotIndex[0][0],2*PARAM::ROBOTMAXID,-1);
     }
-    bool addBall(double x,double y,double height = 0){
-        return ballSize >= PARAM::BALLNUM ? false : ball[ballSize++].fill(x,y,height);
+    bool addBall(double x,double y,double height = 0,int id=-1){
+        return ballSize >= PARAM::BALLNUM ? false : ball[ballSize++].fill(x,y,height,id);
     }
     bool addRobot(int color,unsigned short id,double x,double y,double angel){
         if(robotSize[color] >= PARAM::ROBOTNUM)

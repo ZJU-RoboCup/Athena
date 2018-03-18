@@ -4,16 +4,16 @@
         "height":720
     },
     "bigField":{
-        "canvas_width":9900,
-        "canvas_height":6600,
+        "canvas_width":14250,
+        "canvas_height":9500,
         "field":{
-            "width":9000,
-            "height":6000,
+            "width":12000,
+            "height":9000,
             "goalWidth":1200,
             "goalDepth":200,
-            "penaltyRadius":1000,
-            "penaltyCenterLength":500,
-            "centerCircleRadius":500
+            "penaltyWidth":1200,
+            "penaltyLength":2400,
+            "centerCircleRadius":600
         }
     },
     "smallField":{
@@ -29,7 +29,7 @@
             "centerCircleRadius":500
         }
     },
-    "numberSize":150,
+    "numberSize":200,
     "car":{
         "diameter": 179,
         "faceWidth" : 120
@@ -45,7 +45,7 @@
         "address":"224.5.23.2",
         "port":{
             "small":10002,
-            "big":10005
+            "big":10020
         },
         "minAddFrame":3,
         "minLostFrame":10,

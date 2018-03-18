@@ -7,7 +7,7 @@
 #include <QtMath>
 #include <QtDebug>
 namespace{
-//    const static QColor COLOR_BLUE(19,49,137);
+//    const static QColor COLOR_BLUE(19,49,137);//QColor(16,86,151)
 //    const static QColor COLOR_TRANSBLUE(19,49,137,25);
 //    const static QColor COLOR_YELLOW(241,231,36);
 //    const static QColor COLOR_TRANSYELLOW(241,231,36,25);
@@ -17,10 +17,10 @@ namespace{
 //    const static QColor COLOR_TRANSORANGE(255,170,85,25);
 //    const static QColor COLOR_DARKGREEN(Qt::darkGreen);
 //    const static QColor COLOR_TRANSPARENT(Qt::transparent);
-    const static QColor CAR_COLOR[2]  = {QColor(16,86,151),QColor(241,201,50)};
-    const static QColor FONT_COLOR[2] = {Qt::white,Qt::black};
+    const static QColor CAR_COLOR[2]  = {QColor(25,30,150),QColor(241,201,50)};
+    const static QColor FONT_COLOR[2] = {Qt::white,Qt::white};
     const static QColor COLOR_ORANGE(237,133,12);
-    const static QColor COLOR_DARKGREEN(59,142,112);
+    const static QColor COLOR_DARKGREEN(120,120,120);
     const static QColor COLOR_RED(220,53,47);
     int canvasHeight;
     int canvasWidth;
@@ -30,14 +30,14 @@ namespace{
     int param_canvas_height;
     int param_goalWidth;
     int param_goalDepth;
-    int param_penaltyRadius;
-    int param_penaltyCenterLength;
+    int param_penaltyWidth;
+    int param_penaltyLength;
     int param_centerCircleRadius;
     double x(double _x){
         return _x*canvasWidth/param_canvas_width+canvasWidth/2;
     }
     double y(double _y){
-        return _y*canvasHeight/param_canvas_height+canvasHeight/2;
+        return -_y*canvasHeight/param_canvas_height+canvasHeight/2;
     }
     double w(double _w){
         return _w*canvasWidth/param_canvas_width;
@@ -52,7 +52,6 @@ namespace{
         return _r*16;
     }
 }
-static void addQuarterCirclePath(QPainterPath& painterPath,qreal x,qreal y,qreal radius,qreal angel);
 Field::Field(QQuickItem *parent)
     : QQuickPaintedItem(parent)
     , pixmap(nullptr)
@@ -76,15 +75,15 @@ void Field::paint(QPainter* painter){
 
 void Field::changeMode(bool ifBig){
     std::string prefix = ifBig ? "bigField" : "smallField";
-    pen.setWidth(ifBig ? 2 : 1);
+    pen.setWidth(ifBig ? 1 : 1);
     param_width                 = SingleParams::instance()->_(prefix+".field.width");
     param_height                = SingleParams::instance()->_(prefix+".field.height");
     param_canvas_width          = SingleParams::instance()->_(prefix+".canvas_width");
     param_canvas_height         = SingleParams::instance()->_(prefix+".canvas_height");
     param_goalWidth             = SingleParams::instance()->_(prefix+".field.goalWidth");
     param_goalDepth             = SingleParams::instance()->_(prefix+".field.goalDepth");
-    param_penaltyRadius         = SingleParams::instance()->_(prefix+".field.penaltyRadius");
-    param_penaltyCenterLength   = SingleParams::instance()->_(prefix+".field.penaltyCenterLength");
+    param_penaltyWidth          = SingleParams::instance()->_(prefix+".field.penaltyWidth");
+    param_penaltyLength         = SingleParams::instance()->_(prefix+".field.penaltyLength");
     param_centerCircleRadius    = SingleParams::instance()->_(prefix+".field.centerCircleRadius");
     area = QRect(0,0,this->property("width").toReal(),this->property("height").toReal());
     painterPath = QPainterPath();
@@ -112,27 +111,29 @@ void Field::draw(){                     //change here!!!!!!!
     this->update(area);
 }
 void Field::initPainterPath(){
-    painterPath.addRect(::x(-param_width/2),::y(-param_height/2),::w(param_width),::h(param_height));
-    painterPath.addRect(::x(-param_width/2),::y(param_goalWidth/2),::w(-param_goalDepth),::h(-param_goalWidth));
-    painterPath.addRect(::x(param_width/2),::y(param_goalWidth/2),::w(param_goalDepth),::h(-param_goalWidth));
+    painterPath.addRect(::x(-param_width/2),::y(param_height/2),::w(param_width),::h(param_height));
+    painterPath.addRect(::x(-param_width/2),::y(-param_goalWidth/2),::w(-param_goalDepth),::h(-param_goalWidth));
+    painterPath.addRect(::x(param_width/2),::y(-param_goalWidth/2),::w(param_goalDepth),::h(-param_goalWidth));
     painterPath.moveTo(::x(-param_width/2),::y(0));
     painterPath.lineTo(::x(param_width/2),::y(0));
-    painterPath.moveTo(::x(0),::y(-param_height/2));
-    painterPath.lineTo(::x(0),::y(param_height/2));
-    painterPath.addEllipse(::x(-param_centerCircleRadius),::y(-param_centerCircleRadius),::w(2*param_centerCircleRadius),::h(2*param_centerCircleRadius));
-    addQuarterCirclePath(painterPath,::x(param_width/2),::y(-param_penaltyCenterLength/2),::w(param_penaltyRadius),90);
-    addQuarterCirclePath(painterPath,::x(param_width/2),::y(param_penaltyCenterLength/2),::w(param_penaltyRadius),180);
-    addQuarterCirclePath(painterPath,::x(-param_width/2),::y(param_penaltyCenterLength/2),::w(param_penaltyRadius),-90);
-    addQuarterCirclePath(painterPath,::x(-param_width/2),::y(-param_penaltyCenterLength/2),::w(param_penaltyRadius),0);
-    painterPath.moveTo(::x(param_width/2-param_penaltyRadius),::y(param_penaltyCenterLength/2));
-    painterPath.lineTo(::x(param_width/2-param_penaltyRadius),::y(-param_penaltyCenterLength/2));
-    painterPath.moveTo(::x(-(param_width/2-param_penaltyRadius)),::y(param_penaltyCenterLength/2));
-    painterPath.lineTo(::x(-(param_width/2-param_penaltyRadius)),::y(-param_penaltyCenterLength/2));
-}
-static void addQuarterCirclePath(QPainterPath& painterPath,qreal x,qreal y,qreal radius,qreal angel){
-    painterPath.moveTo(x,y);
-    painterPath.arcMoveTo(x-radius,y-radius,2*radius,2*radius,angel);
-    painterPath.arcTo(x-radius,y-radius,2*radius,2*radius,angel,90);
+    painterPath.moveTo(::x(0),::y(param_height/2));
+    painterPath.lineTo(::x(0),::y(-param_height/2));
+    painterPath.addEllipse(::x(-param_centerCircleRadius),::y(param_centerCircleRadius),::w(2*param_centerCircleRadius),::h(2*param_centerCircleRadius));
+
+    // old method
+    //addQuarterCirclePath(painterPath,::x(param_width/2),::y(-param_penaltyCenterLength/2),::w(param_penaltyRadius),90);
+    //addQuarterCirclePath(painterPath,::x(param_width/2),::y(param_penaltyCenterLength/2),::w(param_penaltyRadius),180);
+    //addQuarterCirclePath(painterPath,::x(-param_width/2),::y(param_penaltyCenterLength/2),::w(param_penaltyRadius),-90);
+    //addQuarterCirclePath(painterPath,::x(-param_width/2),::y(-param_penaltyCenterLength/2),::w(param_penaltyRadius),0);
+    //painterPath.moveTo(::x(param_width/2-param_penaltyRadius),::y(param_penaltyCenterLength/2));
+    //painterPath.lineTo(::x(param_width/2-param_penaltyRadius),::y(-param_penaltyCenterLength/2));
+    //painterPath.moveTo(::x(-(param_width/2-param_penaltyRadius)),::y(param_penaltyCenterLength/2));
+    //painterPath.lineTo(::x(-(param_width/2-param_penaltyRadius)),::y(-param_penaltyCenterLength/2));
+
+    // new method
+    painterPath.addRect(::x(-param_width/2),::y(param_penaltyLength/2),::w(param_penaltyWidth),::h(param_penaltyLength));
+    painterPath.addRect(::x(param_width/2),::y(param_penaltyLength/2),::w(-param_penaltyWidth),::h(param_penaltyLength));
+
 }
 void Field::drawOriginVision(int index){
     for(int i=0;i<PARAM::CAMERA;i++){
@@ -145,9 +146,10 @@ void Field::drawTransformedVision(int index){
     }
 }
 void Field::drawBallFixedVision(int index){
-    for (int i=0;i<PARAM::CAMERA;i++){
-        drawVision(GlobalData::instance()->processBall[i][index]);
-    }
+    //for (int i=0;i<PARAM::CAMERA;i++){
+    //    drawVision(GlobalData::instance()->processBall[i][index]);
+    //}
+    drawVision(GlobalData::instance()->processBall[index]);
 }
 void Field::drawRobotFixedVision(int index){
     for (int i=0;i<PARAM::CAMERA;i++){
@@ -186,9 +188,9 @@ void Field::paintCar(const QColor& color,quint8 num,qreal x,qreal y,qreal radian
         font.setPixelSize(fontSize);
         pixmapPainter.setFont(font);
         if (num >= 10) {
-            pixmapPainter.drawText(::x(x-numberSize/1.5),::y(y+numberSize/3),QString::number(num));
+            pixmapPainter.drawText(::x(x-numberSize/1.5),::y(y),QString::number(num));
         } else {
-            pixmapPainter.drawText(::x(x-numberSize/3),::y(y+numberSize/3),QString::number(num));
+            pixmapPainter.drawText(::x(x-numberSize/3),::y(y),QString::number(num));
         }
     }
 }
