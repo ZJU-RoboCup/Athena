@@ -15,7 +15,7 @@ CGlobalData::CGlobalData(){
     //
     cameraMatrix[0].pos.fill(-450,225);
     cameraMatrix[4].pos.fill(-450,-225);
-    cameraMatrix[2].pos.fill(-150,225);
+    cameraMatrix[1].pos.fill(-150,225);
     cameraMatrix[5].pos.fill(-150,-225);
     cameraMatrix[2].pos.fill(150,225);
     cameraMatrix[6].pos.fill(-150,-225);

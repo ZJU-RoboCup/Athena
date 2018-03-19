@@ -18,6 +18,7 @@ private:
     Ball ballSequence[PARAM::BALLNUM][PARAM::CAMERA];
     ReceiveVisionMessage result;
     double posDist( Pos2d,Pos2d);
+    void init();
 };
 typedef Singleton<CDealball> Dealball;
 #endif // DEALBALL_H

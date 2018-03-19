@@ -7,11 +7,13 @@ namespace {
         double x;
         double y;
         Pos2d():x(-9999),y(-9999){}
+        Pos2d(double _x,double _y){x=_x;y=_y;}
         bool fill(double x,double y){
             this->x=x;
             this->y=y;
             return true;
         }
+
     };
     struct Ball{
         Pos2d pos;
