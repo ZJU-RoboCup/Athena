@@ -6,7 +6,7 @@ namespace {
     struct Pos2d{
         double x;
         double y;
-        Pos2d():x(-9999),y(-9999){}
+        Pos2d():x(-32767),y(-32767){}
         Pos2d(double _x,double _y){x=_x;y=_y;}
         bool fill(double x,double y){
             this->x=x;
@@ -33,6 +33,7 @@ namespace {
         Pos2d pos;
         double angel;
         Robot():id(-1){}
+        Robot(double _x,double _y,double _angle, double _id=-1){pos.x=_x;pos.y=_y;angel=_angle;id=_id;}
         bool fill(unsigned short id,double x,double y,double angel){
             this->id = id; pos.x = x; pos.y = y; this->angel = angel;
             return true;

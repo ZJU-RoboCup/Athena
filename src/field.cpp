@@ -152,9 +152,7 @@ void Field::drawBallFixedVision(int index){
     drawVision(GlobalData::instance()->processBall[index]);
 }
 void Field::drawRobotFixedVision(int index){
-    for (int i=0;i<PARAM::CAMERA;i++){
-        drawVision(GlobalData::instance()->processRobot[i][index]);
-    }
+    drawVision(GlobalData::instance()->processRobot[index]);
 }
 void Field::drawModelFixedVision(int index) {
     float x = GlobalData::instance()->montageMaxX;

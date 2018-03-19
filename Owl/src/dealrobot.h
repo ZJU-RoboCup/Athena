@@ -8,11 +8,14 @@ class CDealrobot
 public:
     CDealrobot();
     void run (bool);
-    ReceiveVisionMessage mergeRobot(ReceiveVisionMessage,ReceiveVisionMessage);//
+    void MergeRobot();//
     void selectRobot();//
 
 private:
-
+    Robot robotSeqence[2][PARAM::ROBOTMAXID][PARAM::CAMERA];
+    ReceiveVisionMessage result;
+    void init();
+    double posDist(Pos2d, Pos2d);
 };
 typedef Singleton <CDealrobot> Dealrobot;
 

@@ -31,11 +31,10 @@ void CDealball::mergeBall(){
     if (PARAM::DEBUG) std::cout<<"Actually have "<<actualBallNum<<" balls.\n";
     result.init();
     for (i=0;i<actualBallNum;i++){
-        Pos2d count(0,0);
         double weight=0;
         Pos2d average(0,0);
         for(j=0;j<PARAM::CAMERA;j++){
-            if (ballSequence[i][j].pos.x>-9000 && ballSequence[i][j].pos.y>-9000)
+            if (ballSequence[i][j].pos.x>-30000 && ballSequence[i][j].pos.y>-30000)
             {
                 SingleCamera camera=GlobalData::instance()->cameraMatrix[j];
                 double _weight;
@@ -55,7 +54,6 @@ void CDealball::init(){
     for (int i=0;i<PARAM::CAMERA;i++){
         for(int j=0;j<GlobalData::instance()->camera[i][0].ballSize;j++)
         {
-            std::cout<<i<<" "<<j<<" "<<GlobalData::instance()->camera[i][0].ballSize<<"\t";
             result.addBall(GlobalData::instance()->camera[i][0].ball[j].pos.x,
                     GlobalData::instance()->camera[i][0].ball[j].pos.y,0,i);
         }
@@ -68,7 +66,7 @@ void CDealball::run(bool sw){
     result.init();
     for(int i=0;i<PARAM::BALLNUM;i++)
         for(int j=0;j<PARAM::CAMERA;j++)
-            ballSequence[i][j].fill(-9999,-9999);
+            ballSequence[i][j].fill(-32767,-32767);
 
     if (sw){
         init();
