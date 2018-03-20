@@ -1,0 +1,22 @@
+message Vision_DetectionBall {
+  required float  confidence = 1;
+  optional uint32 area       = 2;
+  required float  x          = 3;
+  required float  y          = 4;
+  optional float  height     = 5;
+}
+
+message Vision_DetectionRobot {
+  required float  confidence  =  1;
+  optional uint32 robot_id    =  2;
+  required float  x           =  3;
+  required float  y           =  4;
+  optional float  orientation =  5;
+  optional float  speed       =  6;
+}
+
+message Vision_DetectionFrame {
+  repeated Vision_DetectionBall  balls         = 1;
+  repeated Vision_DetectionRobot robots_yellow = 2;
+  repeated Vision_DetectionRobot robots_blue   = 3;
+}

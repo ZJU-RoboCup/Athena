@@ -48,6 +48,10 @@ namespace {
         double height;
         SingleCamera():height(300){}//set 300cm as an example
     };
+    struct CameraFix{
+        double theta,t1,t2;
+        CameraFix():theta(0),t1(0),t2(0){}
+    };
 }
 const int BLUE = 0;
 const int YELLOW = 1;

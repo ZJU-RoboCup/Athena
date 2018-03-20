@@ -104,7 +104,7 @@ void Field::draw(){                     //change here!!!!!!!
     case 3:
         drawRobotFixedVision(0);break;
     case 4:
-        drawProcessedVision(0);break;
+        drawMaintainVision(0);break;
     case 5:
         drawImmortalsVision();break;
     }
@@ -154,6 +154,11 @@ void Field::drawBallFixedVision(int index){
 void Field::drawRobotFixedVision(int index){
     drawVision(GlobalData::instance()->processRobot[index]);
 }
+
+void Field::drawMaintainVision(int index){
+    drawVision(GlobalData::instance()->maintain[index]);
+}
+
 void Field::drawModelFixedVision(int index) {
     float x = GlobalData::instance()->montageMaxX;
     float y = GlobalData::instance()->montageMaxY;

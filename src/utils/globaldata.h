@@ -11,11 +11,12 @@ public:
     bool cameraControl[PARAM::CAMERA];
     bool processControl[3];
     int cameraID[PARAM::CAMERA];//show the mapping of cameras  id
-
+    CameraFix cameraFixMatrix[PARAM::CAMERA];
     SingleCamera cameraMatrix[PARAM::CAMERA];
     DataQueue<ReceiveVisionMessage> camera[PARAM::CAMERA];
     DataQueue<ReceiveVisionMessage> processBall;
     DataQueue<ReceiveVisionMessage> processRobot;
+    DataQueue<ReceiveVisionMessage> maintain;
     DataQueue<ReceiveVisionMessage> transformed[PARAM::CAMERA];
     DataQueue<ReceiveVisionMessage> modelFixed[PARAM::CAMERA];
     DataQueue<OriginMessage> vision;

@@ -29,6 +29,7 @@ private:
     void drawOriginVision(int);
     void drawBallFixedVision(int);
     void drawRobotFixedVision(int);
+    void drawMaintainVision(int);
     void drawTransformedVision(int);
     void drawModelFixedVision(int);
     void drawProcessedVision(int);

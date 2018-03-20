@@ -5,6 +5,7 @@
 #include "transform.h"
 #include "modelfix.h"
 #include "montage.h"
+#include "maintain.h"
 #include "dealball.h"
 #include "dealrobot.h"
 #include "immortals/immortalsvision.h"
@@ -85,7 +86,7 @@ bool CVisionModule::collectNewVision(){
 bool CVisionModule::dealWithData(){
     Dealball::instance()->run(GlobalData::instance()->processControl[0]);
     Dealrobot::instance()->run(GlobalData::instance()->processControl[1]);
-    Montage::instance()->run(GlobalData::instance()->processControl[2]);
+    Maintain::instance()->run(GlobalData::instance()->processControl[2]);
     return true;
 }
 bool CVisionModule::immortalsVision(){
