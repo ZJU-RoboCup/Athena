@@ -43,7 +43,7 @@ namespace{
         return _w*canvasWidth/param_canvas_width;
     }
     double h(double _h){
-        return _h*canvasHeight/param_canvas_height;
+        return -_h*canvasHeight/param_canvas_height;
     }
     double a(double _a){
         return _a*16;
@@ -61,7 +61,6 @@ Field::Field(QQuickItem *parent)
     canvasHeight = SingleParams::instance()->_("canvas.height");
     canvasWidth  = SingleParams::instance()->_("canvas.width");
     connect(VisionModule::instance(),SIGNAL(needDraw()),this,SLOT(draw()));
-    connect(Transform::instance(),SIGNAL(needDrawT()),this,SLOT(draw()));
     setImplicitWidth(canvasWidth);
     setImplicitHeight(canvasHeight);
     pixmap = new QPixmap(QSize(canvasWidth,canvasHeight));
@@ -111,14 +110,14 @@ void Field::draw(){                     //change here!!!!!!!
     this->update(area);
 }
 void Field::initPainterPath(){
-    painterPath.addRect(::x(-param_width/2),::y(param_height/2),::w(param_width),::h(param_height));
-    painterPath.addRect(::x(-param_width/2),::y(-param_goalWidth/2),::w(-param_goalDepth),::h(-param_goalWidth));
-    painterPath.addRect(::x(param_width/2),::y(-param_goalWidth/2),::w(param_goalDepth),::h(-param_goalWidth));
+    painterPath.addRect(::x(-param_width/2),::y(-param_height/2),::w(param_width),::h(param_height));
+    painterPath.addRect(::x(-param_width/2),::y(-param_goalWidth/2),::w(-param_goalDepth),::h(param_goalWidth));
+    painterPath.addRect(::x(param_width/2),::y(-param_goalWidth/2),::w(param_goalDepth),::h(param_goalWidth));
     painterPath.moveTo(::x(-param_width/2),::y(0));
     painterPath.lineTo(::x(param_width/2),::y(0));
     painterPath.moveTo(::x(0),::y(param_height/2));
     painterPath.lineTo(::x(0),::y(-param_height/2));
-    painterPath.addEllipse(::x(-param_centerCircleRadius),::y(param_centerCircleRadius),::w(2*param_centerCircleRadius),::h(2*param_centerCircleRadius));
+    painterPath.addEllipse(::x(-param_centerCircleRadius),::y(-param_centerCircleRadius),::w(2*param_centerCircleRadius),::h(2*param_centerCircleRadius));
 
     // old method
     //addQuarterCirclePath(painterPath,::x(param_width/2),::y(-param_penaltyCenterLength/2),::w(param_penaltyRadius),90);
@@ -131,8 +130,8 @@ void Field::initPainterPath(){
     //painterPath.lineTo(::x(-(param_width/2-param_penaltyRadius)),::y(-param_penaltyCenterLength/2));
 
     // new method
-    painterPath.addRect(::x(-param_width/2),::y(param_penaltyLength/2),::w(param_penaltyWidth),::h(param_penaltyLength));
-    painterPath.addRect(::x(param_width/2),::y(param_penaltyLength/2),::w(-param_penaltyWidth),::h(param_penaltyLength));
+    painterPath.addRect(::x(-param_width/2),::y(-param_penaltyLength/2),::w(param_penaltyWidth),::h(param_penaltyLength));
+    painterPath.addRect(::x(param_width/2),::y(-param_penaltyLength/2),::w(-param_penaltyWidth),::h(param_penaltyLength));
 
 }
 void Field::drawOriginVision(int index){
@@ -182,18 +181,18 @@ void Field::paintCar(const QColor& color,quint8 num,qreal x,qreal y,qreal radian
     static qreal chordAngel = qRadiansToDegrees(qAcos(faceWidth/diameter));
     pixmapPainter.setBrush(QBrush(color));
     pixmapPainter.setPen(Qt::NoPen);
-    pixmapPainter.drawChord(::x(x-radius),::y(y-radius),::w(diameter),::h(diameter),::a(90.0-chordAngel - 180/M_PI*radian),::r(180.0+2*chordAngel));
+    pixmapPainter.drawChord(::x(x-radius),::y(y-radius),::w(diameter),::h(diameter),::a(90.0-chordAngel + 180/M_PI*radian),::r(180.0+2*chordAngel));
     if (ifDrawNum) {
         pixmapPainter.setBrush(Qt::NoBrush);
         pixmapPainter.setPen(QPen(textColor));
         QFont font;
-        int fontSize = ::h(numberSize);
+        int fontSize = ::h(-numberSize);
         font.setPixelSize(fontSize);
         pixmapPainter.setFont(font);
         if (num >= 10) {
-            pixmapPainter.drawText(::x(x-numberSize/1.5),::y(y),QString::number(num));
+            pixmapPainter.drawText(::x(x-numberSize*0.5),::y(y+diameter*0.4),QString::number(num));
         } else {
-            pixmapPainter.drawText(::x(x-numberSize/3),::y(y),QString::number(num));
+            pixmapPainter.drawText(::x(x-numberSize),::y(y+diameter*0.4),QString::number(num));
         }
     }
 }

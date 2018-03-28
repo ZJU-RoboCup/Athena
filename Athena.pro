@@ -16,12 +16,12 @@ SOURCES += \
     src/utils/singleparams.cpp \
     src/interaction.cpp \
     Owl/src/visionmodule.cpp \
-    proto/messages_robocup_ssl_detection.pb.cc \
-    proto/messages_robocup_ssl_geometry_legacy.pb.cc \
-    proto/messages_robocup_ssl_geometry.pb.cc \
-    proto/messages_robocup_ssl_refbox_log.pb.cc \
-    proto/messages_robocup_ssl_wrapper_legacy.pb.cc \
-    proto/messages_robocup_ssl_wrapper.pb.cc \
+    proto/cpp/messages_robocup_ssl_detection.pb.cc \
+    proto/cpp/messages_robocup_ssl_geometry_legacy.pb.cc \
+    proto/cpp/messages_robocup_ssl_geometry.pb.cc \
+    proto/cpp/messages_robocup_ssl_refbox_log.pb.cc \
+    proto/cpp/messages_robocup_ssl_wrapper_legacy.pb.cc \
+    proto/cpp/messages_robocup_ssl_wrapper.pb.cc \
     Owl/src/transform.cpp \
     Owl/src/modelfix.cpp \
     Owl/src/montage.cpp \
@@ -36,7 +36,9 @@ SOURCES += \
     Owl/src/transform.cpp \
     Owl/src/dealball.cpp \
     Owl/src/dealrobot.cpp \
-    Owl/src/maintain.cpp
+    Owl/src/maintain.cpp \
+    proto/cpp/vision_detection.pb.cc \
+    proto/cpp/vision_sendpacket.pb.cc
 
 DISTFILES += \
     opt/params.json
@@ -54,12 +56,12 @@ HEADERS += \
     src/interaction.h \
     Owl/src/messageformat.h \
     src/utils/staticparams.h \
-    proto/messages_robocup_ssl_detection.pb.h \
-    proto/messages_robocup_ssl_geometry_legacy.pb.h \
-    proto/messages_robocup_ssl_geometry.pb.h \
-    proto/messages_robocup_ssl_refbox_log.pb.h \
-    proto/messages_robocup_ssl_wrapper_legacy.pb.h \
-    proto/messages_robocup_ssl_wrapper.pb.h \
+    proto/cpp/messages_robocup_ssl_detection.pb.h \
+    proto/cpp/messages_robocup_ssl_geometry_legacy.pb.h \
+    proto/cpp/messages_robocup_ssl_geometry.pb.h \
+    proto/cpp/messages_robocup_ssl_refbox_log.pb.h \
+    proto/cpp/messages_robocup_ssl_wrapper_legacy.pb.h \
+    proto/cpp/messages_robocup_ssl_wrapper.pb.h \
     Owl/src/transform.h \
     Owl/src/modelfix.h \
     Owl/src/montage.h \

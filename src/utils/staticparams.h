@@ -3,7 +3,8 @@
 //change param for 2018 rule
 //wait for change camera number
 namespace PARAM{
-    const bool DEBUG=1;
+    const bool DEBUG=false;
+    const bool USE_IMMORTAL_BALL=true;
     const int CAMERA = 8;//4
     const int ROBOTNUM = 12;//6
     const int ROBOTMAXID = 12;

@@ -56,6 +56,9 @@ void CDealball::init(){
         {
             result.addBall(GlobalData::instance()->camera[i][0].ball[j].pos.x,
                     GlobalData::instance()->camera[i][0].ball[j].pos.y,0,i);
+            if (PARAM::DEBUG) std::cout<<" "<<i<<" "
+                                      <<GlobalData::instance()->camera[i][0].ball[j].pos.x<<" "
+                                      <<GlobalData::instance()->camera[i][0].ball[j].pos.y<<" ";
         }
     }
     if (PARAM::DEBUG) std::cout<<"Origin vision has "<<result.ballSize<<" balls.\n";

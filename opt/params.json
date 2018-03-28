@@ -45,7 +45,7 @@
         "address":"224.5.23.2",
         "port":{
             "small":10002,
-            "big":10020
+            "big":10025
         },
         "minAddFrame":3,
         "minLostFrame":10,

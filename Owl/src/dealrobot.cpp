@@ -5,6 +5,10 @@
 
 CDealrobot::CDealrobot()
 {
+    for(int i=0;i<PARAM::ROBOTMAXID;i++){
+        GlobalData::instance()->robotPossible[PARAM::BLUE][i]=0;
+        GlobalData::instance()->robotPossible[PARAM::YELLOW][i]=0;
+    }
 }
 
 double CDealrobot::posDist(Pos2d pos1, Pos2d pos2)
@@ -73,10 +77,72 @@ void CDealrobot::init(){
     }
 }
 
+void CDealrobot::sortRobot(int color){
+    //Possible Increase
+    for (int i=0;i<result.robotSize[color];i++)
+    {
+        Robot robot=result.robot[color][i];
+        GlobalData::instance()->robotPossible[color][robot.id]+=0.3;
+        if (GlobalData::instance()->robotPossible[color][robot.id]>1.0)
+            GlobalData::instance()->robotPossible[color][robot.id]=1.0;
+        sortTemp[color][robot.id]=robot;
+    }
+    //Possible Decrease
+    for(int j=0; j< GlobalData::instance()->processRobot[-1].robotSize[color]; j++)
+    {
+        bool found=false;
+        Robot robot=GlobalData::instance()->processRobot[-1].robot[color][j];
+        for (int i=0;i<result.robotSize[color];i++)
+        if (result.robot[color][i].id==robot.id)
+        {
+            found=true;
+            break;
+        }
+        if (!found) {
+            GlobalData::instance()->robotPossible[color][robot.id]-=0.05;
+            if (GlobalData::instance()->robotPossible[color][robot.id]<0.0)
+                GlobalData::instance()->robotPossible[color][robot.id]=0.0;
+            else
+               sortTemp[color][robot.id]=robot;
+        }
+    }
+    //sort
+    for (int i=0;i<PARAM::ROBOTMAXID-1;i++)
+        if (sortTemp[color][i].id>=0){
+        double possible=GlobalData::instance()->robotPossible[color][sortTemp[color][i].id];
+        int maxj=i;
+        for (int j=i+1;j<PARAM::ROBOTMAXID;j++)
+            if (sortTemp[color][j].id>=0)
+            if (possible<GlobalData::instance()->robotPossible[color][sortTemp[color][j].id]) maxj=j;
+        if (maxj!=i){
+            Robot temp;
+            temp=sortTemp[color][maxj];
+            sortTemp[color][maxj]=sortTemp[color][i];
+            sortTemp[color][i]=temp;
+        }
+    }
+}
+
 void CDealrobot::run(bool sw){
     if (sw){
         init();
         MergeRobot();
+        sortRobot(PARAM::BLUE);
+        sortRobot(PARAM::YELLOW);
+        result.init();
+        for (int i=0;i<PARAM::ROBOTMAXID;i++)
+            if (sortTemp[PARAM::BLUE][i].id>=0 && sortTemp[PARAM::BLUE][i].id<=PARAM::ROBOTMAXID)
+            if (GlobalData::instance()->robotPossible[sortTemp[PARAM::BLUE][i].id]>0)
+            {
+                result.addRobot(PARAM::BLUE,sortTemp[PARAM::BLUE][i]);
+            }
+        for (int i=0;i<PARAM::ROBOTMAXID;i++)
+            if (sortTemp[PARAM::YELLOW][i].id>=0 && sortTemp[PARAM::YELLOW][i].id<=PARAM::ROBOTMAXID)
+            if (GlobalData::instance()->robotPossible[sortTemp[PARAM::YELLOW][i].id]>0)
+            {
+                result.addRobot(PARAM::YELLOW,sortTemp[PARAM::YELLOW][i]);
+            }
+        GlobalData::instance()->processRobot.push(result);
     }
     else{
 //        for(int i=0;i<PARAM::CAMERA;i++){

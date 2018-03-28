@@ -14,8 +14,10 @@ public:
 private:
     Robot robotSeqence[2][PARAM::ROBOTMAXID][PARAM::CAMERA];
     ReceiveVisionMessage result;
+    Robot sortTemp[2][PARAM::ROBOTMAXID];
     void init();
     double posDist(Pos2d, Pos2d);
+    void sortRobot(int);
 };
 typedef Singleton <CDealrobot> Dealrobot;
 

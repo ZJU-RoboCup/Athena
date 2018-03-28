@@ -9,7 +9,7 @@
 #include "dealball.h"
 #include "dealrobot.h"
 #include "immortals/immortalsvision.h"
-#include "proto/messages_robocup_ssl_wrapper.pb.h"  // what for?
+#include "proto/cpp/messages_robocup_ssl_wrapper.pb.h"  // what for?
 #include <QtDebug>
 CVisionModule::CVisionModule(QObject *parent)
     : QObject(parent)
