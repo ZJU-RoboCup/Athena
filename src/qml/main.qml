@@ -24,6 +24,7 @@ Window {
             id:fields;
             width:1080;
             height:740;
+            currentIndex:3;
             Repeater{
                 model:["Origin","Ball-Transformed","Robot-ModelFixed","Final-Montaged","Immortals"];
                 Tab{

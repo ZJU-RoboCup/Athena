@@ -22,9 +22,10 @@ void CDealrobot::MergeRobot(){
         double blueWeight=0,yellowWeight=0;
         Pos2d blueAverage(0,0),yellowAverage(0,0);
         double blueAngle=0,yellowAngle=0;
+       // std::cout<<"roboID:"<<roboId<<" : ";
         for (int camId=0;camId<PARAM::CAMERA;camId++){
             SingleCamera camera=GlobalData::instance()->cameraMatrix[camId];
-            double _weight;
+            double _weight=0;
             if(robotSeqence[PARAM::BLUE][roboId][camId].pos.x>-30000 && robotSeqence[PARAM::BLUE][roboId][camId].pos.y>-30000)
             {
                 foundBlue=true;
@@ -33,7 +34,10 @@ void CDealrobot::MergeRobot(){
                 blueAverage.x+=robotSeqence[PARAM::BLUE][roboId][camId].pos.x * _weight;
                 blueAverage.y+=robotSeqence[PARAM::BLUE][roboId][camId].pos.y * _weight;
                 blueAngle+=robotSeqence[PARAM::BLUE][roboId][camId].angel * _weight;
+                //std::cout<<_weight<<" "<<robotSeqence[PARAM::BLUE][roboId][camId].angel <<"\t";
+                //blueAngle=robotSeqence[PARAM::BLUE][roboId][camId].angel ;
             }
+            _weight=0;
             if(robotSeqence[PARAM::YELLOW][roboId][camId].pos.x>-30000 && robotSeqence[PARAM::YELLOW][roboId][camId].pos.y>-30000)
             {
                 foundYellow=true;
@@ -42,8 +46,11 @@ void CDealrobot::MergeRobot(){
                 yellowAverage.x+=robotSeqence[PARAM::YELLOW][roboId][camId].pos.x * _weight;
                 yellowAverage.y+=robotSeqence[PARAM::YELLOW][roboId][camId].pos.y * _weight;
                 yellowAngle=robotSeqence[PARAM::YELLOW][roboId][camId].angel *_weight;
+                //std::cout<<_weight<<" "<<robotSeqence[PARAM::YELLOW][roboId][camId].angel <<"\t";
+                //yellowAngle=robotSeqence[PARAM::YELLOW][roboId][camId].angel;
            }
         }
+        //std::cout<<"\n";
         if (foundBlue){
             Robot ave(blueAverage.x/blueWeight,blueAverage.y/blueWeight,blueAngle/blueWeight,roboId);
             result.addRobot(PARAM::BLUE,ave);
@@ -75,6 +82,11 @@ void CDealrobot::init(){
             robotSeqence[PARAM::YELLOW][robot.id][i]=robot;
         }
     }
+    for (int i=0;i<PARAM::ROBOTMAXID-1;i++){
+        Robot temp(-32767,-32767,0,-1);
+        sortTemp[PARAM::BLUE][i]=temp;
+        sortTemp[PARAM::YELLOW][i]=temp;
+    }
 }
 
 void CDealrobot::sortRobot(int color){
@@ -101,7 +113,11 @@ void CDealrobot::sortRobot(int color){
         if (!found) {
             GlobalData::instance()->robotPossible[color][robot.id]-=0.05;
             if (GlobalData::instance()->robotPossible[color][robot.id]<0.0)
+            {
+                std::cout<<"Already try to delete Color"<<color<<" ID. "<<robot.id<<std::endl;
                 GlobalData::instance()->robotPossible[color][robot.id]=0.0;
+                sortTemp[color][robot.id].id=-1;
+            }
             else
                sortTemp[color][robot.id]=robot;
         }

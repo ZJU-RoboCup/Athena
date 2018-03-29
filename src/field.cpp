@@ -225,7 +225,7 @@ void Field::drawImmortalsVision(){
         }
         if ( state.OppRobot[i].seenState != CompletelyOut ){
             auto& robot = state.OppRobot[i];
-            paintCar(CAR_COLOR[YELLOW],robot.vision_id,robot.Position.X,robot.Position.Y,(robot.Angle/4.0)/180.0*3.1415926,true,FONT_COLOR[YELLOW]);
+            paintCar(CAR_COLOR[YELLOW],robot.vision_id,robot.Position.X,robot.Position.Y,(robot.Angle)/180.0*3.1415926,true,FONT_COLOR[YELLOW]);
         }
     }
 }
