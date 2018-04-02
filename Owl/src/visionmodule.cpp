@@ -71,7 +71,7 @@ void CVisionModule::parse(void * ptr,int size){
         for (int i = 0; i < yellowSize; i++) {
             const SSL_DetectionRobot& robot = detection.robots_yellow(i);
             message.addRobot(YELLOW,robot.robot_id(),robot.x(),robot.y(),robot.orientation());
-            qDebug() << "YELL : " << robot.robot_id() << robot.orientation();
+            //qDebug() << "YELL : " << robot.robot_id() << robot.orientation();
         }
         GlobalData::instance()->camera[message.camID].push(message);
         GlobalData::instance()->cameraUpdate[message.camID] = true;
