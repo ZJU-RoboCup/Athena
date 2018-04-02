@@ -38,7 +38,8 @@ SOURCES += \
     Owl/src/dealrobot.cpp \
     Owl/src/maintain.cpp \
     proto/cpp/vision_detection.pb.cc \
-    proto/cpp/vision_sendpacket.pb.cc
+    proto/cpp/vision_sendpacket.pb.cc \
+    Owl/src/collisiondetect.cpp
 
 DISTFILES += \
     opt/params.json
@@ -75,7 +76,8 @@ HEADERS += \
     immortals/Source/Reality/Vision/Protobuf/aidebug.pb.h \
     Owl/src/dealball.h \
     Owl/src/dealrobot.h \
-    Owl/src/maintain.h
+    Owl/src/maintain.h \
+    Owl/src/collisiondetect.h
 
 INCLUDEPATH += \
     $$PWD/src/utils \

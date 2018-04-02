@@ -13,7 +13,9 @@ namespace {
             this->y=y;
             return true;
         }
-
+        double dist(Pos2d p){
+            return sqrt((x-p.x)*(x-p.x)+(y-p.y)*(y-p.y));
+        }
     };
     struct Ball{
         Pos2d pos;

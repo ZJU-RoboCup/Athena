@@ -11,7 +11,7 @@ public:
     CMaintain();
     void run (bool);
     void init();
-    void CollisionDetection();
+    //void CollisionDetection();
     void ChipPrediction();
     void StateMachine();
     void udpSocketConnect();

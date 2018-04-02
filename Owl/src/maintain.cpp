@@ -1,7 +1,7 @@
 #include "maintain.h"
 #include "globaldata.h"
 #include "staticparams.h"
-#include "proto/cpp/vision_detection.pb.h"
+#include "collisiondetect.h"
 
 
 CMaintain::CMaintain()
@@ -75,6 +75,7 @@ void CMaintain::init(){
 void CMaintain::run(bool sw){
     if (sw){
         init();
+        //CollisionDetect::instance()->visionAlart();
     }
     else{
 
