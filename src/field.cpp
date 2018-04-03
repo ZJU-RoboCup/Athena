@@ -22,7 +22,7 @@ namespace{
     const static QColor FONT_COLOR[2] = {Qt::white,Qt::white};
     const static QColor COLOR_ORANGE(237,133,12);
     const static QColor COLOR_TRANSORANGE(255,170,85,100);
-    const static QColor COLOR_DARKGREEN(120,120,120);
+    const static QColor COLOR_DARKGREEN(80,80,80);
     const static QColor COLOR_RED(220,53,47);
     int canvasHeight;
     int canvasWidth;
@@ -53,11 +53,17 @@ namespace{
     double r(double _r){
         return _r*16;
     }
+    double rx(double _x){
+        return (_x-canvasWidth/2)*param_canvas_width/canvasWidth;
+    }
+    double ry(double _y){
+        return -(_y-canvasHeight/2)*param_canvas_height/canvasHeight;
+    }
 }
 Field::Field(QQuickItem *parent)
     : QQuickPaintedItem(parent)
     , pixmap(nullptr)
-    , pen(Qt::white,1)
+    , pen(QColor(255,255,255),1)
     , cameraMode(true)
     , _type(-1){
     canvasHeight = SingleParams::instance()->_("canvas.height");
@@ -76,7 +82,7 @@ void Field::paint(QPainter* painter){
 
 void Field::changeMode(bool ifBig){
     std::string prefix = ifBig ? "bigField" : "smallField";
-    pen.setWidth(ifBig ? 1 : 1);
+    pen.setWidth(ifBig ? 2 : 1);
     param_width                 = SingleParams::instance()->_(prefix+".field.width");
     param_height                = SingleParams::instance()->_(prefix+".field.height");
     param_canvas_width          = SingleParams::instance()->_(prefix+".canvas_width");
@@ -250,4 +256,17 @@ void Field::drawImmortalsVision(){
             paintCar(CAR_COLOR[YELLOW],robot.vision_id,robot.Position.X,robot.Position.Y,(robot.Angle)/180.0*3.1415926,true,FONT_COLOR[YELLOW]);
         }
     }
+}
+float Field::minimumX = -999999;
+float Field::minimumY = -999999;
+float Field::maximumX =  999999;
+float Field::maximumY =  999999;
+void Field::setArea(int sx,int ex,int sy,int ey){
+    minimumX = ::rx(sx);
+    minimumY = ::ry(sy);
+    maximumX = ::rx(ex);
+    maximumY = ::ry(ey);
+}
+bool Field::inChosenArea(float x, float y){
+    return (x >= minimumX && x <= maximumX && y >= minimumY && y <= maximumY);
 }

@@ -115,7 +115,7 @@ void CDealrobot::sortRobot(int color){
             GlobalData::instance()->robotPossible[color][robot.id]-=0.05;
             if (GlobalData::instance()->robotPossible[color][robot.id]<0.0)
             {
-                std::cout<<"Already try to delete Color"<<color<<" ID. "<<robot.id<<std::endl;
+                //std::cout<<"Already try to delete Color"<<color<<" ID. "<<robot.id<<std::endl;
                 GlobalData::instance()->robotPossible[color][robot.id]=0.0;
                 sortTemp[color][robot.id].id=-1;
             }

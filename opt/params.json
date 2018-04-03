@@ -1,11 +1,11 @@
 {
     "canvas":{
-        "width":1080,
+        "width":960,
         "height":720
     },
     "bigField":{
-        "canvas_width":14250,
-        "canvas_height":9500,
+        "canvas_width":13200,
+        "canvas_height":9900,
         "field":{
             "width":12000,
             "height":9000,

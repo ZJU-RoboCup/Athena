@@ -7,7 +7,7 @@ import Client.Component 1.0 as Client
 Window {
     id:root;
     visible: true;
-    width: 1260;
+    width: 1140;
     height: 740;
     minimumHeight: height;
     minimumWidth: width;
@@ -33,7 +33,7 @@ Window {
 
         TabView{
             id:fields;
-            width:1080;
+            width:960;
             height:740;
             currentIndex:3;
             Repeater{
@@ -80,6 +80,38 @@ Window {
                color:"white";
                font.pointSize: (Qt.platform.os == "windows") ? 10 : 14;
                font.weight:  Font.Bold;
+           }
+           Rectangle{
+               id:areaRectangle;
+               width:parent.width - 20;
+               height:parent.height - 20;
+               x:10;
+               y:10;
+               color:"#44000000";
+           }
+           MouseArea{
+               property int startX : 0;
+               property int startY : 0;
+               property int endX : 0;
+               property int endY : 0;
+               anchors.fill: parent;
+               onPressed: {
+                   startX = mouseX;
+                   startY = mouseY;
+                   areaRectangle.width = 0;
+                   areaRectangle.height = 0;
+                   areaRectangle.x = startX;
+                   areaRectangle.y = startY;
+               }
+               onPositionChanged: {
+                   areaRectangle.width = mouseX - startX;
+                   areaRectangle.height = mouseY - startY;
+               }
+               onReleased: {
+                   endX = mouseX;
+                   endY = mouseY;
+                   interaction.setArea(startX,endX,endY,startY);
+               }
            }
         }
         Column{

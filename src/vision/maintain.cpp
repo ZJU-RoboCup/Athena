@@ -3,7 +3,7 @@
 #include "staticparams.h"
 #include "collisiondetect.h"
 #include "visionmodule.h"
-
+#include "field.h"
 CMaintain::CMaintain()
 {
     detectionBall= detectionFrame.mutable_balls();
@@ -33,7 +33,7 @@ void CMaintain::init(){
     result.init();
     if (PARAM::USE_IMMORTAL_BALL){
         auto& state = GlobalData::instance()->immortalsVisionState;
-        if(state.has_ball && VisionModule::instance()->inChoseArea(state.ball.Position.X,state.ball.Position.Y))
+        if(state.has_ball && Field::inChosenArea(state.ball.Position.X,state.ball.Position.Y))
             result.addBall(state.ball.Position.X,state.ball.Position.Y);
     }
     else{
