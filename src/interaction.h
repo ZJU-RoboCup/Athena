@@ -4,6 +4,7 @@
 #include <QObject>
 #include "visionmodule.h"
 #include "staticparams.h"
+#include "field.h"
 class Interaction : public QObject
 {
     Q_OBJECT
@@ -14,6 +15,7 @@ public:
     Q_INVOKABLE void controlCamera(int,bool);
     Q_INVOKABLE void controlProcess(int,bool);
     Q_INVOKABLE int getFPS(){ return VisionModule::instance()->getFPS();}
+    Q_INVOKABLE void setArea(int a,int b,int c,int d){ Field::setArea(a,b,c,d); }
     ~Interaction();
 public:
 signals:

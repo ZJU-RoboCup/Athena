@@ -4,7 +4,7 @@ CONFIG += c++11
 
 QT += qml quick
 
-TARGET = Athena
+TARGET = Athena_V02
 
 SOURCES += \
     src/main.cpp \

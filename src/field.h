@@ -15,6 +15,8 @@ public:
     void changeMode(bool ifBig);
     inline int type() { return this->_type; }
     inline void setType(int t) { this->_type = t; }
+    static bool inChosenArea(float,float);
+    static void setArea(int,int,int,int);
     virtual ~Field() {};
 signals:
 
@@ -43,6 +45,7 @@ private:
     bool cameraMode;
     int _type;
     QRect area;
+    static float minimumX,maximumX,minimumY,maximumY;
 };
 
 #endif // __FIELD_H__
