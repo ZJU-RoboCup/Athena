@@ -16,10 +16,21 @@ Window {
     color:"#e8e8e8";
     //flags:Qt.FramelessWindowHint
 
+    Timer{
+        id:fpsTimer;
+        interval:1000;
+        running:true;
+        repeat:true;
+        onTriggered: {
+            fps.text = (interaction.getFPS()).toString();
+        }
+    }
+
     Client.Interaction{ id : interaction; }
 
     Row {
         spacing: 0;
+
         TabView{
             id:fields;
             width:1080;
@@ -30,7 +41,9 @@ Window {
                 Tab{
                     anchors.fill: parent;
                     title:modelData;
-                    Client.Field{ type:index+1; }
+                    Client.Field{
+                        type:index+1;
+                    }
                 }
             }
             style: TabViewStyle {
@@ -48,6 +61,26 @@ Window {
                     }
                 }
             }
+            Text{
+               id : fpsWord;
+               text : qsTr("FPS");
+               x:parent.width - 70;
+               y:5;
+               color:"white";
+               font.pointSize: (Qt.platform.os == "windows") ? 10 : 14;
+               font.weight:  Font.Bold;
+           }
+           Text{
+               id : fps;
+               text : "";
+               anchors.top: parent.top;
+               anchors.topMargin: 5;
+               anchors.right: parent.right;
+               anchors.rightMargin: 10;
+               color:"white";
+               font.pointSize: (Qt.platform.os == "windows") ? 10 : 14;
+               font.weight:  Font.Bold;
+           }
         }
         Column{
             width:180;

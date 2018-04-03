@@ -1,7 +1,6 @@
 #include "visionmodule.h"
 #include "singleparams.h"
 #include "globaldata.h"
-
 #include "transform.h"
 #include "modelfix.h"
 #include "montage.h"
@@ -10,6 +9,7 @@
 #include "dealrobot.h"
 #include "immortals/immortalsvision.h"
 #include "messages_robocup_ssl_wrapper.pb.h"
+#include <QElapsedTimer>
 #include <QtDebug>
 CVisionModule::CVisionModule(QObject *parent)
     : QObject(parent)
@@ -86,12 +86,31 @@ bool CVisionModule::collectNewVision(){
 }
 
 bool CVisionModule::dealWithData(){
+    counter++;
+    //qDebug()<<"ready ball";
     Dealball::instance()->run(GlobalData::instance()->processControl[0]);
+    //qDebug()<<"ready robot";
     Dealrobot::instance()->run(GlobalData::instance()->processControl[1]);
+    //qDebug()<<"ready mantain";
     Maintain::instance()->run(GlobalData::instance()->processControl[2]);
     return true;
 }
 bool CVisionModule::immortalsVision(){
     ImmortalsVision::instance()->ProcessVision(&GlobalData::instance()->immortalsVisionState);
     return true;//whattt?
+}
+quint16 CVisionModule::getFPS(){
+    static QElapsedTimer timer;
+    static bool ifStart = false;
+    static quint64 lastCount;
+    static quint16 result;
+    if (!ifStart) {
+        ifStart = true;
+        timer.start();
+        lastCount = counter;
+        return 0;
+    }
+    result = (counter - lastCount)*1000.0/timer.restart();
+    lastCount = counter;
+    return result;
 }

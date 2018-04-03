@@ -19,9 +19,11 @@ public:
 private:
     ReceiveVisionMessage result;
     QUdpSocket udpSocket;
+    QUdpSocket client_udpSocket;
     QHostAddress groupAddress;
     int interface;
-    int port;
+    int zeus_port;
+    int client_port;
     Vision_DetectionFrame detectionFrame;
     Vision_DetectionBall* detectionBall;
     Vision_DetectionRobot* detectionRobot[2][PARAM::ROBOTMAXID];

@@ -20,7 +20,6 @@ SOURCES += \
     src/proto/cpp/messages_robocup_ssl_wrapper_legacy.pb.cc \
     src/proto/cpp/messages_robocup_ssl_wrapper.pb.cc \
     src/proto/cpp/vision_detection.pb.cc \
-    src/proto/cpp/vision_sendpacket.pb.cc \
     immortals/immortalsvision.cpp \
     immortals/Source/Reality/Vision/Kalman/FilteredObject.cpp \
     immortals/Source/Common/MATHS_REGRESSION_PARABOLIC.cpp \
@@ -58,7 +57,6 @@ HEADERS += \
     src/proto/cpp/messages_robocup_ssl_wrapper_legacy.pb.h \
     src/proto/cpp/messages_robocup_ssl_wrapper.pb.h \
     src/proto/cpp/vision_detection.pb.h \
-    src/proto/cpp/vision_sendpacket.pb.h \
     immortals/immortalsvision.h \
     immortals/Source/Common/MedianFilter.h \
     immortals/Source/Reality/Vision/Kalman/FilteredObject.h \

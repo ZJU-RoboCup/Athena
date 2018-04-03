@@ -15,14 +15,18 @@ CMaintain::CMaintain()
 
 void CMaintain::udpSocketConnect(){
     std::string addressStr = "127.0.0.1";
-    port=23333;
+    zeus_port=23333;
+    client_port=54320;
     groupAddress = QString(addressStr.c_str());
-    udpSocket.bind(QHostAddress::AnyIPv4, port, QUdpSocket::ShareAddress);
+    udpSocket.bind(QHostAddress::AnyIPv4, zeus_port, QUdpSocket::ShareAddress);
     udpSocket.joinMulticastGroup(QHostAddress(groupAddress));
+    client_udpSocket.bind(QHostAddress::AnyIPv4,client_port,QUdpSocket::ShareAddress);
+    client_udpSocket.joinMulticastGroup(QHostAddress(groupAddress));
 }
 
 void CMaintain::udpSocketDisconnect(){
     udpSocket.abort();
+    client_udpSocket.abort();
 }
 
 void CMaintain::init(){
@@ -67,7 +71,8 @@ void CMaintain::init(){
     int size = detectionFrame.ByteSize();
     QByteArray buffer(size,0);
     detectionFrame.SerializeToArray(buffer.data(),buffer.size());
-    udpSocket.writeDatagram(buffer.data(),buffer.size(),groupAddress,23334);//is it???
+    udpSocket.writeDatagram(buffer.data(),buffer.size(),groupAddress,zeus_port+1);
+    client_udpSocket.writeDatagram(buffer.data(),buffer.size(),groupAddress,client_port+1);
     detectionFrame.clear_robots_blue();
     detectionFrame.clear_robots_yellow();
 }

@@ -134,6 +134,7 @@ void CDealrobot::sortRobot(int color){
                     GlobalData::instance()->robotPossible[color][sortTemp[color][maxj].id]<
                     GlobalData::instance()->robotPossible[color][sortTemp[color][j].id]) maxj=j;
         }
+        //qDebug()<<"end for";
         if (maxj!=i){
             Robot temp;
             temp=sortTemp[color][maxj];
@@ -149,6 +150,7 @@ void CDealrobot::run(bool sw){
         MergeRobot();
         sortRobot(PARAM::BLUE);
         sortRobot(PARAM::YELLOW);
+        //qDebug()<<"end sort";
         result.init();
         for (int i=0;i<PARAM::ROBOTMAXID;i++)
             if (sortTemp[PARAM::BLUE][i].id>=0 && sortTemp[PARAM::BLUE][i].id<=PARAM::ROBOTMAXID)

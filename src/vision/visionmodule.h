@@ -13,6 +13,7 @@ public:
     void udpSocketConnect();
     void udpSocketDisconnect();
     void parse(void *,int);
+    Q_INVOKABLE quint16 getFPS();
     //void tranMatrix(const OriginMessage& ,int);
 
 signals:
@@ -22,6 +23,7 @@ public slots:
 private:
     QUdpSocket udpSocket;
     QHostAddress groupAddress;
+    quint64 counter;
     int interface;
     int port;
     bool collectNewVision();

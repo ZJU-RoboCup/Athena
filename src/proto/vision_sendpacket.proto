@@ -1,7 +1,0 @@
-import "vision_detection.proto";
-import "messages_robocup_ssl_geometry.proto";
-
-message Vision_SendPacket {
-  optional Vision_DetectionFrame detection = 1;
-  optional SSL_GeometryData geometry = 2;
-}
