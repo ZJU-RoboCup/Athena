@@ -10,30 +10,6 @@
 /************************************************************************/
 /*                        CVector                                       */
 /************************************************************************/
-//class CVector{
-//public:
-//	CVector() : _vector(0,0){}
-//	CVector(double x, double y) : _vector(x,y){ }
-//	CVector(const R::Vector_2& v) : _vector(v){ }
-//	double mod() const { return std::sqrt(_vector.squared_length());}
-//	double mod2() const { return _vector.squared_length(); }
-//	double dir() const ;
-//	double x() const { return _vector.x();	}
-//	double y() const { return _vector.y();	}
-//	double value(double angle) const { return mod()*std::cos(dir()-angle); } ///<在角度angle的分量
-//	const R::Vector_2& CGALVector() const { return _vector; }
-//	CVector operator +(const CVector& v) const { return _vector + v.CGALVector(); }
-//	CVector operator -(const CVector& v) const { return _vector - v.CGALVector(); }
-//	CVector operator *(double a) const { return _vector * a; }
-//	double operator *(CVector a) const { return (_vector.x() * a.x() + _vector.y() * a.y()); }
-//	CVector operator /(double a) const { return _vector /a;	}
-//	CVector operator - () const { return - _vector;	}
-//	CVector rotate(double angle) const;
-//	CVector perp(){return CVector(_vector.y(),-_vector.x());}
-//	friend std::ostream& operator << (std::ostream& os,const CVector& v){ return os << "(" << v.x() << ":" << v.y() << ")";	}
-//private:
-//	R::Vector_2 _vector;
-//};
 double CNormalize(double angle);
 class CVector {
 public:
@@ -64,23 +40,6 @@ private:
 /************************************************************************/
 /*                       CGeoPoint                                      */
 /************************************************************************/
-//class CGeoPoint{
-//public:
-//	CGeoPoint() : _point(0,0){}
-//	CGeoPoint(double x,double y) : _point(x,y){ }
-//	CGeoPoint(const R::Point_2& p) : _point(p) { }
-//	const R::Point_2& CGALPoint() const { return _point; }
-//	double x() const { return _point.x(); }
-//	double y() const { return _point.y(); }
-//	double dist(const CGeoPoint& p) const { return CVector(p.CGALPoint()- _point).mod(); }
-//	double dist2(const CGeoPoint& p) const { return CVector(p.CGALPoint()- _point).mod2(); }
-//	CGeoPoint operator+( const CVector& v) const { return CGeoPoint( _point + v.CGALVector() );	}
-//	CVector operator-( const CGeoPoint& p) const { return CVector( _point - p.CGALPoint()); }
-//	friend std::ostream& operator << (std::ostream& os,const CGeoPoint& v){ return os << "(" << v.x() << ":" << v.y() << ")";	}
-//	bool operator==(const CGeoPoint& p) const {return p.x() == _point.x() && p.y() == _point.y(); }
-//private:
-//	R::Point_2 _point;
-//};
 class CGeoPoint {
 public:
 	CGeoPoint() : _x(0), _y(0) {}
@@ -109,25 +68,6 @@ private:
 /************************************************************************/
 /*                        CGeoLine                                      */
 /************************************************************************/
-//class CGeoLine{
-//public:
-//	CGeoLine(){}
-//	CGeoLine( const CGeoPoint& p1,const CGeoPoint& p2) : _line(p1.CGALPoint(),p2.CGALPoint()){
-//	_point1 = p1; _point2 = p2;}
-//	CGeoLine( const CGeoPoint& p,double angle) 
-//		: _line(p.CGALPoint(),R::Point_2( p.x() + std::cos(angle),p.y() + std::sin(angle))){
-//	_point1 = p; _point2 = CGeoPoint( p.x() + std::cos(angle),p.y() + std::sin(angle));}
-//	const R::Line_2& CGALLine() const { return _line; }
-//	CGeoPoint projection(const CGeoPoint& p) const { return _line.projection(p.CGALPoint()); }
-//	const CGeoPoint& point1() const { return _point1; }
-//	const CGeoPoint& point2() const { return _point2; }
-//private:
-//	friend class CGeoLineLineIntersection;
-//	friend class CGeoLineSegmentIntersection;
-//	CGeoPoint _point1;
-//	CGeoPoint _point2;
-//	R::Line_2 _line;
-//};
 class CGeoLine {
 public:
 	CGeoLine() {}
@@ -196,33 +136,6 @@ private:
 /************************************************************************/
 /*                       CGeoSegment / 线段                             */
 /************************************************************************/
-//class CGeoSegment : public CGeoLine{
-//public:
-//	CGeoSegment(){}
-//	CGeoSegment(const CGeoPoint& p1, const CGeoPoint& p2) : CGeoLine(p1, p2), _start(p1), _end(p2),
-//		_segment(p1.CGALPoint(), p2.CGALPoint())
-//	{ 
-//		_compareX = std::abs(p1.x() - p2.x()) > std::abs(p1.y() - p2.y());
-//	}
-//	bool IsPointOnLineOnSegment(const CGeoPoint& p) const // 直线上的点是否在线段上
-//	{
-//		if( _compareX ){
-//			return p.x() > (std::min)(_start.x(), _end.x()) && p.x() < (std::max)(_start.x(), _end.x());
-//		}
-//		return p.y() > (std::min)(_start.y(), _end.y()) && p.y() < (std::max)(_start.y(), _end.y());
-//	}
-//	const CGeoPoint& start() const { return _start; }
-//	const CGeoPoint& end() const { return _end; }
-//	const R::Segment_2& CGALSegment() const { return _segment; }
-//private:
-//	friend class CGeoLineSegmentIntersection;
-//	friend class CGeoSegmentSegmentIntersection;
-//	CGeoPoint _start;
-//	CGeoPoint _end;
-//	bool _compareX;
-//	R::Segment_2 _segment;
-//};
-
 class CGeoSegment: public CGeoLine {
 public:
 	CGeoSegment() {}
@@ -349,9 +262,7 @@ private:
 };
 
 /************************************************************************/
-/*                      CGeoLineCircleIntersec
-
-tion                      */
+/*                      CGeoLineCircleIntersection                      */
 /************************************************************************/
 class CGeoLineEllipseIntersection{
 public:

@@ -1,5 +1,6 @@
 #include "collisiondetect.h"
 #include "messageformat.h"
+#include "geometry.h"
 
 CCollisionDetect::CCollisionDetect()
 {
@@ -34,11 +35,15 @@ void CCollisionDetect::analyzeData(){
             const auto &p1 = GlobalData::instance()->maintain[LinePoint[pi]];
             const auto &p2 = GlobalData::instance()->maintain[LinePoint[pi+1]];
             const auto& q = GlobalData::instance()->maintain[i];
-            double d;
+            CGeoPoint p1BallPos(p1.ball[0].pos.x,p1.ball[0].pos.y);
+            CGeoPoint p2BallPos(p2.ball[0].pos.x,p2.ball[0].pos.y);
+            CGeoPoint qBallPos(q.ball[0].pos.x,q.ball[0].pos.y);
+            CGeoSegment PassLine(p1BallPos,p2BallPos);
+            double d=qBallPos.dist(PassLine.projection(qBallPos));
             //------------------IMPOTANT------------
             //CGeoSegment PassLine(p1.BallPos, p2.BallPos);
             //d = q.BallPos.dist(PassLine.projection(q.BallPos));
-            //std::cout << "ball" << i << " @" << q.BallPos << "\t with d:" << d << std::endl;
+            //std::cout << "ball" << i << " @" << qBallPos<< "\t with d:" << d << std::endl;
             if (d > maxDis && d > SPLIT_THRESHOLD && i != LinePoint[pi] && i != LinePoint[pi + 1]) {
                 maxi = i;
                 maxDis = d;
@@ -55,26 +60,10 @@ void CCollisionDetect::analyzeData(){
         }
         PointN++; LinePoint[i + 1] = maxi;
     }
-    //std::cout << "\tPointN:" << PointN << "\t" << GlobalData::instance()->maintain[LinePoint[PointN]].BallPos << std::endl;
     if (PointN > 2) {
         int OurTouchNum = -1, TheirTouchNum = -1, j = PointN - 1;
-        double OurTouchDis = 20.0, TheirTouchDis = 20.0;
-        //std::cout << "found PointN=" << PointN << "\tball pos" << GlobalData::instance()->maintain[LinePoint[j]].BallPos << std::endl;
-//        for (int i = 0; i < Param::Field::MAX_PLAYER; i++)
-//        {
-//            if (GlobalData::instance()->maintain[LinePoint[j]].BallPos.dist(GlobalData::instance()->maintain[LinePoint[j]].OurPlayer[i]) < OurTouchDis)
-//            {
-//                OurTouchDis = GlobalData::instance()->maintain[LinePoint[j]].BallPos.dist(GlobalData::instance()->maintain[LinePoint[j]].OurPlayer[i]);
-//                OurTouchNum = i;
-//            }
-//            if (GlobalData::instance()->maintain[LinePoint[j]].BallPos.dist(GlobalData::instance()->maintain[LinePoint[j]].TheirPlayer[i]) < TheirTouchDis)
-//            {
-//                //std::cout << "the ball " << j - 1 << "th touch THEIR player No." << i << "@" << GlobalData::instance()->maintain[LinePoint[j]].TheirPlayer[i] << "WITH D:" << GlobalData::instance()->maintain[LinePoint[j]].BallPos.dist(GlobalData::instance()->maintain[LinePoint[j]].TheirPlayer[i]) << std::endl;
-//                TheirTouchDis = GlobalData::instance()->maintain[LinePoint[j]].BallPos.dist(GlobalData::instance()->maintain[LinePoint[j]].TheirPlayer[i]);
-//                TheirTouchNum = i;
-//            }
-//        }
-
+        double OurTouchDis = 200.0, TheirTouchDis = 200.0;
+        std::cout << "found PointN=" << PointN << "\tball pos" << GlobalData::instance()->maintain[LinePoint[j]].ball[0].pos.x << std::endl;
         Pos2d ballpos=GlobalData::instance()->maintain[LinePoint[j]].ball[0].pos;
         for (int i=0;i<GlobalData::instance()->maintain[LinePoint[j]].robotSize[PARAM::BLUE];i++){
             Pos2d tempos=GlobalData::instance()->maintain[LinePoint[j]].robot[PARAM::BLUE][i].pos;

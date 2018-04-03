@@ -3,6 +3,7 @@
 #include "visionmodule.h"
 #include "transform.h"
 #include "globaldata.h"
+#include <QElapsedTimer>
 #include <QColor>
 #include <QtMath>
 #include <QtDebug>
@@ -250,4 +251,22 @@ void Field::drawImmortalsVision(){
             paintCar(CAR_COLOR[YELLOW],robot.vision_id,robot.Position.X,robot.Position.Y,(robot.Angle)/180.0*3.1415926,true,FONT_COLOR[YELLOW]);
         }
     }
+}
+
+
+quint16 Field::getFPS(){
+    static QElapsedTimer timer;
+    static bool ifStart = false;
+    static quint64 lastCount;
+    static quint16 result;
+    if (!ifStart) {
+        ifStart = true;
+        timer.start();
+        lastCount = counter;
+        return 0;
+    }
+    result = (counter - lastCount)*1000.0/timer.restart();
+    lastCount = counter;
+    qDebug()<<result<<"fps!!!!";
+    return result;
 }

@@ -12,6 +12,7 @@ class Field : public QQuickPaintedItem{
 public:
     void paint(QPainter* painter) override;
     Field(QQuickItem *parent = 0);
+    Q_INVOKABLE quint16 getFPS();
     void changeMode(bool ifBig);
     inline int type() { return this->_type; }
     inline void setType(int t) { this->_type = t; }
@@ -40,6 +41,7 @@ private:
     QPainter pixmapPainter;
     QPainterPath painterPath;
     QPen pen;
+    quint64 counter;
     bool cameraMode;
     int _type;
     QRect area;

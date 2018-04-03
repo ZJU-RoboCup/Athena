@@ -75,7 +75,7 @@ void CMaintain::init(){
 void CMaintain::run(bool sw){
     if (sw){
         init();
-        //CollisionDetect::instance()->visionAlart();
+        CollisionDetect::instance()->visionAlart();
     }
     else{
 

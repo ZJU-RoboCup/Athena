@@ -3,11 +3,12 @@
 #include "singleton.hpp"
 #include "globaldata.h"
 
-#define DETECT_DIST 30 //detect whether the ball in 30cm of vechile
-#define LENGTH_THERESHOLD 580
-#define WIDTH_THERESHOLD 440
+#define DETECT_DIST 300 //detect whether the ball in 300mm of vechile
+#define TOUCH_DIST 200 //decide touch when ball in 200mm og vechile
+#define LENGTH_THERESHOLD 5800
+#define WIDTH_THERESHOLD 4400
 #define MAX_FRAME_NUM 20
-#define SPLIT_THRESHOLD 4 //split
+#define SPLIT_THRESHOLD 20  //split
 class CCollisionDetect
 {
 public:
