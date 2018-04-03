@@ -18,8 +18,10 @@ namespace{
 //    const static QColor COLOR_DARKGREEN(Qt::darkGreen);
 //    const static QColor COLOR_TRANSPARENT(Qt::transparent);
     const static QColor CAR_COLOR[2]  = {QColor(25,30,150),QColor(241,201,50)};
+    const static QColor CAR_SHADOW[2] = {QColor(25,30,150,30),QColor(241,201,50,30)};
     const static QColor FONT_COLOR[2] = {Qt::white,Qt::white};
     const static QColor COLOR_ORANGE(237,133,12);
+    const static QColor COLOR_TRANSORANGE(255,170,85,100);
     const static QColor COLOR_DARKGREEN(120,120,120);
     const static QColor COLOR_RED(220,53,47);
     int canvasHeight;
@@ -145,9 +147,9 @@ void Field::drawTransformedVision(int index){
     }
 }
 void Field::drawBallFixedVision(int index){
-    //for (int i=0;i<PARAM::CAMERA;i++){
-    //    drawVision(GlobalData::instance()->processBall[i][index]);
-    //}
+    for(int i=-99;i<0;i++){
+        drawVision(GlobalData::instance()->processBall[index + i],true);
+    }
     drawVision(GlobalData::instance()->processBall[index]);
 }
 void Field::drawRobotFixedVision(int index){
@@ -155,6 +157,10 @@ void Field::drawRobotFixedVision(int index){
 }
 
 void Field::drawMaintainVision(int index){
+    //drawVision(GlobalData::instance()->maintain[index]);
+    for(int i=-99;i<0;i++){
+        drawVision(GlobalData::instance()->maintain[index + i],true);
+    }
     drawVision(GlobalData::instance()->maintain[index]);
 }
 
@@ -202,16 +208,32 @@ void Field::paintBall(const QColor& color,qreal x, qreal y){
     pixmapPainter.setPen(Qt::NoPen);
     pixmapPainter.drawEllipse(::x(x-radius),::y(y-radius),::w(2*radius),::h(2*radius));
 }
-void Field::drawVision(const OriginMessage &vision){
+void Field::paintShadow(const QColor& color,qreal x,qreal y){
+    static float radius = float(SingleParams::instance()->_("shadow.diameter"))/2;
+    pixmapPainter.setBrush(QBrush(color));
+    pixmapPainter.setPen(Qt::NoPen);
+    pixmapPainter.drawEllipse(::x(x-radius),::y(y-radius),::w(2*radius),::h(2*radius));
+}
+void Field::drawVision(const OriginMessage &vision,bool shadow){
+
     for(int color=BLUE;color<=YELLOW;color++){
         for(int j=0;j<vision.robotSize[color];j++){
             auto& robot = vision.robot[color][j];
-            paintCar(CAR_COLOR[color],robot.id,robot.pos.x,robot.pos.y,robot.angel,true,FONT_COLOR[color]);
+            if(!shadow){
+                paintCar(CAR_COLOR[color],robot.id,robot.pos.x,robot.pos.y,robot.angel,true,FONT_COLOR[color]);
+            }
+            else{
+                paintShadow(CAR_SHADOW[color],robot.pos.x,robot.pos.y);
+            }
         }
     }
     for(int j=0;j<vision.ballSize;j++){
         auto& ball = vision.ball[j];
-        paintBall(COLOR_ORANGE,ball.pos.x,ball.pos.y);
+        if(!shadow){
+            paintBall(COLOR_ORANGE,ball.pos.x,ball.pos.y);
+        }else{
+            paintShadow(COLOR_TRANSORANGE,ball.pos.x,ball.pos.y);
+        }
     }
 }
 void Field::drawImmortalsVision(){

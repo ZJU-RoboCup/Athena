@@ -26,6 +26,7 @@ private:
     void paintCar(const QColor& color,quint8 num,qreal x,qreal y,qreal radian
                   ,bool ifDrawNum = true,const QColor& textColor = Qt::white);
     void paintBall(const QColor& color,qreal x,qreal y);
+    void paintShadow(const QColor& color,qreal x,qreal y);
     void drawOriginVision(int);
     void drawBallFixedVision(int);
     void drawRobotFixedVision(int);
@@ -34,7 +35,7 @@ private:
     void drawModelFixedVision(int);
     void drawProcessedVision(int);
     void drawImmortalsVision();
-    void drawVision(const OriginMessage&);
+    void drawVision(const OriginMessage&,bool shadow = false);
     QPixmap *pixmap;
     QPainter pixmapPainter;
     QPainterPath painterPath;

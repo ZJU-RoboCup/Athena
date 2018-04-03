@@ -1,6 +1,3 @@
-macx {
-    system("/usr/local/bin/protoc --cpp_out=$$PWD/proto --proto_path=$$PWD/proto $$PWD/proto/*.proto")
-}
 TEMPLATE = app
 
 CONFIG += c++11
@@ -89,7 +86,12 @@ macx {
 
 win32 {
     PROTOBUF_INCLUDE_DIR = $$PWD\protobuf\include
-    LIBPROTOBUF = $$PWD\protobuf\lib\libprotobuf.lib
+    release{
+        LIBPROTOBUF = $$PWD\protobuf\lib\libprotobuf.lib
+    }
+    debug{
+        LIBPROTOBUF = $$PWD\protobuf\lib\libprotobufD.lib
+    }
 }
 unix:!macx{
     PROTOBUF_INCLUDE_DIR = /usr/local/include
@@ -111,7 +113,7 @@ defineTest(copyToDestdir) {
     }
     export(QMAKE_POST_LINK)
 }
-
+message("protobuf lib path : " + $$LIBPROTOBUF)
 DESTDIR = ./bin
 MOC_DIR = .
 OBJECTS_DIR = .

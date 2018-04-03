@@ -37,6 +37,9 @@
     "ball":{
         "diameter": 79
     },
+    "shadow":{
+        "diameter": 30
+    },
     "crazy":{
         "port":"",
         "frequency":0
