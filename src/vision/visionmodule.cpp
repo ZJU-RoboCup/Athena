@@ -87,11 +87,8 @@ bool CVisionModule::collectNewVision(){
 
 bool CVisionModule::dealWithData(){
     counter++;
-    //qDebug()<<"ready ball";
     Dealball::instance()->run(GlobalData::instance()->processControl[0]);
-    //qDebug()<<"ready robot";
     Dealrobot::instance()->run(GlobalData::instance()->processControl[1]);
-    //qDebug()<<"ready mantain";
     Maintain::instance()->run(GlobalData::instance()->processControl[2]);
     return true;
 }
