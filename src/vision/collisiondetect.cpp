@@ -63,7 +63,7 @@ void CCollisionDetect::analyzeData(){
     if (PointN > 2) {
         int OurTouchNum = -1, TheirTouchNum = -1, j = PointN - 1;
         double OurTouchDis = 200.0, TheirTouchDis = 200.0;
-        std::cout << "found PointN=" << PointN << "\tball pos" << GlobalData::instance()->maintain[LinePoint[j]].ball[0].pos.x << std::endl;
+        //std::cout << "found PointN=" << PointN << "\tball pos" << GlobalData::instance()->maintain[LinePoint[j]].ball[0].pos.x << std::endl;
         Pos2d ballpos=GlobalData::instance()->maintain[LinePoint[j]].ball[0].pos;
         for (int i=0;i<GlobalData::instance()->maintain[LinePoint[j]].robotSize[PARAM::BLUE];i++){
             Pos2d tempos=GlobalData::instance()->maintain[LinePoint[j]].robot[PARAM::BLUE][i].pos;

@@ -2,6 +2,7 @@
 #include "globaldata.h"
 #include "staticparams.h"
 #include <iostream>
+#include <qdebug.h>
 
 CDealrobot::CDealrobot()
 {
@@ -127,10 +128,12 @@ void CDealrobot::sortRobot(int color){
         if (sortTemp[color][i].id>=0){
         double possible=GlobalData::instance()->robotPossible[color][sortTemp[color][i].id];
         int maxj=i;
-        for (int j=i+1;j<PARAM::ROBOTMAXID;j++)
-            if (sortTemp[color][j].id>=0 && sortTemp[color][maxj].id>=0 &&
+        for (int j=i+1;j<PARAM::ROBOTMAXID;j++){
+            if (sortTemp[color][j].id>=0 && sortTemp[color][j].id<=PARAM::ROBOTMAXID &&
+                sortTemp[color][maxj].id>=0 && sortTemp[color][maxj].id<PARAM::ROBOTMAXID &&
                     GlobalData::instance()->robotPossible[color][sortTemp[color][maxj].id]<
                     GlobalData::instance()->robotPossible[color][sortTemp[color][j].id]) maxj=j;
+        }
         if (maxj!=i){
             Robot temp;
             temp=sortTemp[color][maxj];
