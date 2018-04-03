@@ -12,17 +12,15 @@ SOURCES += \
     src/field.cpp \
     src/utils/singleparams.cpp \
     src/interaction.cpp \
-    Owl/src/visionmodule.cpp \
-    proto/cpp/messages_robocup_ssl_detection.pb.cc \
-    proto/cpp/messages_robocup_ssl_geometry_legacy.pb.cc \
-    proto/cpp/messages_robocup_ssl_geometry.pb.cc \
-    proto/cpp/messages_robocup_ssl_refbox_log.pb.cc \
-    proto/cpp/messages_robocup_ssl_wrapper_legacy.pb.cc \
-    proto/cpp/messages_robocup_ssl_wrapper.pb.cc \
-    Owl/src/transform.cpp \
-    Owl/src/modelfix.cpp \
-    Owl/src/montage.cpp \
-    Owl/src/modelfix/modelfixsingle.cpp \
+    src/vision/visionmodule.cpp \
+    src/proto/cpp/messages_robocup_ssl_detection.pb.cc \
+    src/proto/cpp/messages_robocup_ssl_geometry_legacy.pb.cc \
+    src/proto/cpp/messages_robocup_ssl_geometry.pb.cc \
+    src/proto/cpp/messages_robocup_ssl_refbox_log.pb.cc \
+    src/proto/cpp/messages_robocup_ssl_wrapper_legacy.pb.cc \
+    src/proto/cpp/messages_robocup_ssl_wrapper.pb.cc \
+    src/proto/cpp/vision_detection.pb.cc \
+    src/proto/cpp/vision_sendpacket.pb.cc \
     immortals/immortalsvision.cpp \
     immortals/Source/Reality/Vision/Kalman/FilteredObject.cpp \
     immortals/Source/Common/MATHS_REGRESSION_PARABOLIC.cpp \
@@ -30,13 +28,11 @@ SOURCES += \
     immortals/Source/Reality/Vision/Protobuf/aidebug.pb.cc \
     immortals/Source/Reality/Vision/VisionBall.cpp \
     immortals/Source/Reality/Vision/VisionRobot.cpp \
-    Owl/src/transform.cpp \
-    Owl/src/dealball.cpp \
-    Owl/src/dealrobot.cpp \
-    Owl/src/maintain.cpp \
-    proto/cpp/vision_detection.pb.cc \
-    proto/cpp/vision_sendpacket.pb.cc \
-    Owl/src/collisiondetect.cpp
+    src/vision/transform.cpp \
+    src/vision/dealball.cpp \
+    src/vision/dealrobot.cpp \
+    src/vision/maintain.cpp \
+    src/vision/collisiondetect.cpp
 
 DISTFILES += \
     opt/params.json
@@ -45,25 +41,23 @@ RESOURCES += \
     Athena.qrc
 
 HEADERS += \
-    Owl/src/visionmodule.h \
+    src/vision/visionmodule.h \
     src/utils/singleton.hpp \
     src/utils/dataqueue.hpp \
     src/utils/globaldata.h \
     src/field.h \
     src/utils/singleparams.h \
     src/interaction.h \
-    Owl/src/messageformat.h \
+    src/vision/messageformat.h \
     src/utils/staticparams.h \
-    proto/cpp/messages_robocup_ssl_detection.pb.h \
-    proto/cpp/messages_robocup_ssl_geometry_legacy.pb.h \
-    proto/cpp/messages_robocup_ssl_geometry.pb.h \
-    proto/cpp/messages_robocup_ssl_refbox_log.pb.h \
-    proto/cpp/messages_robocup_ssl_wrapper_legacy.pb.h \
-    proto/cpp/messages_robocup_ssl_wrapper.pb.h \
-    Owl/src/transform.h \
-    Owl/src/modelfix.h \
-    Owl/src/montage.h \
-    Owl/src/modelfix/modelfixsingle.h \
+    src/proto/cpp/messages_robocup_ssl_detection.pb.h \
+    src/proto/cpp/messages_robocup_ssl_geometry_legacy.pb.h \
+    src/proto/cpp/messages_robocup_ssl_geometry.pb.h \
+    src/proto/cpp/messages_robocup_ssl_refbox_log.pb.h \
+    src/proto/cpp/messages_robocup_ssl_wrapper_legacy.pb.h \
+    src/proto/cpp/messages_robocup_ssl_wrapper.pb.h \
+    src/proto/cpp/vision_detection.pb.h \
+    src/proto/cpp/vision_sendpacket.pb.h \
     immortals/immortalsvision.h \
     immortals/Source/Common/MedianFilter.h \
     immortals/Source/Reality/Vision/Kalman/FilteredObject.h \
@@ -71,26 +65,29 @@ HEADERS += \
     immortals/Source/Reality/Vision/WorldState.h \
     immortals/Source/Reality/Vision/Protobuf/ImmortalsProtocols.pb.h \
     immortals/Source/Reality/Vision/Protobuf/aidebug.pb.h \
-    Owl/src/dealball.h \
-    Owl/src/dealrobot.h \
-    Owl/src/maintain.h \
-    Owl/src/collisiondetect.h
+    src/vision/dealball.h \
+    src/vision/dealrobot.h \
+    src/vision/maintain.h \
+    src/vision/collisiondetect.h
 
 INCLUDEPATH += \
     $$PWD/src/utils \
-    $$PWD/Owl/src
+    $$PWD/src/vision \
+    $$PWD/src/proto/cpp \
+    $$PWD/src
 macx {
     PROTOBUF_INCLUDE_DIR = /usr/local/include
     LIBPROTOBUF = /usr/local/lib/libprotobuf.dylib
 }
 
 win32 {
-    PROTOBUF_INCLUDE_DIR = $$PWD\protobuf\include
+    PROTOBUF_INCLUDE_DIR = $$PWD/lib/protobuf/include
+
     release{
-        LIBPROTOBUF = $$PWD\protobuf\lib\libprotobuf.lib
+        LIBPROTOBUF = $$PWD/lib/protobuf/lib/libprotobuf.lib
     }
     debug{
-        LIBPROTOBUF = $$PWD\protobuf\lib\libprotobufD.lib
+        LIBPROTOBUF = $$PWD/lib/protobuf/lib/libprotobufD.lib
     }
 }
 unix:!macx{
@@ -113,7 +110,7 @@ defineTest(copyToDestdir) {
     }
     export(QMAKE_POST_LINK)
 }
-message("protobuf lib path : " + $$LIBPROTOBUF)
+
 DESTDIR = ./bin
 MOC_DIR = .
 OBJECTS_DIR = .

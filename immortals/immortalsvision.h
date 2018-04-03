@@ -4,8 +4,8 @@
 #include <QObject>
 #include <string>
 #include "singleton.hpp"
-#include "proto/cpp/messages_robocup_ssl_detection.pb.h"
-#include "proto/cpp/messages_robocup_ssl_wrapper.pb.h"
+#include "messages_robocup_ssl_detection.pb.h"
+#include "messages_robocup_ssl_wrapper.pb.h"
 #include "immortals/Source/Common/MedianFilter.h"
 #include "immortals/Source/Common/MATHS_REGRESSION_PARABOLIC.h"
 #include "immortals/Source/Reality/Vision/Kalman/FilteredObject.h"

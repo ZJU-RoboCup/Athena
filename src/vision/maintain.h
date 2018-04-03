@@ -1,7 +1,7 @@
 #ifndef MAINTAIN_H
 #define MAINTAIN_H
 #include "singleton.hpp"
-#include "proto/cpp/vision_detection.pb.h"
+#include "vision_detection.pb.h"
 #include <messageformat.h>
 #include <QUdpSocket>
 
