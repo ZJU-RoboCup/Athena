@@ -8,11 +8,11 @@ TARGET = Athena
 
 SOURCES += \
     src/main.cpp \
-    src/utils/globaldata.cpp \
     src/field.cpp \
-    src/utils/singleparams.cpp \
     src/interaction.cpp \
-    src/vision/visionmodule.cpp \
+    src/utils/singleparams.cpp \
+    src/utils/globaldata.cpp \
+    src/utils/geometry.cpp \
     src/proto/cpp/messages_robocup_ssl_detection.pb.cc \
     src/proto/cpp/messages_robocup_ssl_geometry_legacy.pb.cc \
     src/proto/cpp/messages_robocup_ssl_geometry.pb.cc \
@@ -32,7 +32,8 @@ SOURCES += \
     src/vision/dealball.cpp \
     src/vision/dealrobot.cpp \
     src/vision/maintain.cpp \
-    src/vision/collisiondetect.cpp
+    src/vision/collisiondetect.cpp \
+    src/vision/visionmodule.cpp
 
 DISTFILES += \
     opt/params.json
@@ -41,11 +42,11 @@ RESOURCES += \
     Athena.qrc
 
 HEADERS += \
+    src/field.h \
     src/vision/visionmodule.h \
     src/utils/singleton.hpp \
     src/utils/dataqueue.hpp \
     src/utils/globaldata.h \
-    src/field.h \
     src/utils/singleparams.h \
     src/interaction.h \
     src/vision/messageformat.h \
@@ -68,7 +69,8 @@ HEADERS += \
     src/vision/dealball.h \
     src/vision/dealrobot.h \
     src/vision/maintain.h \
-    src/vision/collisiondetect.h
+    src/vision/collisiondetect.h \
+    src/utils/geometry.h
 
 INCLUDEPATH += \
     $$PWD/src/utils \
@@ -82,11 +84,10 @@ macx {
 
 win32 {
     PROTOBUF_INCLUDE_DIR = $$PWD/lib/protobuf/include
-
-    release{
+    CONFIG(release,debug|release){
         LIBPROTOBUF = $$PWD/lib/protobuf/lib/libprotobuf.lib
     }
-    debug{
+    CONFIG(debug,debug|release){
         LIBPROTOBUF = $$PWD/lib/protobuf/lib/libprotobufD.lib
     }
 }
