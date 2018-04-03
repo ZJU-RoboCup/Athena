@@ -61,16 +61,16 @@ void CVisionModule::parse(void * ptr,int size){
         int yellowSize = detection.robots_yellow_size();
         for (int i = 0; i < ballSize; i++) {
             const SSL_DetectionBall& ball = detection.balls(i);
-            message.addBall(ball.x(),ball.y());
+            if (inChoseArea(ball.x(),ball.y())) message.addBall(ball.x(),ball.y());
         }
         for (int i = 0; i < blueSize; i++) {
             const SSL_DetectionRobot& robot = detection.robots_blue(i);
-            message.addRobot(BLUE,robot.robot_id(),robot.x(),robot.y(),robot.orientation());
+            if (inChoseArea(robot.x(),robot.y())) message.addRobot(BLUE,robot.robot_id(),robot.x(),robot.y(),robot.orientation());
             //qDebug() << "BLUE : " << robot.robot_id() << robot.orientation();
         }
         for (int i = 0; i < yellowSize; i++) {
             const SSL_DetectionRobot& robot = detection.robots_yellow(i);
-            message.addRobot(YELLOW,robot.robot_id(),robot.x(),robot.y(),robot.orientation());
+            if (inChoseArea(robot.x(),robot.y())) message.addRobot(YELLOW,robot.robot_id(),robot.x(),robot.y(),robot.orientation());
             //qDebug() << "YELL : " << robot.robot_id() << robot.orientation();
         }
         GlobalData::instance()->camera[message.camID].push(message);
@@ -96,6 +96,10 @@ bool CVisionModule::immortalsVision(){
     ImmortalsVision::instance()->ProcessVision(&GlobalData::instance()->immortalsVisionState);
     return true;//whattt?
 }
+bool CVisionModule::inChoseArea(float x, float y){
+    return (x<=MAXX && x>=MINX && y<=MAXY && y>=MINY);
+}
+
 quint16 CVisionModule::getFPS(){
     static QElapsedTimer timer;
     static bool ifStart = false;

@@ -14,6 +14,7 @@ public:
     void udpSocketDisconnect();
     void parse(void *,int);
     Q_INVOKABLE quint16 getFPS();
+    bool inChoseArea(float,float);
     //void tranMatrix(const OriginMessage& ,int);
 
 signals:
@@ -26,6 +27,7 @@ private:
     quint64 counter;
     int interface;
     int port;
+    int MINX=0,MAXX=6500,MINY=-4800,MAXY=4800;
     bool collectNewVision();
     bool dealWithData();
     bool immortalsVision();
