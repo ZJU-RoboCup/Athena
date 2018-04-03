@@ -34,7 +34,7 @@ void CDealrobot::MergeRobot(){
                 blueWeight+=_weight;
                 blueAverage.x+=robotSeqence[PARAM::BLUE][roboId][camId].pos.x * _weight;
                 blueAverage.y+=robotSeqence[PARAM::BLUE][roboId][camId].pos.y * _weight;
-                blueAngle+=robotSeqence[PARAM::BLUE][roboId][camId].angel * _weight;
+                blueAngle=robotSeqence[PARAM::BLUE][roboId][camId].angel;
                 //std::cout<<_weight<<" "<<robotSeqence[PARAM::BLUE][roboId][camId].angel <<"\t";
                 //blueAngle=robotSeqence[PARAM::BLUE][roboId][camId].angel ;
             }
@@ -46,18 +46,18 @@ void CDealrobot::MergeRobot(){
                 yellowWeight+=_weight;
                 yellowAverage.x+=robotSeqence[PARAM::YELLOW][roboId][camId].pos.x * _weight;
                 yellowAverage.y+=robotSeqence[PARAM::YELLOW][roboId][camId].pos.y * _weight;
-                yellowAngle=robotSeqence[PARAM::YELLOW][roboId][camId].angel *_weight;
+                yellowAngle=robotSeqence[PARAM::YELLOW][roboId][camId].angel;
                 //std::cout<<_weight<<" "<<robotSeqence[PARAM::YELLOW][roboId][camId].angel <<"\t";
                 //yellowAngle=robotSeqence[PARAM::YELLOW][roboId][camId].angel;
            }
         }
         //std::cout<<"\n";
         if (foundBlue){
-            Robot ave(blueAverage.x/blueWeight,blueAverage.y/blueWeight,blueAngle/blueWeight,roboId);
+            Robot ave(blueAverage.x/blueWeight,blueAverage.y/blueWeight,blueAngle,roboId);
             result.addRobot(PARAM::BLUE,ave);
         }
         if (foundYellow){
-            Robot ave(yellowAverage.x/yellowWeight,yellowAverage.y/yellowWeight,yellowAngle/yellowWeight,roboId);
+            Robot ave(yellowAverage.x/yellowWeight,yellowAverage.y/yellowWeight,yellowAngle,roboId);
             result.addRobot(PARAM::YELLOW,ave);
         }
     }
