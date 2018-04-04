@@ -35,7 +35,7 @@
         "faceWidth" : 120
     },
     "ball":{
-        "diameter": 79
+        "diameter": 100
     },
     "shadow":{
         "diameter": 30

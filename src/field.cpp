@@ -20,7 +20,7 @@ namespace{
     const static QColor CAR_COLOR[2]  = {QColor(25,30,150),QColor(241,201,50)};
     const static QColor CAR_SHADOW[2] = {QColor(25,30,150,30),QColor(241,201,50,30)};
     const static QColor FONT_COLOR[2] = {Qt::white,Qt::white};
-    const static QColor COLOR_ORANGE(255,150,52);
+    const static QColor COLOR_ORANGE(255,0,255);
     const static QColor COLOR_TRANSORANGE(255,170,85,100);
     const static QColor COLOR_DARKGREEN(150,150,150);
     const static QColor COLOR_RED(220,53,47);
@@ -221,7 +221,6 @@ void Field::paintShadow(const QColor& color,qreal x,qreal y){
     pixmapPainter.drawEllipse(::x(x-radius),::y(y-radius),::w(2*radius),::h(2*radius));
 }
 void Field::drawVision(const OriginMessage &vision,bool shadow){
-
     for(int color=BLUE;color<=YELLOW;color++){
         for(int j=0;j<vision.robotSize[color];j++){
             auto& robot = vision.robot[color][j];
