@@ -92,8 +92,6 @@ Window {
            MouseArea{
                property int startX : 0;
                property int startY : 0;
-               property int endX : 0;
-               property int endY : 0;
                anchors.fill: parent;
                onPressed: {
                    startX = mouseX;
@@ -104,13 +102,18 @@ Window {
                    areaRectangle.y = startY;
                }
                onPositionChanged: {
-                   areaRectangle.width = mouseX - startX;
-                   areaRectangle.height = mouseY - startY;
+                   areaRectangle.x = Math.min(mouseX,startX);
+                   areaRectangle.y = Math.min(mouseY,startY);
+                   areaRectangle.width = Math.abs(mouseX - startX);
+                   areaRectangle.height = Math.abs(mouseY - startY);
                }
                onReleased: {
-                   endX = mouseX;
-                   endY = mouseY;
-                   interaction.setArea(startX,endX,endY,startY);
+                   if(areaRectangle.width < 100 && areaRectangle.height < 100){
+                       areaRectangle.x = areaRectangle.y = 10;
+                       areaRectangle.width = areaRectangle.parent.width - 20;
+                       areaRectangle.height = areaRectangle.parent.height - 20;
+                   }
+                   interaction.setArea(areaRectangle.x,areaRectangle.width + areaRectangle.x,areaRectangle.height + areaRectangle.y,areaRectangle.y);
                }
            }
         }
