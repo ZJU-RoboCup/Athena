@@ -20,7 +20,7 @@ namespace{
     const static QColor CAR_COLOR[2]  = {QColor(25,30,150),QColor(241,201,50)};
     const static QColor CAR_SHADOW[2] = {QColor(25,30,150,30),QColor(241,201,50,30)};
     const static QColor FONT_COLOR[2] = {Qt::white,Qt::white};
-    const static QColor COLOR_ORANGE(237,133,12);
+    const static QColor COLOR_ORANGE(255,150,52);
     const static QColor COLOR_TRANSORANGE(255,170,85,100);
     const static QColor COLOR_DARKGREEN(150,150,150);
     const static QColor COLOR_RED(220,53,47);
