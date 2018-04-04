@@ -86,28 +86,28 @@ void CCollisionDetect::analyzeData(){
             LastTouch = 1;
             LastTouchNumber = OurTouchNum + 1;
             GlobalData::instance()->lastTouch=PARAM::BLUE*PARAM::ROBOTMAXID+OurTouchNum;
-            std::cout << "the ball touch OUR player No." << OurTouchNum << "WITH D:" << OurTouchDis << std::endl;
+            //std::cout << "the ball touch OUR player No." << OurTouchNum << "WITH D:" << OurTouchDis << std::endl;
         }
         else if (TheirTouchNum != -1 && ((OurTouchNum != -1 && TheirTouchDis <= OurTouchDis - 5) || OurTouchNum == -1))
         {
             LastTouch = 2;
             LastTouchNumber = TheirTouchNum + 1;
             GlobalData::instance()->lastTouch=PARAM::YELLOW*PARAM::ROBOTMAXID+TheirTouchNum;
-            std::cout << "the ball touch THEIR player No." << TheirTouchNum << "WITH D:" << TheirTouchDis << std::endl;
+            //std::cout << "the ball touch THEIR player No." << TheirTouchNum << "WITH D:" << TheirTouchDis << std::endl;
         }
         else if (OurTouchNum != -1 && TheirTouchNum != -1 && abs(OurTouchDis - TheirTouchDis) <= 5)
         {
             LastTouch = 0;
             LastTouchNumber = 0;
             GlobalData::instance()->lastTouch=-1;
-            std::cout << "CANNOT decide the ball between OUR player no." << OurTouchNum << " and THEIR player No." << TheirTouchNum << std::endl;
+            //std::cout << "CANNOT decide the ball between OUR player no." << OurTouchNum << " and THEIR player No." << TheirTouchNum << std::endl;
         }
         else if (ballIsOnEdge(GlobalData::instance()->maintain[LinePoint[j]].ball[0].pos))
         {
             LastTouch = 3;
             LastTouchNumber = 0;
             GlobalData::instance()->lastTouch=-1;
-            std::cout << "the ball touch WALL" << std::endl;
+            //std::cout << "the ball touch WALL" << std::endl;
         }
     }
 }

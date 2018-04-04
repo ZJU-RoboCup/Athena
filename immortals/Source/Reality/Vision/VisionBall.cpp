@@ -28,12 +28,11 @@ int CImmortalsVision::ExtractBalls ( void )
         if ( GlobalData::instance()->cameraControl[i] )
 		{
 			for ( int j = 0 ; j < frame[i].balls_size ( ) ; j ++ )
-			{
-                if (Field::inChosenArea( frame[i].balls(j).x(),frame[i].balls(j).y()))
-				d_ball[ans] = frame[i].balls ( j );
-
-				ans ++;
-			}
+            if (Field::inChosenArea(frame[i].balls(j).x(),frame[i].balls(j).y()))
+            {
+                d_ball[ans] = frame[i].balls ( j );
+                ans ++;
+            }
 		}
 	}
 	return ans;

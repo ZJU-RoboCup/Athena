@@ -74,6 +74,7 @@ public:
     void init(){
         robotSize[BLUE] = robotSize[YELLOW] = ballSize = 0;
         std::fill_n(&robotIndex[0][0],2*PARAM::ROBOTMAXID,-1);
+        ball[0].pos.fill(-32767,-32767);
     }
     bool addBall(double x,double y,double height = 0,int id=-1){
         return ballSize >= PARAM::BALLNUM ? false : ball[ballSize++].fill(x,y,height,id);

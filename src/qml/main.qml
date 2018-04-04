@@ -87,7 +87,7 @@ Window {
                height:parent.height - 20;
                x:10;
                y:10;
-               color:"#44000000";
+               color:"#33ffffff";
            }
            MouseArea{
                property int startX : 0;

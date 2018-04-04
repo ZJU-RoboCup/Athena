@@ -47,9 +47,17 @@ void CMaintain::init(){
     GlobalData::instance()->maintain.push(result);
 
     //udp start
-    detectionBall->set_x(result.ball[0].pos.x);
-    detectionBall->set_y(result.ball[0].pos.y);
-    detectionBall->set_speed(0);//todo
+    if (result.ballSize>0){
+        detectionBall->set_x(result.ball[0].pos.x);
+        detectionBall->set_y(result.ball[0].pos.y);
+        detectionBall->set_speed(0);//todo
+    }
+    else
+    {
+        detectionBall->set_x(-32767);
+        detectionBall->set_y(-32767);
+        detectionBall->set_speed(0);//todo
+    }
     for (int i=0;i<result.robotSize[PARAM::BLUE];i++){
         detectionRobot[PARAM::BLUE][i]=detectionFrame.add_robots_blue();
         detectionRobot[PARAM::BLUE][i]->set_x(result.robot[PARAM::BLUE][i].pos.x);
