@@ -22,7 +22,7 @@ namespace{
     const static QColor FONT_COLOR[2] = {Qt::white,Qt::white};
     const static QColor COLOR_ORANGE(237,133,12);
     const static QColor COLOR_TRANSORANGE(255,170,85,100);
-    const static QColor COLOR_DARKGREEN(80,80,80);
+    const static QColor COLOR_DARKGREEN(150,150,150);
     const static QColor COLOR_RED(220,53,47);
     int canvasHeight;
     int canvasWidth;
