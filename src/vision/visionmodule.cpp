@@ -102,7 +102,7 @@ bool CVisionModule::dealWithData(){
 }
 bool CVisionModule::immortalsVision(){
     ImmortalsVision::instance()->ProcessVision(&GlobalData::instance()->immortalsVisionState);
-    return true;//whattt?
+    return true;
 }
 quint16 CVisionModule::getFPS(){
     static QElapsedTimer timer;

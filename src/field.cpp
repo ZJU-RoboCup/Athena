@@ -168,6 +168,17 @@ void Field::drawMaintainVision(int index){
         drawVision(GlobalData::instance()->maintain[index + i],true);
     }
     drawVision(GlobalData::instance()->maintain[index]);
+    const OriginMessage &vision = GlobalData::instance()->maintain[index];
+    if (GlobalData::instance()->lastTouch!=-1){
+        if (GlobalData::instance()->lastTouch<PARAM::ROBOTMAXID){
+            auto& robot = vision.robot[BLUE][GlobalData::instance()->lastTouch];
+            paintCar(CAR_COLOR[BLUE],robot.id,robot.pos.x,robot.pos.y,robot.angel,true,FONT_COLOR[BLUE],true);
+        }
+        else{
+            auto& robot = vision.robot[YELLOW][GlobalData::instance()->lastTouch-PARAM::ROBOTMAXID];
+            paintCar(CAR_COLOR[YELLOW],robot.id,robot.pos.x,robot.pos.y,robot.angel,true,FONT_COLOR[YELLOW],true);
+        }
+    }
 }
 
 void Field::drawModelFixedVision(int index) {
@@ -185,7 +196,7 @@ void Field::drawModelFixedVision(int index) {
 void Field::drawProcessedVision(int index){
     drawVision(GlobalData::instance()->vision[index]);
 }
-void Field::paintCar(const QColor& color,quint8 num,qreal x,qreal y,qreal radian,bool ifDrawNum,const QColor& textColor){
+void Field::paintCar(const QColor& color,quint8 num,qreal x,qreal y,qreal radian,bool ifDrawNum,const QColor& textColor,bool needCircle){
     static float diameter = SingleParams::instance()->_("car.diameter");
     static float faceWidth = SingleParams::instance()->_("car.faceWidth");
     static float numberSize = SingleParams::instance()->_("numberSize");
@@ -194,6 +205,11 @@ void Field::paintCar(const QColor& color,quint8 num,qreal x,qreal y,qreal radian
     pixmapPainter.setBrush(QBrush(color));
     pixmapPainter.setPen(Qt::NoPen);
     pixmapPainter.drawChord(::x(x-radius),::y(y-radius),::w(diameter),::h(diameter),::a(90.0-chordAngel + 180/M_PI*radian),::r(180.0+2*chordAngel));
+    if (needCircle) {
+        pixmapPainter.setBrush(Qt::NoBrush);
+        pixmapPainter.setPen(QPen(COLOR_RED));
+        pixmapPainter.drawChord(::x(x-radius),::y(y-radius),::w(diameter),::h(diameter),::a(90.0-chordAngel + 180/M_PI*radian),::r(180.0+2*chordAngel));
+    }
     if (ifDrawNum) {
         pixmapPainter.setBrush(Qt::NoBrush);
         pixmapPainter.setPen(QPen(textColor));

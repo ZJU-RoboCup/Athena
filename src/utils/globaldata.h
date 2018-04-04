@@ -25,6 +25,7 @@ public:
     float montageMaxX;
     float montageMaxY;
     int maxLostFrame;
+    int lastTouch;
 };
 
 typedef Singleton<CGlobalData> GlobalData;

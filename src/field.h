@@ -26,7 +26,7 @@ private:
     void initPainterPath();
     void initField();
     void paintCar(const QColor& color,quint8 num,qreal x,qreal y,qreal radian
-                  ,bool ifDrawNum = true,const QColor& textColor = Qt::white);
+                  ,bool ifDrawNum = true,const QColor& textColor = Qt::white,bool needCircle = false);
     void paintBall(const QColor& color,qreal x,qreal y);
     void paintShadow(const QColor& color,qreal x,qreal y);
     void drawOriginVision(int);

@@ -1,5 +1,6 @@
 #include "immortals/immortalsvision.h"
 #include "globaldata.h"
+#include "field.h"
 #define MAX_BALL_2FRAMES_DISTANCE 450000.0f
 
 void CImmortalsVision::ProcessBalls ( WorldState * state )
@@ -28,6 +29,7 @@ int CImmortalsVision::ExtractBalls ( void )
 		{
 			for ( int j = 0 ; j < frame[i].balls_size ( ) ; j ++ )
 			{
+                if (Field::inChosenArea( frame[i].balls(j).x(),frame[i].balls(j).y()))
 				d_ball[ans] = frame[i].balls ( j );
 
 				ans ++;

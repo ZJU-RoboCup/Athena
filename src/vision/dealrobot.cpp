@@ -36,7 +36,6 @@ void CDealrobot::MergeRobot(){
                 blueAverage.y+=robotSeqence[PARAM::BLUE][roboId][camId].pos.y * _weight;
                 blueAngle=robotSeqence[PARAM::BLUE][roboId][camId].angel;
                 //std::cout<<_weight<<" "<<robotSeqence[PARAM::BLUE][roboId][camId].angel <<"\t";
-                //blueAngle=robotSeqence[PARAM::BLUE][roboId][camId].angel ;
             }
             _weight=0;
             if(robotSeqence[PARAM::YELLOW][roboId][camId].pos.x>-30000 && robotSeqence[PARAM::YELLOW][roboId][camId].pos.y>-30000)
@@ -48,7 +47,6 @@ void CDealrobot::MergeRobot(){
                 yellowAverage.y+=robotSeqence[PARAM::YELLOW][roboId][camId].pos.y * _weight;
                 yellowAngle=robotSeqence[PARAM::YELLOW][roboId][camId].angel;
                 //std::cout<<_weight<<" "<<robotSeqence[PARAM::YELLOW][roboId][camId].angel <<"\t";
-                //yellowAngle=robotSeqence[PARAM::YELLOW][roboId][camId].angel;
            }
         }
         //std::cout<<"\n";
