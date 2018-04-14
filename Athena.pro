@@ -32,7 +32,9 @@ SOURCES += \
     src/vision/dealrobot.cpp \
     src/vision/maintain.cpp \
     src/vision/collisiondetect.cpp \
-    src/vision/visionmodule.cpp
+    src/vision/visionmodule.cpp \
+    src/vision/kalmanfilter.cpp \
+    src/utils/matrix2d.cpp
 
 DISTFILES += \
     opt/params.json
@@ -68,7 +70,9 @@ HEADERS += \
     src/vision/dealrobot.h \
     src/vision/maintain.h \
     src/vision/collisiondetect.h \
-    src/utils/geometry.h
+    src/utils/geometry.h \
+    src/vision/kalmanfilter.h \
+    src/utils/matrix2d.h
 
 INCLUDEPATH += \
     $$PWD/src/utils \
