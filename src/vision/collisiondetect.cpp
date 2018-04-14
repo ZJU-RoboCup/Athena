@@ -1,14 +1,13 @@
 #include "collisiondetect.h"
 #include "messageformat.h"
-#include "geometry.h"
 
 CCollisionDetect::CCollisionDetect()
 {
 
 }
-bool CCollisionDetect::ballIsOnEdge(Pos2d ball){
-   if(ball.x<-LENGTH_THERESHOLD || ball.x>LENGTH_THERESHOLD ||
-      ball.y<-WIDTH_THERESHOLD || ball.y>WIDTH_THERESHOLD) return true;
+bool CCollisionDetect::ballIsOnEdge(CGeoPoint ball){
+   if(ball.x() < -LENGTH_THERESHOLD || ball.x() > LENGTH_THERESHOLD ||
+      ball.y() < -WIDTH_THERESHOLD || ball.y() > WIDTH_THERESHOLD) return true;
    return false;
 }
 
@@ -35,9 +34,9 @@ void CCollisionDetect::analyzeData(){
             const auto &p1 = GlobalData::instance()->maintain[LinePoint[pi]];
             const auto &p2 = GlobalData::instance()->maintain[LinePoint[pi+1]];
             const auto& q = GlobalData::instance()->maintain[i];
-            CGeoPoint p1BallPos(p1.ball[0].pos.x,p1.ball[0].pos.y);
-            CGeoPoint p2BallPos(p2.ball[0].pos.x,p2.ball[0].pos.y);
-            CGeoPoint qBallPos(q.ball[0].pos.x,q.ball[0].pos.y);
+            CGeoPoint p1BallPos(p1.ball[0].pos.x(),p1.ball[0].pos.y());
+            CGeoPoint p2BallPos(p2.ball[0].pos.x(),p2.ball[0].pos.y());
+            CGeoPoint qBallPos(q.ball[0].pos.x(),q.ball[0].pos.y());
             CGeoSegment PassLine(p1BallPos,p2BallPos);
             double d=qBallPos.dist(PassLine.projection(qBallPos));
             //------------------IMPOTANT------------
@@ -64,9 +63,9 @@ void CCollisionDetect::analyzeData(){
         int OurTouchNum = -1, TheirTouchNum = -1, j = PointN - 1;
         double OurTouchDis = 200.0, TheirTouchDis = 200.0;
         //std::cout << "found PointN=" << PointN << "\tball pos" << GlobalData::instance()->maintain[LinePoint[j]].ball[0].pos.x << std::endl;
-        Pos2d ballpos=GlobalData::instance()->maintain[LinePoint[j]].ball[0].pos;
+        CGeoPoint ballpos(GlobalData::instance()->maintain[LinePoint[j]].ball[0].pos);
         for (int i=0;i<GlobalData::instance()->maintain[LinePoint[j]].robotSize[PARAM::BLUE];i++){
-            Pos2d tempos=GlobalData::instance()->maintain[LinePoint[j]].robot[PARAM::BLUE][i].pos;
+            CGeoPoint tempos(GlobalData::instance()->maintain[LinePoint[j]].robot[PARAM::BLUE][i].pos);
             if (ballpos.dist(tempos)<OurTouchDis)
             {
                 OurTouchDis = ballpos.dist(tempos);
@@ -74,7 +73,7 @@ void CCollisionDetect::analyzeData(){
             }
         }
         for (int i=0;i<GlobalData::instance()->maintain[LinePoint[j]].robotSize[PARAM::YELLOW];i++){
-            Pos2d tempos=GlobalData::instance()->maintain[LinePoint[j]].robot[PARAM::YELLOW][i].pos;
+            CGeoPoint tempos(GlobalData::instance()->maintain[LinePoint[j]].robot[PARAM::YELLOW][i].pos);
             if (ballpos.dist(tempos)<TheirTouchDis)
             {
                 TheirTouchDis = ballpos.dist(tempos);

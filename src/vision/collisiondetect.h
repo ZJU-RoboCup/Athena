@@ -2,6 +2,7 @@
 #define COLLISIONDETECT_H
 #include "singleton.hpp"
 #include "globaldata.h"
+#include "geometry.h"
 
 #define DETECT_DIST 300 //detect whether the ball in 300mm of vechile
 #define TOUCH_DIST 200 //decide touch when ball in 200mm og vechile
@@ -24,7 +25,7 @@ private:
     int LastTouchNumber = 0;//car number; 0 for not sure or wall
     void analyzeData();
     bool ballCloseEnough2Analyze(int);
-    bool ballIsOnEdge(Pos2d);
+    bool ballIsOnEdge(CGeoPoint);
 };
 typedef Singleton<CCollisionDetect> CollisionDetect;
 
