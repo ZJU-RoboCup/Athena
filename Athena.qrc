@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>src/qml/main.qml</file>
+        <file>graph/shaders/line.fsh</file>
+        <file>graph/shaders/line.vsh</file>
+        <file>graph/shaders/noisy.fsh</file>
+        <file>graph/shaders/noisy.vsh</file>
     </qresource>
 </RCC>

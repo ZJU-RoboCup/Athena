@@ -19,7 +19,7 @@ void CDealball::mergeBall(){
         for (j=0;j<actualBallNum;j++)
         {
             for (int id=0;id<PARAM::CAMERA;id++)
-                if (posDist(result.ball[i].pos,ballSequence[j][id].pos)<PARAM::MERGEDISTANCE){
+                if (posDist(result.ball[i].pos,ballSequence[j][id].pos)<PARAM::BALLMERGEDISTANCE){
                     found=true;
                     break;
                 }

@@ -107,12 +107,8 @@ void Field::draw(){                     //change here!!!!!!!
     case 1:
         drawOriginVision(0);break;
     case 2:
-        drawBallFixedVision(0);break;
-    case 3:
-        drawRobotFixedVision(0);break;
-    case 4:
         drawMaintainVision(0);break;
-    case 5:
+    case 3:
         drawImmortalsVision();break;
     }
     this->update(area);

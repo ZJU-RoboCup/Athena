@@ -15,7 +15,7 @@ public:
     Q_INVOKABLE void controlCamera(int,bool);
     Q_INVOKABLE void controlProcess(int,bool);
     Q_INVOKABLE int getFPS(){ return VisionModule::instance()->getFPS();}
-    Q_INVOKABLE void setArea(int a,int b,int c,int d){ std::cout << "setArea : " << a << ' ' << b << ' ' << c << ' ' << d << std::endl;Field::setArea(a,b,c,d); }
+    Q_INVOKABLE void setArea(int a,int b,int c,int d){Field::setArea(a,b,c,d); }
     ~Interaction();
 public:
 signals:

@@ -23,23 +23,28 @@ void CDealrobot::MergeRobot(){
         double blueWeight=0,yellowWeight=0;
         Pos2d blueAverage(0,0),yellowAverage(0,0);
         double blueAngle=0,yellowAngle=0;
-       // std::cout<<"roboID:"<<roboId<<" : ";
-        for (int camId=0;camId<PARAM::CAMERA;camId++){
+        //std::cout<<"roboID:"<<roboId<<" : ";
+        for (int camId=0;camId<PARAM::CAMERA;camId++)
+        {
             SingleCamera camera=GlobalData::instance()->cameraMatrix[camId];
             double _weight=0;
-            if(robotSeqence[PARAM::BLUE][roboId][camId].pos.x>-30000 && robotSeqence[PARAM::BLUE][roboId][camId].pos.y>-30000)
+            if(robotSeqence[PARAM::BLUE][roboId][camId].pos.x>-30000 && robotSeqence[PARAM::BLUE][roboId][camId].pos.y>-30000 && (!foundBlue ||
+              (foundBlue && posDist(Pos2d(blueAverage.x/blueWeight,blueAverage.y/blueWeight),robotSeqence[PARAM::BLUE][roboId][camId].pos)<PARAM::ROBOTMERGEDOSTANCE)))
             {
+                //std::cout<<"blueFound:"<<foundBlue;
                 foundBlue=true;
                 _weight=std::pow(posDist(robotSeqence[PARAM::BLUE][roboId][camId].pos,GlobalData::instance()->cameraMatrix[camera.id].pos)/100.0,-2.0);
                 blueWeight+=_weight;
                 blueAverage.x+=robotSeqence[PARAM::BLUE][roboId][camId].pos.x * _weight;
                 blueAverage.y+=robotSeqence[PARAM::BLUE][roboId][camId].pos.y * _weight;
                 blueAngle=robotSeqence[PARAM::BLUE][roboId][camId].angel;
-                //std::cout<<_weight<<" "<<robotSeqence[PARAM::BLUE][roboId][camId].angel <<"\t";
+                //std::cout<<"  weight:"<<_weight<<" "<<robotSeqence[PARAM::BLUE][roboId][camId].pos.x <<"\t";
             }
             _weight=0;
-            if(robotSeqence[PARAM::YELLOW][roboId][camId].pos.x>-30000 && robotSeqence[PARAM::YELLOW][roboId][camId].pos.y>-30000)
+            if(robotSeqence[PARAM::YELLOW][roboId][camId].pos.x>-30000 && robotSeqence[PARAM::YELLOW][roboId][camId].pos.y>-30000 &&(!foundYellow ||
+            (foundYellow && posDist(Pos2d(yellowAverage.x/yellowWeight,yellowAverage.y/yellowWeight),robotSeqence[PARAM::YELLOW][roboId][camId].pos)<PARAM::ROBOTMERGEDOSTANCE)))
             {
+//                std::cout<<"yellowFound:"<<foundYellow;
                 foundYellow=true;
                 _weight=std::pow(posDist(robotSeqence[PARAM::YELLOW][roboId][camId].pos,GlobalData::instance()->cameraMatrix[camera.id].pos)/100.0,-2.0);
                 yellowWeight+=_weight;

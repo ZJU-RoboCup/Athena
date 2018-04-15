@@ -31,8 +31,8 @@ void CMaintain::udpSocketDisconnect(){
 
 void CMaintain::init(){
     result.init();
+    auto& state = GlobalData::instance()->immortalsVisionState;
     if (PARAM::USE_IMMORTAL_BALL){
-        auto& state = GlobalData::instance()->immortalsVisionState;
         if(state.has_ball && Field::inChosenArea(state.ball.Position.X,state.ball.Position.Y))
             result.addBall(state.ball.Position.X,state.ball.Position.Y);
     }
@@ -50,7 +50,14 @@ void CMaintain::init(){
     if (result.ballSize>0){
         detectionBall->set_x(result.ball[0].pos.x);
         detectionBall->set_y(result.ball[0].pos.y);
-        detectionBall->set_speed(0);//todo
+        if (PARAM::USE_IMMORTAL_BALL){
+            double ballspeed= sqrt(state.ball.velocity.x*state.ball.velocity.x+state.ball.velocity.y*state.ball.velocity.y);
+            detectionBall->set_speed(ballspeed);
+            if (ballspeed > 7500) qDebug()<<"now BALL speed="<<ballspeed<<"mm/s";
+        }
+        else{
+            detectionBall->set_speed(0);//todo
+        }
     }
     else
     {

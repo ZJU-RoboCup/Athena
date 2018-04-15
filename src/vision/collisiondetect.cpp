@@ -106,7 +106,7 @@ void CCollisionDetect::analyzeData(){
         {
             LastTouch = 3;
             LastTouchNumber = 0;
-            GlobalData::instance()->lastTouch=-1;
+            //GlobalData::instance()->lastTouch=-1;
             //std::cout << "the ball touch WALL" << std::endl;
         }
     }

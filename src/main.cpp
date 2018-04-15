@@ -3,9 +3,11 @@
 #include "visionmodule.h"
 #include "interaction.h"
 #include "field.h"
+#include "graph/graph.h"
 void qmlRegister(){
     qmlRegisterType<Field>("Client.Component", 1, 0, "Field");
     qmlRegisterType<Interaction>("Client.Component", 1, 0, "Interaction");
+    qmlRegisterType<Graph>("Graph", 1, 0, "Graph");
 }
 
 int main(int argc, char *argv[]){
