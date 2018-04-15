@@ -33,6 +33,8 @@ SOURCES += \
     src/vision/maintain.cpp \
     src/vision/collisiondetect.cpp \
     src/vision/visionmodule.cpp \
+    src/vision/kalmanfilter.cpp \
+    src/utils/matrix2d.cpp \
     graph/graph.cpp \
     graph/gridnode.cpp \
     graph/linenode.cpp
@@ -84,9 +86,12 @@ HEADERS += \
     src/vision/maintain.h \
     src/vision/collisiondetect.h \
     src/utils/geometry.h \
+    src/vision/kalmanfilter.h \
+    src/utils/matrix2d.h \
     graph/graph.h \
     graph/gridnode.h \
     graph/linenode.h
+
 
 INCLUDEPATH += \
     $$PWD/src/utils \

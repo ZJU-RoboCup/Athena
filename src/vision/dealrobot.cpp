@@ -12,55 +12,55 @@ CDealrobot::CDealrobot()
     }
 }
 
-double CDealrobot::posDist(Pos2d pos1, Pos2d pos2)
+double CDealrobot::posDist(CGeoPoint pos1, CGeoPoint pos2)
 {
-    return std::sqrt((pos1.x-pos2.x)*(pos1.x-pos2.x)+(pos1.y-pos2.y)*((pos1.y-pos2.y)));
+    return std::sqrt((pos1.x() - pos2.x())*(pos1.x() -pos2.x())+(pos1.y() -pos2.y())*((pos1.y() -pos2.y())));
 }
 
 void CDealrobot::MergeRobot(){
     for (int roboId=0; roboId<PARAM::ROBOTMAXID;roboId++){
         bool foundBlue=false,foundYellow=false;
         double blueWeight=0,yellowWeight=0;
-        Pos2d blueAverage(0,0),yellowAverage(0,0);
+        CGeoPoint blueAverage(0,0),yellowAverage(0,0);
         double blueAngle=0,yellowAngle=0;
         //std::cout<<"roboID:"<<roboId<<" : ";
         for (int camId=0;camId<PARAM::CAMERA;camId++)
         {
             SingleCamera camera=GlobalData::instance()->cameraMatrix[camId];
             double _weight=0;
-            if(robotSeqence[PARAM::BLUE][roboId][camId].pos.x>-30000 && robotSeqence[PARAM::BLUE][roboId][camId].pos.y>-30000 && (!foundBlue ||
-              (foundBlue && posDist(Pos2d(blueAverage.x/blueWeight,blueAverage.y/blueWeight),robotSeqence[PARAM::BLUE][roboId][camId].pos)<PARAM::ROBOTMERGEDOSTANCE)))
+            if(robotSeqence[PARAM::BLUE][roboId][camId].pos.x() > -30000 && robotSeqence[PARAM::BLUE][roboId][camId].pos.y() > -30000 && (!foundBlue ||
+              (foundBlue && robotSeqence[PARAM::BLUE][roboId][camId].pos.dist(CGeoPoint(blueAverage.x() /blueWeight,blueAverage.y() /blueWeight))<PARAM::ROBOTMERGEDOSTANCE)))
             {
                 //std::cout<<"blueFound:"<<foundBlue;
                 foundBlue=true;
                 _weight=std::pow(posDist(robotSeqence[PARAM::BLUE][roboId][camId].pos,GlobalData::instance()->cameraMatrix[camera.id].pos)/100.0,-2.0);
                 blueWeight+=_weight;
-                blueAverage.x+=robotSeqence[PARAM::BLUE][roboId][camId].pos.x * _weight;
-                blueAverage.y+=robotSeqence[PARAM::BLUE][roboId][camId].pos.y * _weight;
+                blueAverage.setX(blueAverage.x() + robotSeqence[PARAM::BLUE][roboId][camId].pos.x() * _weight);
+                blueAverage.setY(blueAverage.y() + robotSeqence[PARAM::BLUE][roboId][camId].pos.y() * _weight);
                 blueAngle=robotSeqence[PARAM::BLUE][roboId][camId].angel;
                 //std::cout<<"  weight:"<<_weight<<" "<<robotSeqence[PARAM::BLUE][roboId][camId].pos.x <<"\t";
             }
             _weight=0;
-            if(robotSeqence[PARAM::YELLOW][roboId][camId].pos.x>-30000 && robotSeqence[PARAM::YELLOW][roboId][camId].pos.y>-30000 &&(!foundYellow ||
-            (foundYellow && posDist(Pos2d(yellowAverage.x/yellowWeight,yellowAverage.y/yellowWeight),robotSeqence[PARAM::YELLOW][roboId][camId].pos)<PARAM::ROBOTMERGEDOSTANCE)))
+            if(robotSeqence[PARAM::YELLOW][roboId][camId].pos.x() >-30000 && robotSeqence[PARAM::YELLOW][roboId][camId].pos.y() >-30000 &&(!foundYellow ||
+            (foundYellow && robotSeqence[PARAM::YELLOW][roboId][camId].pos.dist(CGeoPoint(yellowAverage.x()/yellowWeight,yellowAverage.y()/yellowWeight))<PARAM::ROBOTMERGEDOSTANCE)))
             {
 //                std::cout<<"yellowFound:"<<foundYellow;
                 foundYellow=true;
                 _weight=std::pow(posDist(robotSeqence[PARAM::YELLOW][roboId][camId].pos,GlobalData::instance()->cameraMatrix[camera.id].pos)/100.0,-2.0);
                 yellowWeight+=_weight;
-                yellowAverage.x+=robotSeqence[PARAM::YELLOW][roboId][camId].pos.x * _weight;
-                yellowAverage.y+=robotSeqence[PARAM::YELLOW][roboId][camId].pos.y * _weight;
+                yellowAverage.setX(yellowAverage.x() + robotSeqence[PARAM::YELLOW][roboId][camId].pos.x() * _weight);
+                yellowAverage.setY(yellowAverage.y() + robotSeqence[PARAM::YELLOW][roboId][camId].pos.y() * _weight);
                 yellowAngle=robotSeqence[PARAM::YELLOW][roboId][camId].angel;
                 //std::cout<<_weight<<" "<<robotSeqence[PARAM::YELLOW][roboId][camId].angel <<"\t";
            }
         }
         //std::cout<<"\n";
         if (foundBlue){
-            Robot ave(blueAverage.x/blueWeight,blueAverage.y/blueWeight,blueAngle,roboId);
+            Robot ave(blueAverage.x() / blueWeight,blueAverage.y() / blueWeight,blueAngle,roboId);
             result.addRobot(PARAM::BLUE,ave);
         }
         if (foundYellow){
-            Robot ave(yellowAverage.x/yellowWeight,yellowAverage.y/yellowWeight,yellowAngle,roboId);
+            Robot ave(yellowAverage.x() / yellowWeight,yellowAverage.y() / yellowWeight,yellowAngle,roboId);
             result.addRobot(PARAM::YELLOW,ave);
         }
     }

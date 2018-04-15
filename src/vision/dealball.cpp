@@ -6,9 +6,9 @@
 CDealball::CDealball()
 {
 }
-double CDealball::posDist(Pos2d pos1, Pos2d pos2)
+double CDealball::posDist(CGeoPoint pos1, CGeoPoint pos2)
 {
-    return std::sqrt((pos1.x-pos2.x)*(pos1.x-pos2.x)+(pos1.y-pos2.y)*((pos1.y-pos2.y)));
+    return std::sqrt((pos1.x() - pos2.x())*(pos1.x() - pos2.x())+(pos1.y() - pos2.y())*((pos1.y() - pos2.y())));
 }
 
 void CDealball::mergeBall(){
@@ -32,20 +32,20 @@ void CDealball::mergeBall(){
     result.init();
     for (i=0;i<actualBallNum;i++){
         double weight=0;
-        Pos2d average(0,0);
+        CGeoPoint average(0,0);
         for(j=0;j<PARAM::CAMERA;j++){
-            if (ballSequence[i][j].pos.x>-30000 && ballSequence[i][j].pos.y>-30000)
+            if (ballSequence[i][j].pos.x()>-30000 && ballSequence[i][j].pos.y()>-30000)
             {
                 SingleCamera camera=GlobalData::instance()->cameraMatrix[j];
                 double _weight;
                 _weight=std::pow(posDist(ballSequence[i][j].pos,GlobalData::instance()->cameraMatrix[camera.id].pos)/100.0,-2.0);
                 weight+=_weight;
-                average.x+=ballSequence[i][j].pos.x * _weight;
-                average.y+=ballSequence[i][j].pos.y * _weight;
+                average.setX(average.x() + ballSequence[i][j].pos.x() * _weight);
+                average.setY(average.y() + ballSequence[i][j].pos.y() * _weight);
             }
         }
-        result.addBall(average.x/weight,average.y/weight);
-        if (PARAM::DEBUG) std::cout<<"have merged NO. "<<i<<" ball with"<<average.x<<","<<average.y<<" "<<weight<<"\n";
+        result.addBall(average.x()/weight,average.y()/weight);
+        if (PARAM::DEBUG) std::cout<<"have merged NO. "<<i<<" ball with"<<average<<" "<<weight<<"\n";
     }
     GlobalData::instance()->processBall.push(result);
 }
@@ -54,11 +54,10 @@ void CDealball::init(){
     for (int i=0;i<PARAM::CAMERA;i++){
         for(int j=0;j<GlobalData::instance()->camera[i][0].ballSize;j++)
         {
-            result.addBall(GlobalData::instance()->camera[i][0].ball[j].pos.x,
-                    GlobalData::instance()->camera[i][0].ball[j].pos.y,0,i);
+            result.addBall(GlobalData::instance()->camera[i][0].ball[j].pos.x(),
+                    GlobalData::instance()->camera[i][0].ball[j].pos.y(),0,i);
             if (PARAM::DEBUG) std::cout<<" "<<i<<" "
-                                      <<GlobalData::instance()->camera[i][0].ball[j].pos.x<<" "
-                                      <<GlobalData::instance()->camera[i][0].ball[j].pos.y<<" ";
+                                      <<GlobalData::instance()->camera[i][0].ball[j].pos<<" ";
         }
     }
     if (PARAM::DEBUG) std::cout<<"Origin vision has "<<result.ballSize<<" balls.\n";

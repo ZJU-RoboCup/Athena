@@ -48,8 +48,8 @@ void CMaintain::init(){
 
     //udp start
     if (result.ballSize>0){
-        detectionBall->set_x(result.ball[0].pos.x);
-        detectionBall->set_y(result.ball[0].pos.y);
+        detectionBall->set_x(result.ball[0].pos.x());
+        detectionBall->set_y(result.ball[0].pos.y());
         if (PARAM::USE_IMMORTAL_BALL){
             double ballspeed= sqrt(state.ball.velocity.x*state.ball.velocity.x+state.ball.velocity.y*state.ball.velocity.y);
             detectionBall->set_speed(ballspeed);
@@ -67,8 +67,8 @@ void CMaintain::init(){
     }
     for (int i=0;i<result.robotSize[PARAM::BLUE];i++){
         detectionRobot[PARAM::BLUE][i]=detectionFrame.add_robots_blue();
-        detectionRobot[PARAM::BLUE][i]->set_x(result.robot[PARAM::BLUE][i].pos.x);
-        detectionRobot[PARAM::BLUE][i]->set_y(result.robot[PARAM::BLUE][i].pos.y);
+        detectionRobot[PARAM::BLUE][i]->set_x(result.robot[PARAM::BLUE][i].pos.x());
+        detectionRobot[PARAM::BLUE][i]->set_y(result.robot[PARAM::BLUE][i].pos.y());
         detectionRobot[PARAM::BLUE][i]->set_orientation(result.robot[PARAM::BLUE][i].angel);
         detectionRobot[PARAM::BLUE][i]->set_robot_id(result.robot[PARAM::BLUE][i].id);
         detectionRobot[PARAM::BLUE][i]->set_confidence(1);
@@ -76,8 +76,8 @@ void CMaintain::init(){
     }
     for (int i=0;i<result.robotSize[PARAM::YELLOW];i++){
         detectionRobot[PARAM::YELLOW][i]=detectionFrame.add_robots_yellow();
-        detectionRobot[PARAM::YELLOW][i]->set_x(result.robot[PARAM::YELLOW][i].pos.x);
-        detectionRobot[PARAM::YELLOW][i]->set_y(result.robot[PARAM::YELLOW][i].pos.y);
+        detectionRobot[PARAM::YELLOW][i]->set_x(result.robot[PARAM::YELLOW][i].pos.x());
+        detectionRobot[PARAM::YELLOW][i]->set_y(result.robot[PARAM::YELLOW][i].pos.y());
         detectionRobot[PARAM::YELLOW][i]->set_orientation(result.robot[PARAM::YELLOW][i].angel);
         detectionRobot[PARAM::YELLOW][i]->set_robot_id(result.robot[PARAM::YELLOW][i].id);
         detectionRobot[PARAM::YELLOW][i]->set_confidence(1);
