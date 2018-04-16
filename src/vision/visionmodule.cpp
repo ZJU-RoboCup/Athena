@@ -1,5 +1,4 @@
 #include "visionmodule.h"
-#include "singleparams.h"
 #include "globaldata.h"
 #include "transform.h"
 #include "modelfix.h"
@@ -10,8 +9,12 @@
 #include "immortals/immortalsvision.h"
 #include "messages_robocup_ssl_wrapper.pb.h"
 #include "field.h"
+#include "parammanager.h"
 #include <QElapsedTimer>
 #include <QtDebug>
+namespace{
+    auto zpm = ZSS::ZParamManager::instance();
+}
 CVisionModule::CVisionModule(QObject *parent)
     : QObject(parent)
     , udpSocket()
@@ -23,9 +26,9 @@ CVisionModule::CVisionModule(QObject *parent)
     std::fill_n(GlobalData::instance()->processControl,3,true);
 }
 void CVisionModule::udpSocketConnect(){
-    std::string addressStr = SingleParams::instance()->_("vision.address");
-    port = SingleParams::instance()->_("vision.port.big");
-    groupAddress = QString(addressStr.c_str());
+    QString groupAddress;
+    zpm->loadParam(groupAddress,"vision/address","224.5.23.2");
+    zpm->loadParam(port,"vision/port",10005);
     udpSocket.bind(QHostAddress::AnyIPv4, port, QUdpSocket::ShareAddress);
     udpSocket.joinMulticastGroup(QHostAddress(groupAddress));
     connect(&udpSocket,SIGNAL(readyRead()),this,SLOT(storeData()),Qt::DirectConnection);
