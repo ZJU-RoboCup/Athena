@@ -4,6 +4,7 @@
 #include <singleton.hpp>
 #include "globaldata.h"
 #include "messageformat.h"
+#include "geometry.h"
 
 
 class CDealball
@@ -17,7 +18,7 @@ private:
     int actualBallNum=0;
     Ball ballSequence[PARAM::BALLNUM][PARAM::CAMERA];
     ReceiveVisionMessage result;
-    double posDist( Pos2d,Pos2d);
+    double posDist(CGeoPoint,CGeoPoint);
     void init();
 };
 typedef Singleton<CDealball> Dealball;

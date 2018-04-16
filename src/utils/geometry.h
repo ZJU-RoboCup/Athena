@@ -51,6 +51,7 @@ public:
 	double y() const { return _y; }
 	void setX(double x) { _x = x; }   // 2014/2/28 新增 设置x坐标 yys
 	void setY(double y) { _y = y; }   // 2014/2/28 新增 设置y坐标 yys
+        bool fill(double x,double y){ _x = x; _y = y;return true;} //2018/4/14  新增 同时设置 wayne
 	double dist(const CGeoPoint& p) const { return CVector(p - CGeoPoint(_x, _y)).mod(); }
 	double dist2(const CGeoPoint& p) const { return CVector(p - CGeoPoint(_x, _y)).mod2(); }
 	CGeoPoint operator+(const CVector& v) const { return CGeoPoint(_x + v.x(), _y + v.y()); }

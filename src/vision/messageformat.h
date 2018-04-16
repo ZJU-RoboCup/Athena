@@ -2,7 +2,12 @@
 #define __MESSAGEFORMAT_H__
 #include "staticparams.h"
 #include <iostream>
+#include "geometry.h"
+/************************************************************************/
+/*                 Basic Vision Classes                                 */
+/************************************************************************/
 namespace {
+/*
     struct Pos2d{
         double x;
         double y;
@@ -17,36 +22,37 @@ namespace {
             return sqrt((x-p.x)*(x-p.x)+(y-p.y)*(y-p.y));
         }
     };
+    */
     struct Ball{
-        Pos2d pos;
+        CGeoPoint pos;
         double height;
         int cameraID;
         Ball():pos(),height(0){}
         bool fill(double x,double y,double height = 0,int id=-1){
-            pos.x = x; pos.y = y; this->height = height;this->cameraID=id;
+            pos.setX(x); pos.setY(y); this->height = height;this->cameraID=id;
             return true;
         }
         bool fill(const Ball& ball){
-            return fill(ball.pos.x,ball.pos.y,ball.height);
+            return fill(ball.pos.x(),ball.pos.y(),ball.height);
         }
     };
     struct Robot{
         unsigned short id;
-        Pos2d pos;
+        CGeoPoint pos;
         double angel;
         Robot():id(-1){}
-        Robot(double _x,double _y,double _angle, double _id=-1){pos.x=_x;pos.y=_y;angel=_angle;id=_id;}
-        bool fill(unsigned short id,double x,double y,double angel){
-            this->id = id; pos.x = x; pos.y = y; this->angel = angel;
+        Robot(double _x,double _y,double _angle, double _id=-1){pos.setX(_x);pos.setY(_y);angel=_angle;id=_id;}
+        bool fill(unsigned short id,double _x,double _y,double angel){
+            this->id = id; pos.setX(_x);pos.setY(_y); this->angel = angel;
             return true;
         }
         bool fill(const Robot& robot){
-            return fill(robot.id,robot.pos.x,robot.pos.y,robot.angel);
-        }//why same name??
+            return fill(robot.id,robot.pos.x(),robot.pos.y(),robot.angel);
+        }
     };
     struct SingleCamera{
         unsigned short id;
-        Pos2d pos;
+        CGeoPoint pos;
         double height;
         SingleCamera():height(300){}//set 300cm as an example
     };
@@ -55,6 +61,7 @@ namespace {
         CameraFix():theta(0),t1(0),t2(0){}
     };
 }
+
 const int BLUE = 0;
 const int YELLOW = 1;
 //* Robot store the data, Index and Size exist for the index search for robots;

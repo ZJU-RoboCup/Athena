@@ -4,6 +4,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.0
 import Client.Component 1.0 as Client
+import Graph 1.0
 Window {
     id:root;
     visible: true;
@@ -15,6 +16,19 @@ Window {
     maximumWidth: width;
     color:"#e8e8e8";
     //flags:Qt.FramelessWindowHint
+
+
+    Timer {
+        id: ballspeedtimer
+        interval: 50
+        repeat: true
+        running: true
+        onTriggered: {
+            graph.removeFirstSample();
+            graph.appendSample(graph.newSample(++graph.offset));
+        }
+
+    }
 
     Timer{
         id:fpsTimer;
@@ -35,9 +49,9 @@ Window {
             id:fields;
             width:960;
             height:740;
-            currentIndex:3;
+            currentIndex:1;
             Repeater{
-                model:["Origin","Ball-Transformed","Robot-ModelFixed","Final-Montaged","Immortals"];
+                model:["Origin","Merged","Immortals"];
                 Tab{
                     anchors.fill: parent;
                     title:modelData;
@@ -81,6 +95,26 @@ Window {
                font.pointSize: (Qt.platform.os == "windows") ? 10 : 14;
                font.weight:  Font.Bold;
            }
+           Graph {
+               id: graph
+               anchors.fill: parent
+               anchors.leftMargin: 600
+               anchors.rightMargin: 50
+               anchors.topMargin: 500
+               anchors.bottomMargin: 50
+
+               function newSample(i) {
+                   return (Math.sin(i / 100.0 * Math.PI * 2) + 1) * 0.4 + Math.random() * 0.05;
+               }
+
+               Component.onCompleted: {
+                   for (var i=0; i<100; ++i)
+                       appendSample(newSample(i));
+               }
+
+               property int offset: 100;
+                scale:1
+           }
            Rectangle{
                id:areaRectangle;
                width:parent.width - 20;
@@ -121,6 +155,7 @@ Window {
             width:180;
             height:parent.height;
             spacing: 0;
+
             Grid{
                 id:cameraControls;
                 width:parent.width;
@@ -162,6 +197,7 @@ Window {
                     }
                 }
             }
+
             Grid{
                 id:processControl
                 width:parent.width;
@@ -189,7 +225,9 @@ Window {
                         }
                     }
                 }
+
             }
+
         }
     }
 }

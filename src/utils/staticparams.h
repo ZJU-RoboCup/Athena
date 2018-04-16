@@ -11,6 +11,7 @@ namespace PARAM{
     const int BALLNUM = 20;
     const int BLUE=0;
     const int YELLOW=1;
-    const int MERGEDISTANCE=140;
+    const int BALLMERGEDISTANCE=140;
+    const int ROBOTMERGEDOSTANCE=500;
 }
 #endif // STATICPARAMS_H

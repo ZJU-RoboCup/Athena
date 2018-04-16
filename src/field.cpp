@@ -107,12 +107,8 @@ void Field::draw(){                     //change here!!!!!!!
     case 1:
         drawOriginVision(0);break;
     case 2:
-        drawBallFixedVision(0);break;
-    case 3:
-        drawRobotFixedVision(0);break;
-    case 4:
         drawMaintainVision(0);break;
-    case 5:
+    case 3:
         drawImmortalsVision();break;
     }
     this->update(area);
@@ -172,11 +168,11 @@ void Field::drawMaintainVision(int index){
     if (GlobalData::instance()->lastTouch!=-1){
         if (GlobalData::instance()->lastTouch<PARAM::ROBOTMAXID){
             auto& robot = vision.robot[BLUE][GlobalData::instance()->lastTouch];
-            paintCar(CAR_COLOR[BLUE],robot.id,robot.pos.x,robot.pos.y,robot.angel,true,FONT_COLOR[BLUE],true);
+            paintCar(CAR_COLOR[BLUE],robot.id,robot.pos.x(),robot.pos.y(),robot.angel,true,FONT_COLOR[BLUE],true);
         }
         else{
             auto& robot = vision.robot[YELLOW][GlobalData::instance()->lastTouch-PARAM::ROBOTMAXID];
-            paintCar(CAR_COLOR[YELLOW],robot.id,robot.pos.x,robot.pos.y,robot.angel,true,FONT_COLOR[YELLOW],true);
+            paintCar(CAR_COLOR[YELLOW],robot.id,robot.pos.x(),robot.pos.y(),robot.angel,true,FONT_COLOR[YELLOW],true);
         }
     }
 }
@@ -241,19 +237,19 @@ void Field::drawVision(const OriginMessage &vision,bool shadow){
         for(int j=0;j<vision.robotSize[color];j++){
             auto& robot = vision.robot[color][j];
             if(!shadow){
-                paintCar(CAR_COLOR[color],robot.id,robot.pos.x,robot.pos.y,robot.angel,true,FONT_COLOR[color]);
+                paintCar(CAR_COLOR[color],robot.id,robot.pos.x(),robot.pos.y(),robot.angel,true,FONT_COLOR[color]);
             }
             else{
-                paintShadow(CAR_SHADOW[color],robot.pos.x,robot.pos.y);
+                paintShadow(CAR_SHADOW[color],robot.pos.x(),robot.pos.y());
             }
         }
     }
     for(int j=0;j<vision.ballSize;j++){
         auto& ball = vision.ball[j];
         if(!shadow){
-            paintBall(COLOR_ORANGE,ball.pos.x,ball.pos.y);
+            paintBall(COLOR_ORANGE,ball.pos.x(),ball.pos.y());
         }else{
-            paintShadow(COLOR_TRANSORANGE,ball.pos.x,ball.pos.y);
+            paintShadow(COLOR_TRANSORANGE,ball.pos.x(),ball.pos.y());
         }
     }
 }

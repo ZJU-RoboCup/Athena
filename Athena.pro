@@ -2,7 +2,7 @@ TEMPLATE = app
 
 CONFIG += c++11
 
-QT += qml quick
+QT +=    quick
 
 TARGET = Athena_V02
 
@@ -32,10 +32,27 @@ SOURCES += \
     src/vision/dealrobot.cpp \
     src/vision/maintain.cpp \
     src/vision/collisiondetect.cpp \
-    src/vision/visionmodule.cpp
+    src/vision/visionmodule.cpp \
+    src/vision/kalmanfilter.cpp \
+    src/utils/matrix2d.cpp \
+    graph/graph.cpp \
+    graph/gridnode.cpp \
+    graph/linenode.cpp
 
 DISTFILES += \
-    opt/params.json
+    opt/params.json \
+    graph/shaders/line.fsh \
+    graph/shaders/noisy.fsh \
+    graph/shaders/line.vsh \
+    graph/shaders/noisy.vsh \
+    graph/shaders/line.fsh \
+    graph/shaders/noisy.fsh \
+    graph/shaders/line.vsh \
+    graph/shaders/noisy.vsh \
+    graph/shaders/line.fsh \
+    graph/shaders/noisy.fsh \
+    graph/shaders/line.vsh \
+    graph/shaders/noisy.vsh
 
 RESOURCES += \
     Athena.qrc
@@ -68,7 +85,13 @@ HEADERS += \
     src/vision/dealrobot.h \
     src/vision/maintain.h \
     src/vision/collisiondetect.h \
-    src/utils/geometry.h
+    src/utils/geometry.h \
+    src/vision/kalmanfilter.h \
+    src/utils/matrix2d.h \
+    graph/graph.h \
+    graph/gridnode.h \
+    graph/linenode.h
+
 
 INCLUDEPATH += \
     $$PWD/src/utils \
