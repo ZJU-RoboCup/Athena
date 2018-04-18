@@ -1,8 +1,8 @@
 #include "field.h"
-#include "singleparams.h"
 #include "visionmodule.h"
 #include "transform.h"
 #include "globaldata.h"
+#include "parammanager.h"
 #include <QColor>
 #include <QtMath>
 #include <QtDebug>
@@ -59,6 +59,12 @@ namespace{
     double ry(double _y){
         return -(_y-canvasHeight/2)*param_canvas_height/canvasHeight;
     }
+    auto zpm = ZSS::ZParamManager::instance();
+    int ballDiameter;
+    int shadowDiameter;
+    int carDiameter;
+    int carFaceWidth;
+    int numberSize;
 }
 Field::Field(QQuickItem *parent)
     : QQuickPaintedItem(parent)
@@ -66,14 +72,19 @@ Field::Field(QQuickItem *parent)
     , pen(QColor(255,255,255),1)
     , cameraMode(true)
     , _type(-1){
-    canvasHeight = SingleParams::instance()->_("canvas.height");
-    canvasWidth  = SingleParams::instance()->_("canvas.width");
+    zpm->loadParam(canvasHeight,"canvas/height",720);
+    zpm->loadParam(canvasWidth ,"canvas/width" ,960);
     connect(VisionModule::instance(),SIGNAL(needDraw()),this,SLOT(draw()));
     setImplicitWidth(canvasWidth);
     setImplicitHeight(canvasHeight);
     pixmap = new QPixmap(QSize(canvasWidth,canvasHeight));
     pixmapPainter.begin(pixmap);
     changeMode(cameraMode);
+    zpm->loadParam(ballDiameter   ,"size/ballDiameter",100);
+    zpm->loadParam(shadowDiameter ,"size/shadowDiameter",30);
+    zpm->loadParam(carDiameter    ,"size/carDiameter",180);
+    zpm->loadParam(carFaceWidth   ,"size/carFaceWidth",120);
+    zpm->loadParam(numberSize     ,"size/numberSize",200);
 }
 
 void Field::paint(QPainter* painter){
@@ -81,17 +92,16 @@ void Field::paint(QPainter* painter){
 }
 
 void Field::changeMode(bool ifBig){
-    std::string prefix = ifBig ? "bigField" : "smallField";
-    pen.setWidth(ifBig ? 2 : 1);
-    param_width                 = SingleParams::instance()->_(prefix+".field.width");
-    param_height                = SingleParams::instance()->_(prefix+".field.height");
-    param_canvas_width          = SingleParams::instance()->_(prefix+".canvas_width");
-    param_canvas_height         = SingleParams::instance()->_(prefix+".canvas_height");
-    param_goalWidth             = SingleParams::instance()->_(prefix+".field.goalWidth");
-    param_goalDepth             = SingleParams::instance()->_(prefix+".field.goalDepth");
-    param_penaltyWidth          = SingleParams::instance()->_(prefix+".field.penaltyWidth");
-    param_penaltyLength         = SingleParams::instance()->_(prefix+".field.penaltyLength");
-    param_centerCircleRadius    = SingleParams::instance()->_(prefix+".field.centerCircleRadius");
+    pen.setWidth(2);
+    zpm->loadParam(param_width             , "field/width"             ,12000);
+    zpm->loadParam(param_height            , "field/height"            , 9000);
+    zpm->loadParam(param_canvas_width      , "field/canvasWidth"       ,13200);
+    zpm->loadParam(param_canvas_height     , "field/canvasHeight"      , 9900);
+    zpm->loadParam(param_goalWidth         , "field/goalWidth"         , 1200);
+    zpm->loadParam(param_goalDepth         , "field/goalDepth"         ,  200);
+    zpm->loadParam(param_penaltyWidth      , "field/penaltyWidth"      , 1200);
+    zpm->loadParam(param_penaltyLength     , "field/penaltyLength"     , 2400);
+    zpm->loadParam(param_centerCircleRadius, "field/centerCircleRadius",  500);
     area = QRect(0,0,this->property("width").toReal(),this->property("height").toReal());
     painterPath = QPainterPath();
     initPainterPath();
@@ -197,18 +207,15 @@ void Field::drawProcessedVision(int index){
     drawVision(GlobalData::instance()->vision[index]);
 }
 void Field::paintCar(const QColor& color,quint8 num,qreal x,qreal y,qreal radian,bool ifDrawNum,const QColor& textColor,bool needCircle){
-    static float diameter = SingleParams::instance()->_("car.diameter");
-    static float faceWidth = SingleParams::instance()->_("car.faceWidth");
-    static float numberSize = SingleParams::instance()->_("numberSize");
-    static qreal radius = diameter/2;
-    static qreal chordAngel = qRadiansToDegrees(qAcos(faceWidth/diameter));
+    static qreal radius = carDiameter/2;
+    static qreal chordAngel = qRadiansToDegrees(qAcos(carFaceWidth/carDiameter));
     pixmapPainter.setBrush(QBrush(color));
     pixmapPainter.setPen(Qt::NoPen);
-    pixmapPainter.drawChord(::x(x-radius),::y(y-radius),::w(diameter),::h(diameter),::a(90.0-chordAngel + 180/M_PI*radian),::r(180.0+2*chordAngel));
+    pixmapPainter.drawChord(::x(x-radius),::y(y-radius),::w(2*radius),::h(2*radius),::a(90.0-chordAngel + 180/M_PI*radian),::r(180.0+2*chordAngel));
     if (needCircle) {
         pixmapPainter.setBrush(Qt::NoBrush);
         pixmapPainter.setPen(QPen(COLOR_RED));
-        pixmapPainter.drawChord(::x(x-radius),::y(y-radius),::w(diameter),::h(diameter),::a(90.0-chordAngel + 180/M_PI*radian),::r(180.0+2*chordAngel));
+        pixmapPainter.drawChord(::x(x-radius),::y(y-radius),::w(2*radius),::h(2*radius),::a(90.0-chordAngel + 180/M_PI*radian),::r(180.0+2*chordAngel));
     }
     if (ifDrawNum) {
         pixmapPainter.setBrush(Qt::NoBrush);
@@ -218,23 +225,21 @@ void Field::paintCar(const QColor& color,quint8 num,qreal x,qreal y,qreal radian
         font.setPixelSize(fontSize);
         pixmapPainter.setFont(font);
         if (num >= 10) {
-            pixmapPainter.drawText(::x(x-numberSize*0.5),::y(y+diameter*0.4),QString::number(num));
+            pixmapPainter.drawText(::x(x-numberSize*0.5),::y(y+carDiameter*0.4),QString::number(num));
         } else {
-            pixmapPainter.drawText(::x(x-numberSize),::y(y+diameter*0.4),QString::number(num));
+            pixmapPainter.drawText(::x(x-numberSize),::y(y+carDiameter*0.4),QString::number(num));
         }
     }
 }
 void Field::paintBall(const QColor& color,qreal x, qreal y){
-    static float radius = float(SingleParams::instance()->_("ball.diameter"))/2;
     pixmapPainter.setBrush(QBrush(color));
     pixmapPainter.setPen(Qt::NoPen);
-    pixmapPainter.drawEllipse(::x(x-radius),::y(y-radius),::w(2*radius),::h(2*radius));
+    pixmapPainter.drawEllipse(::x(x-ballDiameter/2),::y(y-ballDiameter/2),::w(ballDiameter),::h(ballDiameter));
 }
 void Field::paintShadow(const QColor& color,qreal x,qreal y){
-    static float radius = float(SingleParams::instance()->_("shadow.diameter"))/2;
     pixmapPainter.setBrush(QBrush(color));
     pixmapPainter.setPen(Qt::NoPen);
-    pixmapPainter.drawEllipse(::x(x-radius),::y(y-radius),::w(2*radius),::h(2*radius));
+    pixmapPainter.drawEllipse(::x(x-shadowDiameter/2),::y(y-shadowDiameter/2),::w(shadowDiameter),::h(shadowDiameter));
 }
 void Field::drawVision(const OriginMessage &vision,bool shadow){
     for(int color=BLUE;color<=YELLOW;color++){

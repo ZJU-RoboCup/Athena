@@ -2,9 +2,9 @@ TEMPLATE = app
 
 CONFIG += c++11
 
-QT +=    quick
+QT += qml quick
 
-TARGET = Athena_V02
+TARGET = Athena
 
 SOURCES += \
     src/main.cpp \
@@ -37,7 +37,8 @@ SOURCES += \
     src/utils/matrix2d.cpp \
     graph/graph.cpp \
     graph/gridnode.cpp \
-    graph/linenode.cpp
+    graph/linenode.cpp \
+    src/Utils/parammanager.cpp
 
 DISTFILES += \
     opt/params.json \
@@ -90,7 +91,8 @@ HEADERS += \
     src/utils/matrix2d.h \
     graph/graph.h \
     graph/gridnode.h \
-    graph/linenode.h
+    graph/linenode.h \
+    src/Utils/parammanager.h
 
 
 INCLUDEPATH += \
@@ -104,12 +106,12 @@ macx {
 }
 
 win32 {
-    PROTOBUF_INCLUDE_DIR = $$PWD/lib/protobuf/include
+    PROTOBUF_INCLUDE_DIR = C:\usr\local\protobuf\2.6.1\include
     CONFIG(release,debug|release){
-        LIBPROTOBUF = $$PWD/lib/protobuf/lib/libprotobuf.lib
+        LIBPROTOBUF = C:\usr\local\protobuf\2.6.1\lib\vs14.0\libprotobuf.lib
     }
     CONFIG(debug,debug|release){
-        LIBPROTOBUF = $$PWD/lib/protobuf/lib/libprotobufD.lib
+        LIBPROTOBUF = C:\usr\local\protobuf\2.6.1\lib\vs14.0\libprotobufd.lib
     }
 }
 unix:!macx{
