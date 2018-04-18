@@ -1,10 +1,16 @@
 #include "dealball.h"
 #include "globaldata.h"
 #include "staticparams.h"
+#include "matrix2d.h"
 #include <iostream>
+#define MAX_BALL_PER_FRAME 150
+#define MIN_FILT_DIST 15
+#define FRAME_RATE 61
 
 CDealball::CDealball()
 {
+    lastBall.pos.setX(0);
+    lastBall.pos.setY(0);
 }
 double CDealball::posDist(CGeoPoint pos1, CGeoPoint pos2)
 {
@@ -47,7 +53,7 @@ void CDealball::mergeBall(){
         result.addBall(average.x()/weight,average.y()/weight);
         if (PARAM::DEBUG) std::cout<<"have merged NO. "<<i<<" ball with"<<average<<" "<<weight<<"\n";
     }
-    GlobalData::instance()->processBall.push(result);
+
 }
 
 void CDealball::init(){
@@ -61,6 +67,36 @@ void CDealball::init(){
         }
     }
     if (PARAM::DEBUG) std::cout<<"Origin vision has "<<result.ballSize<<" balls.\n";
+    //GlobalData::instance()->processBall.push(result);
+}
+
+
+
+void CDealball::filteBall(){
+    float dis=32767;
+    int id=-1;
+    for (int i=0; i<result.ballSize;i++)
+    {
+        if (result.ball[i].pos.dist(lastBall.pos)<dis){
+            dis = result.ball[i].pos.dist(lastBall.pos);
+            id = i;
+            if (PARAM::DEBUG) std::cout <<" the dis=" <<dis<<std::endl;
+        }
+    }
+    lastBall=result.ball[id];
+    Ball curentBall=result.ball[id];
+    bool filteSwitch=true;
+    for (int i=0;i< result.robotSize[PARAM::BLUE];i++)
+       if (result.robot[PARAM::BLUE][i].pos.dist(curentBall.pos) <= MIN_FILT_DIST ) filteSwitch = false;
+
+    for (int i=0;i< result.robotSize[PARAM::YELLOW];i++)
+       if (result.robot[PARAM::YELLOW][i].pos.dist(curentBall.pos)<MIN_FILT_DIST) filteSwitch = false;
+    auto & tempMatrix= filteSwitch? _kalmanFilter.update(curentBall.pos.x(),curentBall.pos.y()):_kalmanFilter.follow(curentBall.pos.x(),curentBall.pos.y());
+    CGeoPoint filtePos(tempMatrix(0,0),tempMatrix(1,0));
+    result.ballSize=0;
+    result.ball[0].fill(filtePos.x(),filtePos.y());
+    result.ball[0].velocity.setVector(tempMatrix(2, 0)*FRAME_RATE, tempMatrix(3, 0)*FRAME_RATE);
+    std::cout<<"After filt Pos:"<<filtePos<<"\twith velocity = "<<result.ball[0].velocity.mod()<<std::endl;
     GlobalData::instance()->processBall.push(result);
 }
 
@@ -73,7 +109,8 @@ void CDealball::run(bool sw){
     if (sw){
         init();
         mergeBall();
-
+        filteBall();
+        GlobalData::instance()->processBall.push(result);
     }
     else{
         for(int i=0;i<PARAM::CAMERA;i++){

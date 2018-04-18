@@ -110,6 +110,10 @@ void Field::draw(){                     //change here!!!!!!!
         drawMaintainVision(0);break;
     case 3:
         drawImmortalsVision();break;
+    case 4:
+        drawBallFixedVision(0);break;
+    case 5:
+        drawRobotFixedVision(0);break;
     }
     this->update(area);
 }

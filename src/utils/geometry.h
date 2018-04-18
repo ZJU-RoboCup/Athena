@@ -16,6 +16,7 @@ public:
 	CVector() :	_x(0), _y(0) {}
 	CVector(double x, double y) : _x(x), _y(y) {}
 	CVector(const CVector& v) :	_x(v.x()), _y(v.y()) {}
+        bool setVector(double x, double y) {_x=x;_y=y; return true;}
 	double mod() const { return std::sqrt(_x * _x + _y * _y); }
 	double mod2() const { return (_x * _x + _y * _y); }
 	double dir() const { return std::atan2(y(), x());}

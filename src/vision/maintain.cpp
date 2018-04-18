@@ -4,6 +4,7 @@
 #include "collisiondetect.h"
 #include "visionmodule.h"
 #include "field.h"
+#include "dealball.h"
 CMaintain::CMaintain()
 {
     detectionBall= detectionFrame.mutable_balls();
@@ -37,8 +38,12 @@ void CMaintain::init(){
             result.addBall(state.ball.Position.X,state.ball.Position.Y);
     }
     else{
-        for (int i=0;i<GlobalData::instance()->processBall[0].ballSize;i++)
-            result.addBall(GlobalData::instance()->processBall[0].ball[i]);
+        //Dealball::instance()->filteBall(result);
+//        for (int i=0;i<GlobalData::instance()->processBall[0].ballSize;i++)
+//            result.addBall(GlobalData::instance()->processBall[0].ball[i]);
+
+        result.addBall(GlobalData::instance()->processBall[0].ball[0]);
+
     }
     for (int i=0;i<GlobalData::instance()->processRobot[0].robotSize[PARAM::BLUE];i++)
         result.addRobot(PARAM::BLUE,GlobalData::instance()->processRobot[0].robot[PARAM::BLUE][i]);
@@ -96,6 +101,7 @@ void CMaintain::run(bool sw){
     if (sw){
         init();
         CollisionDetect::instance()->visionAlart();
+
     }
     else{
 

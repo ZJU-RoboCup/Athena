@@ -51,7 +51,7 @@ Window {
             height:740;
             currentIndex:1;
             Repeater{
-                model:["Origin","Merged","Immortals"];
+                model:["Transform","ModelFix","Immortals","Ball","Robot"];
                 Tab{
                     anchors.fill: parent;
                     title:modelData;
@@ -103,8 +103,9 @@ Window {
                anchors.topMargin: 500
                anchors.bottomMargin: 50
 
+               //非常奇怪，这里的区间是0-1，而且0在上方。
                function newSample(i) {
-                   return (Math.sin(i / 100.0 * Math.PI * 2) + 1) * 0.4 + Math.random() * 0.05;
+                   return (-(interaction.getBallVelocity())/8000+1);//(Math.sin(i / 100.0 * Math.PI * 2) + 1) * 0.4 + Math.random() * 0.05;
                }
 
                Component.onCompleted: {
@@ -209,7 +210,7 @@ Window {
                 verticalItemAlignment: Grid.AlignVCenter;
                 property int itemWidth : (width - (columns-1) * columnSpacing)/columns;
                 Repeater{
-                    model:["Transform","ModelFix","Montage"];
+                    model:["Transform","ModelFix","Montage","Ball","Robot"];
                     Rectangle{
                         property int itemIndex : index;
                         property bool itemChecked : true;

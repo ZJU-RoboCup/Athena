@@ -27,6 +27,7 @@ namespace {
         CGeoPoint pos;
         double height;
         int cameraID;
+        CVector velocity;
         Ball():pos(),height(0){}
         bool fill(double x,double y,double height = 0,int id=-1){
             pos.setX(x); pos.setY(y); this->height = height;this->cameraID=id;

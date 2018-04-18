@@ -28,7 +28,7 @@ int CImmortalsVision::ExtractBalls ( void )
         if ( GlobalData::instance()->cameraControl[i] )
 		{
 			for ( int j = 0 ; j < frame[i].balls_size ( ) ; j ++ )
-            if (Field::inChosenArea(frame[i].balls(j).x(),frame[i].balls(j).y()))
+            if (Field::inChosenArea(frame[i].balls(j).x(),frame[i].balls(j).y()))//adapt to Athena
             {
                 d_ball[ans] = frame[i].balls ( j );
                 ans ++;
@@ -227,6 +227,6 @@ void CImmortalsVision::calculateBallHeight ( void )
 	y0 = ballBufferY[0];
 	x0 = ballBufferX[0];*/
 
-	//ballParabolic.calculate ( BALL_BUFFER_FRAMES , ballBufferY , ballBufferX );
+    //ballParabolic.calculate ( BALL_BUFFER_FRAMES , ballBufferY , ballBufferX );
 	//std::cout << (int)ballParabolic.get_a() << std::endl;
 }
