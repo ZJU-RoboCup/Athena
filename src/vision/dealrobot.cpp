@@ -1,8 +1,10 @@
 #include "dealrobot.h"
 #include "globaldata.h"
 #include "staticparams.h"
+#include "matrix2d.h"
 #include <iostream>
 #include <qdebug.h>
+#define FRAME_RATE 60
 
 CDealrobot::CDealrobot()
 {
@@ -146,6 +148,13 @@ void CDealrobot::sortRobot(int color){
     }
 }
 
+//void CDealrobot::filteRobot(Robot& robot){
+//    auto & tempMatrix = _kalmanFilter.update(robot.pos.x(),robot.pos.y());
+//    CGeoPoint filtPoint (tempMatrix(0,0),tempMatrix(1,0));
+//    robot.pos=filtPoint;
+//    robot.velocity.setVector(tempMatrix(2, 0)*FRAME_RATE, tempMatrix(3, 0)*FRAME_RATE);
+//}
+
 void CDealrobot::run(bool sw){
     if (sw){
         init();
@@ -153,6 +162,7 @@ void CDealrobot::run(bool sw){
         sortRobot(PARAM::BLUE);
         sortRobot(PARAM::YELLOW);
         result.init();
+        //重新加入概率排序后的车
         for (int i=0;i<PARAM::ROBOTMAXID;i++)
             if (sortTemp[PARAM::BLUE][i].id>=0 && sortTemp[PARAM::BLUE][i].id<=PARAM::ROBOTMAXID)
             if (GlobalData::instance()->robotPossible[sortTemp[PARAM::BLUE][i].id]>0)
@@ -165,6 +175,25 @@ void CDealrobot::run(bool sw){
             {
                 result.addRobot(PARAM::YELLOW,sortTemp[PARAM::YELLOW][i]);
             }
+        //滤波
+        for (int i=0;i<result.robotSize[PARAM::BLUE];i++)
+        {
+            Robot robot=result.robot[PARAM::BLUE][i];
+            auto & tempMatrix = _kalmanFilter[PARAM::BLUE][i].update(robot.pos.x(),robot.pos.y());
+            CGeoPoint filtPoint (tempMatrix(0,0),tempMatrix(1,0));
+            robot.pos=filtPoint;
+            robot.velocity.setVector(tempMatrix(2, 0)*FRAME_RATE, tempMatrix(3, 0)*FRAME_RATE);
+        }
+        for (int i=0;i<result.robotSize[PARAM::YELLOW];i++)
+        {
+            std::cout<<"before filter"<<result.robot[PARAM::YELLOW][i].pos<<std::endl;
+            Robot robot=result.robot[PARAM::YELLOW][i];
+            auto & tempMatrix = _kalmanFilter[PARAM::YELLOW][i].update(robot.pos.x(),robot.pos.y());
+            CGeoPoint filtPoint (tempMatrix(0,0),tempMatrix(1,0));
+            robot.pos=filtPoint;
+            robot.velocity.setVector(tempMatrix(2, 0)*FRAME_RATE, tempMatrix(3, 0)*FRAME_RATE);
+        }
+           // filteRobot(result.robot[PARAM::YELLOW][i]);
         GlobalData::instance()->processRobot.push(result);
     }
     else{

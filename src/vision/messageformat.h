@@ -41,6 +41,7 @@ namespace {
         unsigned short id;
         CGeoPoint pos;
         double angel;
+        CVector velocity;
         Robot():id(-1){}
         Robot(double _x,double _y,double _angle, double _id=-1){pos.setX(_x);pos.setY(_y);angel=_angle;id=_id;}
         bool fill(unsigned short id,double _x,double _y,double angel){

@@ -91,12 +91,13 @@ void CDealball::filteBall(){
 
     for (int i=0;i< result.robotSize[PARAM::YELLOW];i++)
        if (result.robot[PARAM::YELLOW][i].pos.dist(curentBall.pos)<MIN_FILT_DIST) filteSwitch = false;
-    auto & tempMatrix= filteSwitch? _kalmanFilter.update(curentBall.pos.x(),curentBall.pos.y()):_kalmanFilter.follow(curentBall.pos.x(),curentBall.pos.y());
+    std::cout<<"filtswtich="<<filteSwitch<<std::endl;
+    auto & tempMatrix= _kalmanFilter.update(curentBall.pos.x(),curentBall.pos.y());//filteSwitch? _kalmanFilter.update(curentBall.pos.x(),curentBall.pos.y()):_kalmanFilter.follow(curentBall.pos.x(),curentBall.pos.y());
     CGeoPoint filtePos(tempMatrix(0,0),tempMatrix(1,0));
     result.ballSize=0;
     result.ball[0].fill(filtePos.x(),filtePos.y());
     result.ball[0].velocity.setVector(tempMatrix(2, 0)*FRAME_RATE, tempMatrix(3, 0)*FRAME_RATE);
-    std::cout<<"After filt Pos:"<<filtePos<<"\twith velocity = "<<result.ball[0].velocity.mod()<<std::endl;
+    //std::cout<<"After filt Pos:"<<filtePos<<"\twith velocity = "<<result.ball[0].velocity.mod()<<std::endl;
     GlobalData::instance()->processBall.push(result);
 }
 
