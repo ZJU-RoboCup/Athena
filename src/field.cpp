@@ -208,7 +208,7 @@ void Field::drawProcessedVision(int index){
 }
 void Field::paintCar(const QColor& color,quint8 num,qreal x,qreal y,qreal radian,bool ifDrawNum,const QColor& textColor,bool needCircle){
     static qreal radius = carDiameter/2;
-    static qreal chordAngel = qRadiansToDegrees(qAcos(carFaceWidth/carDiameter));
+    static qreal chordAngel = qRadiansToDegrees(qAcos(1.0*carFaceWidth/carDiameter));
     pixmapPainter.setBrush(QBrush(color));
     pixmapPainter.setPen(Qt::NoPen);
     pixmapPainter.drawChord(::x(x-radius),::y(y-radius),::w(2*radius),::h(2*radius),::a(90.0-chordAngel + 180/M_PI*radian),::r(180.0+2*chordAngel));
@@ -225,7 +225,7 @@ void Field::paintCar(const QColor& color,quint8 num,qreal x,qreal y,qreal radian
         font.setPixelSize(fontSize);
         pixmapPainter.setFont(font);
         if (num >= 10) {
-            pixmapPainter.drawText(::x(x-numberSize*0.5),::y(y+carDiameter*0.4),QString::number(num));
+            pixmapPainter.drawText(::x(x-numberSize*0.5),::y(y+carDiameter*0.4),QString::number(num));//
         } else {
             pixmapPainter.drawText(::x(x-numberSize),::y(y+carDiameter*0.4),QString::number(num));
         }
@@ -289,4 +289,7 @@ void Field::setArea(int sx,int ex,int sy,int ey){
 }
 bool Field::inChosenArea(float x, float y){
     return (x >= minimumX && x <= maximumX && y >= minimumY && y <= maximumY);
+}
+bool Field::inChosenArea(CGeoPoint point){
+    return (point.x() >= minimumX && point.x() <= maximumX && point.y() >= minimumY && point.y() <= maximumY);
 }

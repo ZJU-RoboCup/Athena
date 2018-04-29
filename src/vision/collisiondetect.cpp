@@ -82,6 +82,7 @@ void CCollisionDetect::analyzeData(){
         }
         if (OurTouchNum != -1 && ((TheirTouchNum != -1 && OurTouchDis <= TheirTouchDis - 5) || TheirTouchNum == -1))
         {
+            GlobalData::instance()->ballStateMachine=touched;
             LastTouch = 1;
             LastTouchNumber = OurTouchNum + 1;
             GlobalData::instance()->lastTouch=PARAM::BLUE*PARAM::ROBOTMAXID+OurTouchNum;
@@ -89,6 +90,7 @@ void CCollisionDetect::analyzeData(){
         }
         else if (TheirTouchNum != -1 && ((OurTouchNum != -1 && TheirTouchDis <= OurTouchDis - 5) || OurTouchNum == -1))
         {
+            GlobalData::instance()->ballStateMachine=touched;
             LastTouch = 2;
             LastTouchNumber = TheirTouchNum + 1;
             GlobalData::instance()->lastTouch=PARAM::YELLOW*PARAM::ROBOTMAXID+TheirTouchNum;
@@ -96,24 +98,24 @@ void CCollisionDetect::analyzeData(){
         }
         else if (OurTouchNum != -1 && TheirTouchNum != -1 && abs(OurTouchDis - TheirTouchDis) <= 5)
         {
+            //争球
+            GlobalData::instance()->ballStateMachine=struggle;
             LastTouch = 0;
             LastTouchNumber = 0;
             GlobalData::instance()->lastTouch=-1;
-            //std::cout << "CANNOT decide the ball between OUR player no." << OurTouchNum << " and THEIR player No." << TheirTouchNum << std::endl;
+                     //std::cout << "CANNOT decide the ball between OUR player no." << OurTouchNum << " and THEIR player No." << TheirTouchNum << std::endl;
         }
         else if (ballIsOnEdge(GlobalData::instance()->maintain[LinePoint[j]].ball[0].pos))
         {
             LastTouch = 3;
             LastTouchNumber = 0;
-            //GlobalData::instance()->lastTouch=-1;
+            GlobalData::instance()->lastTouch=-1;
             //std::cout << "the ball touch WALL" << std::endl;
         }
     }
 }
 
 void  CCollisionDetect::visionAlart(){
-    ReceiveVisionMessage _pVision=GlobalData::instance()->maintain[0];
-    if (ballCloseEnough2Analyze(PARAM::BLUE) || ballCloseEnough2Analyze(PARAM::YELLOW) || ballIsOnEdge(_pVision.ball[0].pos))
-        analyzeData();
+
 
 }

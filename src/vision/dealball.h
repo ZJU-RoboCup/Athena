@@ -24,6 +24,7 @@ private:
     void init();
     void mergeBall();
     KalmanFilter _kalmanFilter;
+    bool validBall;
 
 };
 typedef Singleton<CDealball> Dealball;

@@ -16,6 +16,7 @@ public:
     inline int type() { return this->_type; }
     inline void setType(int t) { this->_type = t; }
     static bool inChosenArea(float,float);
+    static bool inChosenArea(CGeoPoint);
     static void setArea(int,int,int,int);
     virtual ~Field() {};
 signals:

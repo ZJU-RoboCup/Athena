@@ -24,6 +24,8 @@ CVisionModule::CVisionModule(QObject *parent)
     //cameraControl
     std::fill_n(GlobalData::instance()->cameraControl,PARAM::CAMERA,true);
     std::fill_n(GlobalData::instance()->processControl,3,true);
+    zpm->loadParam(saoAction,"field/saoAction",0);
+    std::cout<<"SAO="<<saoAction;
 }
 void CVisionModule::udpSocketConnect(){
     QString groupAddress;
@@ -36,6 +38,28 @@ void CVisionModule::udpSocketConnect(){
 void CVisionModule::udpSocketDisconnect(){
     disconnect(&udpSocket,0,this,0);
     udpSocket.abort();
+}
+CGeoPoint CVisionModule::saoConvert(CGeoPoint originPoint){
+    CGeoPoint result;
+    switch (saoAction){
+    case 0:
+        result.setX(originPoint.x());
+        result.setY(originPoint.y());
+        break;
+    case 1:
+        result.setX(originPoint.y()+3000);
+        result.setY(-originPoint.x());
+        break;
+    case 2:
+        result.setX(originPoint.x() * 3 / 2);
+        result.setY(originPoint.y() * 3 / 2);
+        break;
+    default:
+        result.setX(originPoint.x());
+        result.setY(originPoint.y());
+        break;
+    }
+    return result;
 }
 void CVisionModule::storeData(){
     static QByteArray datagram;
@@ -66,21 +90,21 @@ void CVisionModule::parse(void * ptr,int size){
         int yellowSize = detection.robots_yellow_size();
         for (int i = 0; i < ballSize; i++) {
             const SSL_DetectionBall& ball = detection.balls(i);
-            if (Field::inChosenArea(ball.x(),ball.y())){
-                message.addBall(ball.x(),ball.y());
+            if (Field::inChosenArea(saoConvert(CGeoPoint(ball.x(),ball.y())))){
+                message.addBall(saoConvert(CGeoPoint(ball.x(),ball.y())));
             }
         }
         for (int i = 0; i < blueSize; i++) {
             const SSL_DetectionRobot& robot = detection.robots_blue(i);
-            if (Field::inChosenArea(robot.x(),robot.y())){
-                message.addRobot(BLUE,robot.robot_id(),robot.x(),robot.y(),robot.orientation());
+            if (Field::inChosenArea(saoConvert(CGeoPoint(robot.x(),robot.y())))){
+                message.addRobot(BLUE,robot.robot_id(),saoConvert(CGeoPoint(robot.x(),robot.y())),robot.orientation());
             }
             //qDebug() << "BLUE : " << robot.robot_id() << robot.orientation();
         }
         for (int i = 0; i < yellowSize; i++) {
             const SSL_DetectionRobot& robot = detection.robots_yellow(i);
             if (Field::inChosenArea(robot.x(),robot.y())){
-                message.addRobot(YELLOW,robot.robot_id(),robot.x(),robot.y(),robot.orientation());
+                message.addRobot(YELLOW,robot.robot_id(),saoConvert(CGeoPoint(robot.x(),robot.y())),robot.orientation());
             }
             //qDebug() << "YELL : " << robot.robot_id() << robot.orientation();
         }

@@ -22,11 +22,13 @@ signals:
 public slots:
     void storeData();
 private:
+    CGeoPoint saoConvert(CGeoPoint);
     QUdpSocket udpSocket;
     QHostAddress groupAddress;
     quint64 counter;
     int interface;
     int port;
+    int saoAction;
     bool collectNewVision();
     bool dealWithData();
     bool immortalsVision();

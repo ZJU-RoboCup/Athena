@@ -10,12 +10,16 @@
 #define WIDTH_THERESHOLD 4400
 #define MAX_FRAME_NUM 20
 #define SPLIT_THRESHOLD 20  //split
+#define CHIP_DIS 30
 class CCollisionDetect
 {
 public:
     CCollisionDetect();
     //virtual ~CCollisionDetect();
     void visionAlart();
+    void analyzeData();
+    bool ballCloseEnough2Analyze(int);
+    bool ballIsOnEdge(CGeoPoint);
 private:
     int LinePoint[MAX_FRAME_NUM];
     int _RecordFlag = 0;
@@ -23,9 +27,7 @@ private:
     int PointN;
     int LastTouch=0;//0 for NOT sure; 1 for our ;2 for their; 3 for wall;
     int LastTouchNumber = 0;//car number; 0 for not sure or wall
-    void analyzeData();
-    bool ballCloseEnough2Analyze(int);
-    bool ballIsOnEdge(CGeoPoint);
+
 };
 typedef Singleton<CCollisionDetect> CollisionDetect;
 

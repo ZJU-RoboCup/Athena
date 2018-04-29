@@ -4,6 +4,8 @@
 #include "dataqueue.hpp"
 #include "messageformat.h"
 #include "immortals/Source/Reality/Vision/WorldState.h"
+#define maxLostFrame  30
+enum ballState {received,touched,kicked,struggle,chip_pass,flat_pass};
 class CGlobalData{
 public:
     CGlobalData();
@@ -24,8 +26,9 @@ public:
     WorldState immortalsVisionState;
     float montageMaxX;
     float montageMaxY;
-    int maxLostFrame;
+    //int maxLostFrame;
     int lastTouch;
+    ballState ballStateMachine;
 };
 
 typedef Singleton<CGlobalData> GlobalData;

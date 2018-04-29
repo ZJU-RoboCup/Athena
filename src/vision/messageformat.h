@@ -88,11 +88,20 @@ public:
     bool addBall(double x,double y,double height = 0,int id=-1){
         return ballSize >= PARAM::BALLNUM ? false : ball[ballSize++].fill(x,y,height,id);
     }
+    bool addBall(CGeoPoint point, double height = 0,int id=-1){
+        return ballSize >= PARAM::BALLNUM ? false : ball[ballSize++].fill(point.x(),point.y(),height,id);
+    }
     bool addRobot(int color,unsigned short id,double x,double y,double angel){
         if(robotSize[color] >= PARAM::ROBOTNUM)
             return false;
         robotIndex[color][id] = robotSize[color];
         return robot[color][robotSize[color]++].fill(id,x,y,angel);
+    }
+    bool addRobot(int color,unsigned short id,CGeoPoint point,double angel){
+        if(robotSize[color] >= PARAM::ROBOTNUM)
+            return false;
+        robotIndex[color][id] = robotSize[color];
+        return robot[color][robotSize[color]++].fill(id,point.x(),point.y(),angel);
     }
     bool addRobot(int color,const Robot& r){
         if(robotSize[color] >= PARAM::ROBOTNUM)

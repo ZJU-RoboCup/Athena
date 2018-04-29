@@ -35,25 +35,28 @@ void CDealball::mergeBall(){
         else ballSequence[actualBallNum++][result.ball[i].cameraID].fill(result.ball[i]);
     }
     if (PARAM::DEBUG) std::cout<<"Actually have "<<actualBallNum<<" balls.\n";
-    result.init();
-    for (i=0;i<actualBallNum;i++){
-        double weight=0;
-        CGeoPoint average(0,0);
-        for(j=0;j<PARAM::CAMERA;j++){
-            if (ballSequence[i][j].pos.x()>-30000 && ballSequence[i][j].pos.y()>-30000)
-            {
-                SingleCamera camera=GlobalData::instance()->cameraMatrix[j];
-                double _weight;
-                _weight=std::pow(posDist(ballSequence[i][j].pos,GlobalData::instance()->cameraMatrix[camera.id].pos)/100.0,-2.0);
-                weight+=_weight;
-                average.setX(average.x() + ballSequence[i][j].pos.x() * _weight);
-                average.setY(average.y() + ballSequence[i][j].pos.y() * _weight);
-            }
-        }
-        result.addBall(average.x()/weight,average.y()/weight);
-        if (PARAM::DEBUG) std::cout<<"have merged NO. "<<i<<" ball with"<<average<<" "<<weight<<"\n";
-    }
 
+    result.init();
+    if (!validBall) result.addBall(GlobalData::instance()->maintain[-1].ball[0]);
+    else{
+        for (i=0;i<actualBallNum;i++){
+            double weight=0;
+            CGeoPoint average(0,0);
+            for(j=0;j<PARAM::CAMERA;j++){
+                if (ballSequence[i][j].pos.x()>-30000 && ballSequence[i][j].pos.y()>-30000)
+                {
+                    SingleCamera camera=GlobalData::instance()->cameraMatrix[j];
+                    double _weight;
+                    _weight=std::pow(posDist(ballSequence[i][j].pos,GlobalData::instance()->cameraMatrix[camera.id].pos)/100.0,-2.0);
+                    weight+=_weight;
+                    average.setX(average.x() + ballSequence[i][j].pos.x() * _weight);
+                    average.setY(average.y() + ballSequence[i][j].pos.y() * _weight);
+                }
+            }
+            result.addBall(average.x()/weight,average.y()/weight);
+            if (PARAM::DEBUG) std::cout<<"have merged NO. "<<i<<" ball with"<<average<<" "<<weight<<"\n";
+        }
+    }
 }
 
 void CDealball::init(){
@@ -62,10 +65,14 @@ void CDealball::init(){
         {
             result.addBall(GlobalData::instance()->camera[i][0].ball[j].pos.x(),
                     GlobalData::instance()->camera[i][0].ball[j].pos.y(),0,i);
-            if (PARAM::DEBUG) std::cout<<" "<<i<<" "
-                                      <<GlobalData::instance()->camera[i][0].ball[j].pos<<" ";
+            if (PARAM::DEBUG) std::cout<<" "<<i<<" "<<GlobalData::instance()->camera[i][0].ball[j].pos<<" ";
         }
     }
+    if (result.ballSize==0) {
+        validBall=false;
+        //std::cout<<"its invalid!!!!"<<std::endl;
+    }
+    else validBall=true;
     if (PARAM::DEBUG) std::cout<<"Origin vision has "<<result.ballSize<<" balls.\n";
     //GlobalData::instance()->processBall.push(result);
 }
@@ -91,7 +98,6 @@ void CDealball::filteBall(){
 
     for (int i=0;i< result.robotSize[PARAM::YELLOW];i++)
        if (result.robot[PARAM::YELLOW][i].pos.dist(curentBall.pos)<MIN_FILT_DIST) filteSwitch = false;
-    std::cout<<"filtswtich="<<filteSwitch<<std::endl;
     auto & tempMatrix= _kalmanFilter.update(curentBall.pos.x(),curentBall.pos.y());//filteSwitch? _kalmanFilter.update(curentBall.pos.x(),curentBall.pos.y()):_kalmanFilter.follow(curentBall.pos.x(),curentBall.pos.y());
     CGeoPoint filtePos(tempMatrix(0,0),tempMatrix(1,0));
     result.ballSize=0;
@@ -99,6 +105,9 @@ void CDealball::filteBall(){
     result.ball[0].velocity.setVector(tempMatrix(2, 0)*FRAME_RATE, tempMatrix(3, 0)*FRAME_RATE);
     //std::cout<<"After filt Pos:"<<filtePos<<"\twith velocity = "<<result.ball[0].velocity.mod()<<std::endl;
     GlobalData::instance()->processBall.push(result);
+
+    //predict
+    CGeoPoint predictPos= result.ball[0].pos+result.ball[0].velocity;
 }
 
 void CDealball::run(bool sw){
