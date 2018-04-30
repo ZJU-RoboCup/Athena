@@ -10,7 +10,7 @@
 #define WIDTH_THERESHOLD 4400
 #define MAX_FRAME_NUM 20
 #define SPLIT_THRESHOLD 20  //split
-#define CHIP_DIS 30
+#define CHIP_DIS 10
 class CCollisionDetect
 {
 public:
