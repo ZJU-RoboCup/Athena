@@ -99,20 +99,19 @@ INCLUDEPATH += \
     $$PWD/src/utils \
     $$PWD/src/vision \
     $$PWD/src/proto/cpp \
-    $$PWD/src \
-    $$PWD/lib/protobuf/include
+    $$PWD/src
 macx {
     PROTOBUF_INCLUDE_DIR = /usr/local/include
-    LIBPROTOBUF = /usr/local/lib/libprotobuf.dylib
+    LIBPROTOBUF = /usr/local/lib/libprotobuf.a
 }
 
 win32 {
-    PROTOBUF_INCLUDE_DIR = $$PWD\lib\protobuf\include
+    PROTOBUF_INCLUDE_DIR = C:\usr\local\protobuf\2.6.1\include
     CONFIG(release,debug|release){
-        LIBPROTOBUF = $$PWD\lib\protobuf\lib\libprotobuf.lib
+        LIBPROTOBUF = $$PWD\lib\libprotobuf.lib
     }
     CONFIG(debug,debug|release){
-        LIBPROTOBUF = $$PWD\lib\protobuf\lib\libprotobufD.lib
+        LIBPROTOBUF = $$PWD\lib\libprotobufD.lib
     }
 }
 unix:!macx{

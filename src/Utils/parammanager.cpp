@@ -3,6 +3,7 @@
 namespace ZSS {
 ParamManager::ParamManager():
     settings("./zss.ini", QSettings::IniFormat){
+    qDebug() << settings.allKeys();
 }
 ParamManager::~ParamManager(){
 }
