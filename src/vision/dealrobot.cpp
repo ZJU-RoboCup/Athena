@@ -184,6 +184,7 @@ void CDealrobot::run(bool sw){
             robot.pos=filtPoint;
             robot.velocity.setVector(tempMatrix(2, 0)*FRAME_RATE, tempMatrix(3, 0)*FRAME_RATE);
             CGeoPoint predictPos=filtPoint+robot.velocity;
+            result.robot[PARAM::BLUE][i].fillPredictPos(predictPos);
         }
         for (int i=0;i<result.robotSize[PARAM::YELLOW];i++)
         {
@@ -193,8 +194,9 @@ void CDealrobot::run(bool sw){
             robot.pos=filtPoint;
             robot.velocity.setVector(tempMatrix(2, 0)*FRAME_RATE, tempMatrix(3, 0)*FRAME_RATE);
             CGeoPoint predictPos=filtPoint+robot.velocity;
+            result.robot[PARAM::YELLOW][i].fillPredictPos(predictPos);
         }
-           // filteRobot(result.robot[PARAM::YELLOW][i]);
+        // filteRobot(result.robot[PARAM::YELLOW][i]);
         GlobalData::instance()->processRobot.push(result);
     }
     else{

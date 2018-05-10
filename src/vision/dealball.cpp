@@ -108,6 +108,7 @@ void CDealball::filteBall(){
 
     //predict
     CGeoPoint predictPos= result.ball[0].pos+result.ball[0].velocity;
+    result.ball[0].fillPredictPos(predictPos);
 }
 
 void CDealball::run(bool sw){

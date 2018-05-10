@@ -1,9 +1,14 @@
 message Vision_DetectionBall {
-  required float  speed      = 1;  
-  optional uint32 area       = 2;
-  required float  x          = 3;
-  required float  y          = 4;
-  optional float  height     = 5;
+  required float  speed_mod        = 1;
+  optional float  speed_direction  = 2; 
+  optional uint32 area       =  3;
+  required float  x          =  4;
+  required float  y          =  5;
+  optional float  height     =  6;
+  optional uint32 ball_state =  7;
+  optional uint32 last_touch =  8;
+  optional float  next_x     =  9;
+  optional float  next_y     =  10;
 }
 
 message Vision_DetectionRobot {
@@ -12,7 +17,10 @@ message Vision_DetectionRobot {
   required float  x           =  3;
   required float  y           =  4;
   optional float  orientation =  5;
-  optional float  speed       =  6;
+  optional float  speed_mod         =  6;
+  optional float  speed_direction   =  7;
+  optional float  next_x      =  8;
+  optional float  next_y      =  9;
 }
 
 message Vision_DetectionFrame {

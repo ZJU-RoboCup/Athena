@@ -61,6 +61,13 @@ CGeoPoint CVisionModule::saoConvert(CGeoPoint originPoint){
     }
     return result;
 }
+
+double CVisionModule::saoConvert(double direction){
+    if (saoAction == 1)
+        return (direction-3.1415926/2);
+    else
+        return direction;
+}
 void CVisionModule::storeData(){
     static QByteArray datagram;
     while (udpSocket.hasPendingDatagrams()) {
@@ -97,14 +104,15 @@ void CVisionModule::parse(void * ptr,int size){
         for (int i = 0; i < blueSize; i++) {
             const SSL_DetectionRobot& robot = detection.robots_blue(i);
             if (Field::inChosenArea(saoConvert(CGeoPoint(robot.x(),robot.y())))){
-                message.addRobot(BLUE,robot.robot_id(),saoConvert(CGeoPoint(robot.x(),robot.y())),robot.orientation());
+                message.addRobot(BLUE,robot.robot_id(),saoConvert(CGeoPoint(robot.x(),robot.y())),saoConvert(robot.orientation()));
+                std::cout<<"id:"<<robot.robot_id()<<"\t"<<robot.orientation()<<std::endl;
             }
             //qDebug() << "BLUE : " << robot.robot_id() << robot.orientation();
         }
         for (int i = 0; i < yellowSize; i++) {
             const SSL_DetectionRobot& robot = detection.robots_yellow(i);
             if (Field::inChosenArea(robot.x(),robot.y())){
-                message.addRobot(YELLOW,robot.robot_id(),saoConvert(CGeoPoint(robot.x(),robot.y())),robot.orientation());
+                message.addRobot(YELLOW,robot.robot_id(),saoConvert(CGeoPoint(robot.x(),robot.y())),saoConvert(robot.orientation()));
             }
             //qDebug() << "YELL : " << robot.robot_id() << robot.orientation();
         }

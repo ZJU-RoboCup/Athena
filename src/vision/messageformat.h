@@ -25,6 +25,7 @@ namespace {
     */
     struct Ball{
         CGeoPoint pos;
+        CGeoPoint predict_pos;
         double height;
         int cameraID;
         CVector velocity;
@@ -36,10 +37,15 @@ namespace {
         bool fill(const Ball& ball){
             return fill(ball.pos.x(),ball.pos.y(),ball.height);
         }
+        bool fillPredictPos(CGeoPoint prePos){
+            this->predict_pos=prePos;
+            return true;
+        }
     };
     struct Robot{
         unsigned short id;
         CGeoPoint pos;
+        CGeoPoint predict_pos;
         double angel;
         CVector velocity;
         Robot():id(-1){}
@@ -50,6 +56,10 @@ namespace {
         }
         bool fill(const Robot& robot){
             return fill(robot.id,robot.pos.x(),robot.pos.y(),robot.angel);
+        }
+        bool fillPredictPos(CGeoPoint prePos){
+            this->predict_pos=prePos;
+            return true;
         }
     };
     struct SingleCamera{

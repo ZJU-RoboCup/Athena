@@ -23,6 +23,7 @@ public slots:
     void storeData();
 private:
     CGeoPoint saoConvert(CGeoPoint);
+    double saoConvert(double);
     QUdpSocket udpSocket;
     QHostAddress groupAddress;
     quint64 counter;

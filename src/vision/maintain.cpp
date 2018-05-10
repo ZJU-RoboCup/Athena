@@ -57,18 +57,23 @@ void CMaintain::init(){
         detectionBall->set_y(result.ball[0].pos.y());
         if (PARAM::USE_IMMORTAL_BALL){
             double ballspeed= sqrt(state.ball.velocity.x*state.ball.velocity.x+state.ball.velocity.y*state.ball.velocity.y);
-            detectionBall->set_speed(ballspeed);
+            detectionBall->set_speed_mod(ballspeed);
             if (ballspeed > 7500) qDebug()<<"now BALL speed="<<ballspeed<<"mm/s";
         }
         else{
-            detectionBall->set_speed(0);//todo
+            detectionBall->set_speed_mod(result.ball[0].velocity.mod());
+            detectionBall->set_speed_direction(result.ball[0].velocity.dir());
+            detectionBall->set_next_x(result.ball[0].predict_pos.x());
+            detectionBall->set_next_y(result.ball[0].predict_pos.y());
+            detectionBall->set_last_touch(GlobalData::instance()->lastTouch);
+            detectionBall->set_ball_state(GlobalData::instance()->ballStateMachine);
         }
     }
     else
     {
         detectionBall->set_x(-32767);
         detectionBall->set_y(-32767);
-        detectionBall->set_speed(0);//todo
+        detectionBall->set_speed_mod(0);//todo
     }
     for (int i=0;i<result.robotSize[PARAM::BLUE];i++){
         detectionRobot[PARAM::BLUE][i]=detectionFrame.add_robots_blue();
@@ -77,7 +82,10 @@ void CMaintain::init(){
         detectionRobot[PARAM::BLUE][i]->set_orientation(result.robot[PARAM::BLUE][i].angel);
         detectionRobot[PARAM::BLUE][i]->set_robot_id(result.robot[PARAM::BLUE][i].id);
         detectionRobot[PARAM::BLUE][i]->set_confidence(1);
-        detectionRobot[PARAM::BLUE][i]->set_speed(0);//todo
+        detectionRobot[PARAM::BLUE][i]->set_speed_mod(result.robot[PARAM::BLUE][i].velocity.mod());
+        detectionRobot[PARAM::BLUE][i]->set_speed_direction(result.robot[PARAM::BLUE][i].velocity.dir());
+        detectionRobot[PARAM::BLUE][i]->set_next_x(result.robot[PARAM::BLUE][i].predict_pos.x());
+        detectionRobot[PARAM::BLUE][i]->set_next_y(result.robot[PARAM::BLUE][i].predict_pos.y());
     }
     for (int i=0;i<result.robotSize[PARAM::YELLOW];i++){
         detectionRobot[PARAM::YELLOW][i]=detectionFrame.add_robots_yellow();
@@ -86,7 +94,10 @@ void CMaintain::init(){
         detectionRobot[PARAM::YELLOW][i]->set_orientation(result.robot[PARAM::YELLOW][i].angel);
         detectionRobot[PARAM::YELLOW][i]->set_robot_id(result.robot[PARAM::YELLOW][i].id);
         detectionRobot[PARAM::YELLOW][i]->set_confidence(1);
-        detectionRobot[PARAM::YELLOW][i]->set_speed(0);//todo
+        detectionRobot[PARAM::YELLOW][i]->set_speed_mod(result.robot[PARAM::YELLOW][i].velocity.mod());
+        detectionRobot[PARAM::YELLOW][i]->set_speed_direction(result.robot[PARAM::YELLOW][i].velocity.dir());
+        detectionRobot[PARAM::YELLOW][i]->set_next_x(result.robot[PARAM::YELLOW][i].predict_pos.x());
+        detectionRobot[PARAM::YELLOW][i]->set_next_y(result.robot[PARAM::YELLOW][i].predict_pos.y());
     }
     int size = detectionFrame.ByteSize();
     QByteArray buffer(size,0);
