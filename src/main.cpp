@@ -2,13 +2,22 @@
 #include <QQmlApplicationEngine>
 #include "visionmodule.h"
 #include "interaction.h"
+#include "interaction4field.h"
 #include "field.h"
 #include "graph/graph.h"
-#include <parammanager.h>
+#include "parammanager.h"
+#include "translator.hpp"
+#include "paraminterface.h"
+#include "test.h"
 void qmlRegister(){
-    qmlRegisterType<Field>("Client.Component", 1, 0, "Field");
-    qmlRegisterType<Interaction>("Client.Component", 1, 0, "Interaction");
+    qmlRegisterType<Field>("ZSS", 1, 0, "Field");
+    qmlRegisterType<Interaction>("ZSS", 1, 0, "Interaction");
+    qmlRegisterType<Interaction4Field>("ZSS", 1, 0, "Interaction4Field");
     qmlRegisterType<Graph>("Graph", 1, 0, "Graph");
+    qmlRegisterType<Translator>("ZSS", 1, 0, "Translator");
+    qmlRegisterType<Interaction>("ZSS", 1, 0, "Interaction");
+    //qmlRegisterType<Test>("ZSS", 1, 0, "Test");
+    qmlRegisterType<ParamInterface>("ZSS", 1, 0, "ParamModel");
 }
 
 int main(int argc, char *argv[]){

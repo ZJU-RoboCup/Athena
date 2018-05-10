@@ -2,6 +2,7 @@
 #define STATICPARAMS_H
 //change param for 2018 rule
 //wait for change camera number
+#include <QString>
 namespace PARAM{
     const bool DEBUG=false;
     const bool USE_IMMORTAL_BALL=false;
@@ -13,5 +14,12 @@ namespace PARAM{
     const int YELLOW=1;
     const int BALLMERGEDISTANCE=140;
     const int ROBOTMERGEDOSTANCE=500;
+}
+namespace ZSS{
+namespace Jupyter {
+    const QString UDP_ADDRESS = "233.233.233.233";
+    const int UDP_SEND_PORT = 10001;
+    const int UDP_RECEIVE_PORT = 10002;
+}
 }
 #endif // STATICPARAMS_H

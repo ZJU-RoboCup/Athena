@@ -12,7 +12,7 @@ class CDealball
 {
 public:
     CDealball();
-    void run(bool);
+    void run();
     void filteBall();
     double getBallSpeed() {return result.ball[0].velocity.mod();}
 private:

@@ -2,7 +2,7 @@ TEMPLATE = app
 
 CONFIG += c++11
 
-QT += qml quick
+QT += qml quick serialport
 
 TARGET = Athena
 
@@ -38,22 +38,14 @@ SOURCES += \
     graph/graph.cpp \
     graph/gridnode.cpp \
     graph/linenode.cpp \
-    src/Utils/parammanager.cpp
-
-DISTFILES += \
-    opt/params.json \
-    graph/shaders/line.fsh \
-    graph/shaders/noisy.fsh \
-    graph/shaders/line.vsh \
-    graph/shaders/noisy.vsh \
-    graph/shaders/line.fsh \
-    graph/shaders/noisy.fsh \
-    graph/shaders/line.vsh \
-    graph/shaders/noisy.vsh \
-    graph/shaders/line.fsh \
-    graph/shaders/noisy.fsh \
-    graph/shaders/line.vsh \
-    graph/shaders/noisy.vsh
+    src/utils/parammanager.cpp \
+    src/test.cpp \
+    src/paraminterface.cpp \
+    src/communicator.cpp \
+    src/proto/cpp/zss_cmd.pb.cc \
+    src/radio/actionmodule.cpp \
+    src/radio/crc.cpp \
+    src/interaction4field.cpp
 
 RESOURCES += \
     Athena.qrc
@@ -92,13 +84,21 @@ HEADERS += \
     graph/graph.h \
     graph/gridnode.h \
     graph/linenode.h \
-    src/Utils/parammanager.h
-
+    src/utils/parammanager.h \
+    src/test.h \
+    src/utils/translator.hpp \
+    src/paraminterface.h \
+    src/communicator.h \
+    src/proto/cpp/zss_cmd.pb.h \
+    src/radio/actionmodule.h \
+    src/radio/crc.h \
+    src/interaction4field.h
 
 INCLUDEPATH += \
     $$PWD/src/utils \
     $$PWD/src/vision \
     $$PWD/src/proto/cpp \
+    $$PWD/src/radio \
     $$PWD/src
 macx {
     PROTOBUF_INCLUDE_DIR = /usr/local/include

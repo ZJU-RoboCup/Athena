@@ -1,0 +1,45 @@
+syntax = "proto2";
+package ZSS.Protocol;
+
+message Robots_Status{
+  repeated Robot_Status robots_status = 1;
+}
+
+message Robot_Status {
+  required bool infrared   = 1;
+  required bool flat_kick  = 2;
+  required bool chip_kick  = 3;
+}
+message Robots_Command {
+  repeated Robot_Command command = 1;
+}
+
+message Robot_Command {
+  // The unique ID of the robot, as identified by SSL-Vision.
+  required int32 robot_id = 1;
+
+  // Desired forward drive velocity in meters / second.
+  required float velocity_x = 2;
+
+  // Desired sideways left drive velocity in meters / second.
+  required float velocity_y = 3;
+
+  // Desired counterclockwise angular velocity in radians / second.
+  required float velocity_r = 4;
+
+  required bool kick = 5;
+  
+  // Desired flat kick speed, in meters / second.
+  // If this optional field is missing, then no flat kick command should be
+  // sent.
+  // Desired chip kick distance, in meters.
+  // If this optional field is missing, then no flat kick command should be
+  // sent. If this field is present along with the flat_kick field, the
+  // flat_kick command takes precedence.
+  required float power = 6;
+
+  // Desired dribbler spin, from -1 to +1, where -1 is the maximum reverse-spin
+  // that can be imparted to the ball, and +1 is the maximum forward-spin
+  // that can be imparted to the ball.
+  required float dribbler_spin = 7;
+}

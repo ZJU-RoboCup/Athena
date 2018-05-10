@@ -11,13 +11,15 @@ public:
     bool loadParam(QChar&, const QString&, QChar d = 0);
     bool loadParam(int&, const QString&, int d = 0);
     bool loadParam(double&, const QString&, double d = 0);
-    bool loadParam(QString&, const QString&, QString d = "");//String
+    bool loadParam(QString&, const QString&, QString d = "");
     bool loadParam(bool&, const QString&, bool d = false);
-    bool changeParam(const QString&, QChar);
-    bool changeParam(const QString&, int);
-    bool changeParam(const QString&, double);
-    bool changeParam(const QString&, QString);
-    bool changeParam(const QString&, bool);
+    bool changeParam(const QString&,const QVariant&);
+    QStringList allKeys(){
+        return settings.allKeys();
+    }
+    QVariant value(const QString& key){
+        return settings.value(key);
+    }
 private:
     QSettings settings;
 };

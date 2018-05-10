@@ -111,21 +111,15 @@ void CDealball::filteBall(){
     result.ball[0].fillPredictPos(predictPos);
 }
 
-void CDealball::run(bool sw){
+void CDealball::run(){
     result.init();
+    // TODO fill_n
     for(int i=0;i<PARAM::BALLNUM;i++)
         for(int j=0;j<PARAM::CAMERA;j++)
             ballSequence[i][j].fill(-32767,-32767);
 
-    if (sw){
-        init();
-        mergeBall();
-        filteBall();
-        GlobalData::instance()->processBall.push(result);
-    }
-    else{
-        for(int i=0;i<PARAM::CAMERA;i++){
-            GlobalData::instance()->processBall.push(GlobalData::instance()->camera[i][0]);
-        }
-    }
+    init();
+    mergeBall();
+    filteBall();
+    GlobalData::instance()->processBall.push(result);
 }
