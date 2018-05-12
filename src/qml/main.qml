@@ -51,7 +51,7 @@ Window {
             height:740;
             currentIndex:1;
             Repeater{
-                model:["Transform","ModelFix","Immortals","Ball","Robot"];
+                model:["Origin","Filtered"];
                 Tab{
                     anchors.fill: parent;
                     title:modelData;
@@ -210,7 +210,7 @@ Window {
                 verticalItemAlignment: Grid.AlignVCenter;
                 property int itemWidth : (width - (columns-1) * columnSpacing)/columns;
                 Repeater{
-                    model:["Transform","ModelFix","Montage","Ball","Robot"];
+                    model:["Origin","Filtered"];
                     Rectangle{
                         property int itemIndex : index;
                         property bool itemChecked : true;

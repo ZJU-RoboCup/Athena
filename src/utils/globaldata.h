@@ -3,7 +3,6 @@
 #include "singleton.hpp"
 #include "dataqueue.hpp"
 #include "messageformat.h"
-#include "immortals/Source/Reality/Vision/WorldState.h"
 #define maxLostFrame  30
 enum ballState {received,touched,kicked,struggle,chip_pass,flat_pass};
 class CGlobalData{
@@ -23,7 +22,6 @@ public:
     DataQueue<ReceiveVisionMessage> transformed[PARAM::CAMERA];
     DataQueue<ReceiveVisionMessage> modelFixed[PARAM::CAMERA];
     DataQueue<OriginMessage> vision;
-    WorldState immortalsVisionState;
     float montageMaxX;
     float montageMaxY;
     //int maxLostFrame;

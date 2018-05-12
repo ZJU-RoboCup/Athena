@@ -32,19 +32,7 @@ void CMaintain::udpSocketDisconnect(){
 
 void CMaintain::init(){
     result.init();
-    auto& state = GlobalData::instance()->immortalsVisionState;
-    if (PARAM::USE_IMMORTAL_BALL){
-        if(state.has_ball && Field::inChosenArea(state.ball.Position.X,state.ball.Position.Y))
-            result.addBall(state.ball.Position.X,state.ball.Position.Y);
-    }
-    else{
-        //Dealball::instance()->filteBall(result);
-//        for (int i=0;i<GlobalData::instance()->processBall[0].ballSize;i++)
-//            result.addBall(GlobalData::instance()->processBall[0].ball[i]);
-
-        result.addBall(GlobalData::instance()->processBall[0].ball[0]);
-
-    }
+    result.addBall(GlobalData::instance()->processBall[0].ball[0]);
     for (int i=0;i<GlobalData::instance()->processRobot[0].robotSize[PARAM::BLUE];i++)
         result.addRobot(PARAM::BLUE,GlobalData::instance()->processRobot[0].robot[PARAM::BLUE][i]);
     for (int i=0;i<GlobalData::instance()->processRobot[0].robotSize[PARAM::YELLOW];i++)
@@ -55,19 +43,12 @@ void CMaintain::init(){
     if (result.ballSize>0){
         detectionBall->set_x(result.ball[0].pos.x());
         detectionBall->set_y(result.ball[0].pos.y());
-        if (PARAM::USE_IMMORTAL_BALL){
-            double ballspeed= sqrt(state.ball.velocity.x*state.ball.velocity.x+state.ball.velocity.y*state.ball.velocity.y);
-            detectionBall->set_speed_mod(ballspeed);
-            if (ballspeed > 7500) qDebug()<<"now BALL speed="<<ballspeed<<"mm/s";
-        }
-        else{
-            detectionBall->set_speed_mod(result.ball[0].velocity.mod());
-            detectionBall->set_speed_direction(result.ball[0].velocity.dir());
-            detectionBall->set_next_x(result.ball[0].predict_pos.x());
-            detectionBall->set_next_y(result.ball[0].predict_pos.y());
-            detectionBall->set_last_touch(GlobalData::instance()->lastTouch);
-            detectionBall->set_ball_state(GlobalData::instance()->ballStateMachine);
-        }
+        detectionBall->set_speed_mod(result.ball[0].velocity.mod());
+        detectionBall->set_speed_direction(result.ball[0].velocity.dir());
+        detectionBall->set_next_x(result.ball[0].predict_pos.x());
+        detectionBall->set_next_y(result.ball[0].predict_pos.y());
+        detectionBall->set_last_touch(GlobalData::instance()->lastTouch);
+        detectionBall->set_ball_state(GlobalData::instance()->ballStateMachine);
     }
     else
     {
@@ -124,7 +105,7 @@ void CMaintain::run(bool sw){
             CGeoLine line(GlobalData::instance()->maintain[0].ball[0].pos,GlobalData::instance()->maintain[-7].ball[0].pos);
             CGeoPoint middlePoint(GlobalData::instance()->maintain[-4].ball[0].pos);
             if(line.projection(middlePoint).dist(middlePoint)>1.0)
-                std::cout<<"now its chip dist="<<line.projection(middlePoint).dist(middlePoint)<<std::endl;
+//                std::cout<<"now its chip dist="<<line.projection(middlePoint).dist(middlePoint)<<std::endl;
             if (line.projection(middlePoint).dist(middlePoint)>CHIP_DIS)
             {
                 GlobalData::instance()->ballStateMachine=chip_pass;

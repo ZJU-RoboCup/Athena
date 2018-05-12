@@ -118,12 +118,6 @@ void Field::draw(){                     //change here!!!!!!!
         drawOriginVision(0);break;
     case 2:
         drawMaintainVision(0);break;
-    case 3:
-        drawImmortalsVision();break;
-    case 4:
-        drawBallFixedVision(0);break;
-    case 5:
-        drawRobotFixedVision(0);break;
     }
     this->update(area);
 }
@@ -259,21 +253,6 @@ void Field::drawVision(const OriginMessage &vision,bool shadow){
             paintBall(COLOR_ORANGE,ball.pos.x(),ball.pos.y());
         }else{
             paintShadow(COLOR_TRANSORANGE,ball.pos.x(),ball.pos.y());
-        }
-    }
-}
-void Field::drawImmortalsVision(){
-    auto& state = GlobalData::instance()->immortalsVisionState;
-    if(state.has_ball)
-        paintBall(COLOR_ORANGE,state.ball.Position.X,state.ball.Position.Y);
-    for ( int i = 0 ; i < MAX_ROBOTS ; i ++ ){
-        if ( state.OwnRobot[i].seenState != CompletelyOut ){
-            auto& robot = state.OwnRobot[i];
-            paintCar(CAR_COLOR[BLUE],robot.vision_id,robot.Position.X,robot.Position.Y,robot.Angle/180.0*3.1415926,true,FONT_COLOR[BLUE]);
-        }
-        if ( state.OppRobot[i].seenState != CompletelyOut ){
-            auto& robot = state.OppRobot[i];
-            paintCar(CAR_COLOR[YELLOW],robot.vision_id,robot.Position.X,robot.Position.Y,(robot.Angle)/180.0*3.1415926,true,FONT_COLOR[YELLOW]);
         }
     }
 }

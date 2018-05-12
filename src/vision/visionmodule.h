@@ -32,7 +32,6 @@ private:
     int saoAction;
     bool collectNewVision();
     bool dealWithData();
-    bool immortalsVision();
 };
 typedef Singleton<CVisionModule> VisionModule;
 #endif // __VISIONMODULE_H__

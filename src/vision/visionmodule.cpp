@@ -6,7 +6,6 @@
 #include "maintain.h"
 #include "dealball.h"
 #include "dealrobot.h"
-#include "immortals/immortalsvision.h"
 #include "messages_robocup_ssl_wrapper.pb.h"
 #include "field.h"
 #include "parammanager.h"
@@ -78,7 +77,6 @@ void CVisionModule::storeData(){
     if (collectNewVision()) {
         std::fill_n(GlobalData::instance()->cameraUpdate,PARAM::CAMERA,false);
         dealWithData();
-        immortalsVision();
         emit needDraw();
     }
 }
@@ -89,9 +87,6 @@ void CVisionModule::parse(void * ptr,int size){
     if (packet.has_detection()) {
         const SSL_DetectionFrame& detection = packet.detection();
         message.camID = detection.camera_id();
-        // add for ImmortalsVision
-        ImmortalsVision::instance()->frame[message.camID] = packet.detection();
-        // end of ImmortalsVision
         int ballSize = detection.balls_size();
         int blueSize = detection.robots_blue_size();
         int yellowSize = detection.robots_yellow_size();
@@ -133,10 +128,6 @@ bool CVisionModule::dealWithData(){
     Dealball::instance()->run(GlobalData::instance()->processControl[0]);
     Dealrobot::instance()->run(GlobalData::instance()->processControl[1]);
     Maintain::instance()->run(GlobalData::instance()->processControl[2]);
-    return true;
-}
-bool CVisionModule::immortalsVision(){
-    ImmortalsVision::instance()->ProcessVision(&GlobalData::instance()->immortalsVisionState);
     return true;
 }
 quint16 CVisionModule::getFPS(){

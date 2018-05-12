@@ -37,7 +37,6 @@ private:
     void drawTransformedVision(int);
     void drawModelFixedVision(int);
     void drawProcessedVision(int);
-    void drawImmortalsVision();
     void drawVision(const OriginMessage&,bool shadow = false);
     QPixmap *pixmap;
     QPainter pixmapPainter;

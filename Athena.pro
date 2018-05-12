@@ -20,13 +20,6 @@ SOURCES += \
     src/proto/cpp/messages_robocup_ssl_wrapper_legacy.pb.cc \
     src/proto/cpp/messages_robocup_ssl_wrapper.pb.cc \
     src/proto/cpp/vision_detection.pb.cc \
-    immortals/immortalsvision.cpp \
-    immortals/Source/Reality/Vision/Kalman/FilteredObject.cpp \
-    immortals/Source/Common/MATHS_REGRESSION_PARABOLIC.cpp \
-    immortals/Source/Reality/Vision/Protobuf/ImmortalsProtocols.pb.cc \
-    immortals/Source/Reality/Vision/Protobuf/aidebug.pb.cc \
-    immortals/Source/Reality/Vision/VisionBall.cpp \
-    immortals/Source/Reality/Vision/VisionRobot.cpp \
     src/vision/transform.cpp \
     src/vision/dealball.cpp \
     src/vision/dealrobot.cpp \
@@ -75,13 +68,6 @@ HEADERS += \
     src/proto/cpp/messages_robocup_ssl_wrapper_legacy.pb.h \
     src/proto/cpp/messages_robocup_ssl_wrapper.pb.h \
     src/proto/cpp/vision_detection.pb.h \
-    immortals/immortalsvision.h \
-    immortals/Source/Common/MedianFilter.h \
-    immortals/Source/Reality/Vision/Kalman/FilteredObject.h \
-    immortals/Source/Common/MATHS_REGRESSION_PARABOLIC.h \
-    immortals/Source/Reality/Vision/WorldState.h \
-    immortals/Source/Reality/Vision/Protobuf/ImmortalsProtocols.pb.h \
-    immortals/Source/Reality/Vision/Protobuf/aidebug.pb.h \
     src/vision/dealball.h \
     src/vision/dealrobot.h \
     src/vision/maintain.h \
@@ -141,6 +127,3 @@ MOC_DIR = .
 OBJECTS_DIR = .
 LIBS += $$LIBPROTOBUF
 INCLUDEPATH += $$PROTOBUF_INCLUDE_DIR
-
-copyToDestdir($$PWD/opt/params.json $$PWD/immortals/Data/ballFilterFast.txt $$PWD/immortals/Data/ballFilterSlow.txt)
-
