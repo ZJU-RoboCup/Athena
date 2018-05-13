@@ -2,9 +2,20 @@ TEMPLATE = app
 
 CONFIG += c++11
 
-QT += qml quick
+QT += qml quick serialport
 
-TARGET = Athena
+CONFIG(debug, debug|release) {
+    TARGET = AthenaD
+    DESTDIR = $$PWD/../ZJUNlictSoftwareD
+    MOC_DIR = ./temp
+    OBJECTS_DIR = ./temp
+}
+CONFIG(release, debug|release) {
+    TARGET = Athena
+    DESTDIR = $$PWD/../ZJUNlict
+    MOC_DIR = ./temp
+    OBJECTS_DIR = ./temp
+}
 
 SOURCES += \
     src/main.cpp \
@@ -31,22 +42,13 @@ SOURCES += \
     graph/graph.cpp \
     graph/gridnode.cpp \
     graph/linenode.cpp \
-    src/Utils/parammanager.cpp
-
-DISTFILES += \
-    opt/params.json \
-    graph/shaders/line.fsh \
-    graph/shaders/noisy.fsh \
-    graph/shaders/line.vsh \
-    graph/shaders/noisy.vsh \
-    graph/shaders/line.fsh \
-    graph/shaders/noisy.fsh \
-    graph/shaders/line.vsh \
-    graph/shaders/noisy.vsh \
-    graph/shaders/line.fsh \
-    graph/shaders/noisy.fsh \
-    graph/shaders/line.vsh \
-    graph/shaders/noisy.vsh
+    src/utils/parammanager.cpp \
+    src/test.cpp \
+    src/communicator.cpp \
+    src/proto/cpp/zss_cmd.pb.cc \
+    src/radio/actionmodule.cpp \
+    src/radio/crc.cpp \
+    src/interaction4field.cpp
 
 RESOURCES += \
     Athena.qrc
@@ -78,27 +80,34 @@ HEADERS += \
     graph/graph.h \
     graph/gridnode.h \
     graph/linenode.h \
-    src/Utils/parammanager.h
-
+    src/utils/parammanager.h \
+    src/test.h \
+    src/utils/translator.hpp \
+    src/paraminterface.h \
+    src/communicator.h \
+    src/proto/cpp/zss_cmd.pb.h \
+    src/radio/actionmodule.h \
+    src/radio/crc.h \
+    src/interaction4field.h
 
 INCLUDEPATH += \
     $$PWD/src/utils \
     $$PWD/src/vision \
     $$PWD/src/proto/cpp \
-    $$PWD/src \
-    $$PWD/lib/protobuf/include
+    $$PWD/src/radio \
+    $$PWD/src
 macx {
     PROTOBUF_INCLUDE_DIR = /usr/local/include
-    LIBPROTOBUF = /usr/local/lib/libprotobuf.dylib
+    LIBPROTOBUF = /usr/local/lib/libprotobuf.a
 }
 
 win32 {
-    PROTOBUF_INCLUDE_DIR = $$PWD\lib\protobuf\include
+    PROTOBUF_INCLUDE_DIR = C:\usr\local\protobuf\2.6.1\include
     CONFIG(release,debug|release){
-        LIBPROTOBUF = $$PWD\lib\protobuf\lib\libprotobuf.lib
+        LIBPROTOBUF = $$PWD\lib\libprotobuf.lib
     }
     CONFIG(debug,debug|release){
-        LIBPROTOBUF = $$PWD\lib\protobuf\lib\libprotobufD.lib
+        LIBPROTOBUF = $$PWD\lib\libprotobufD.lib
     }
 }
 unix:!macx{
@@ -121,9 +130,5 @@ defineTest(copyToDestdir) {
     }
     export(QMAKE_POST_LINK)
 }
-
-DESTDIR = ./bin
-MOC_DIR = .
-OBJECTS_DIR = .
 LIBS += $$LIBPROTOBUF
 INCLUDEPATH += $$PROTOBUF_INCLUDE_DIR

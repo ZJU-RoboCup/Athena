@@ -22,7 +22,7 @@ namespace{
     const static QColor FONT_COLOR[2] = {Qt::white,Qt::white};
     const static QColor COLOR_ORANGE(255,0,255);
     const static QColor COLOR_TRANSORANGE(255,170,85,100);
-    const static QColor COLOR_DARKGREEN(150,150,150);
+    const static QColor COLOR_DARKGREEN(48,48,48);
     const static QColor COLOR_RED(220,53,47);
     int canvasHeight;
     int canvasWidth;
@@ -69,7 +69,7 @@ namespace{
 Field::Field(QQuickItem *parent)
     : QQuickPaintedItem(parent)
     , pixmap(nullptr)
-    , pen(QColor(255,255,255),1)
+    , pen(QColor(150,150,150),1)
     , cameraMode(true)
     , _type(-1){
     zpm->loadParam(canvasHeight,"canvas/height",720);

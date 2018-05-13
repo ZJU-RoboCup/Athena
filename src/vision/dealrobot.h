@@ -8,7 +8,7 @@ class CDealrobot
 {
 public:
     CDealrobot();
-    void run (bool);
+    void run();
     void MergeRobot();//
     void selectRobot();//
 //    void filteRobot(Robot &);

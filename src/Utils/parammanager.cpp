@@ -46,24 +46,11 @@ bool ParamManager::loadParam(bool& value, const QString& key, bool defaultValue)
     }
     return true;
 }
-bool ParamManager::changeParam(const QString& key, QChar value){
-    settings.setValue(key, value);
-    return true;
-}
-bool ParamManager::changeParam(const QString& key, int value){
-    settings.setValue(key, value);
-    return true;
-}
-bool ParamManager::changeParam(const QString& key, double value){
-    settings.setValue(key, value);
-    return true;
-}
-bool ParamManager::changeParam(const QString& key, QString value){
-    settings.setValue(key, value);
-    return true;
-}
-bool ParamManager::changeParam(const QString& key, bool value){
-    settings.setValue(key, value);
+bool ParamManager::changeParam(const QString & key, const QVariant & value){
+    if (!settings.contains(key)){
+        return false;
+    }
+    settings.setValue(key,value);
     return true;
 }
 

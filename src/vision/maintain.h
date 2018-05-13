@@ -9,7 +9,7 @@ class CMaintain
 {
 public:
     CMaintain();
-    void run (bool);
+    void run();
     void init();
     void ChipPrediction();
     void StateMachine();

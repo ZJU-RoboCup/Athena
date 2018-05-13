@@ -155,54 +155,46 @@ void CDealrobot::sortRobot(int color){
 //    robot.velocity.setVector(tempMatrix(2, 0)*FRAME_RATE, tempMatrix(3, 0)*FRAME_RATE);
 //}
 
-void CDealrobot::run(bool sw){
-    if (sw){
-        init();
-        MergeRobot();
-        sortRobot(PARAM::BLUE);
-        sortRobot(PARAM::YELLOW);
-        result.init();
-        //重新加入概率排序后的车
-        for (int i=0;i<PARAM::ROBOTMAXID;i++)
-            if (sortTemp[PARAM::BLUE][i].id>=0 && sortTemp[PARAM::BLUE][i].id<=PARAM::ROBOTMAXID)
-            if (GlobalData::instance()->robotPossible[sortTemp[PARAM::BLUE][i].id]>0)
-            {
-                result.addRobot(PARAM::BLUE,sortTemp[PARAM::BLUE][i]);
-            }
-        for (int i=0;i<PARAM::ROBOTMAXID;i++)
-            if (sortTemp[PARAM::YELLOW][i].id>=0 && sortTemp[PARAM::YELLOW][i].id<=PARAM::ROBOTMAXID)
-            if (GlobalData::instance()->robotPossible[sortTemp[PARAM::YELLOW][i].id]>0)
-            {
-                result.addRobot(PARAM::YELLOW,sortTemp[PARAM::YELLOW][i]);
-            }
-        //滤波和线性预测
-        for (int i=0;i<result.robotSize[PARAM::BLUE];i++)
+void CDealrobot::run(){
+    init();
+    MergeRobot();
+    sortRobot(PARAM::BLUE);
+    sortRobot(PARAM::YELLOW);
+    result.init();
+    //重新加入概率排序后的车
+    for (int i=0;i<PARAM::ROBOTMAXID;i++)
+        if (sortTemp[PARAM::BLUE][i].id>=0 && sortTemp[PARAM::BLUE][i].id<=PARAM::ROBOTMAXID)
+        if (GlobalData::instance()->robotPossible[sortTemp[PARAM::BLUE][i].id]>0)
         {
-            Robot robot=result.robot[PARAM::BLUE][i];
-            auto & tempMatrix = _kalmanFilter[PARAM::BLUE][i].update(robot.pos.x(),robot.pos.y());
-            CGeoPoint filtPoint (tempMatrix(0,0),tempMatrix(1,0));
-            robot.pos=filtPoint;
-            robot.velocity.setVector(tempMatrix(2, 0)*FRAME_RATE, tempMatrix(3, 0)*FRAME_RATE);
-            CGeoPoint predictPos=filtPoint+robot.velocity;
-            result.robot[PARAM::BLUE][i].fillPredictPos(predictPos);
+            result.addRobot(PARAM::BLUE,sortTemp[PARAM::BLUE][i]);
         }
-        for (int i=0;i<result.robotSize[PARAM::YELLOW];i++)
+    for (int i=0;i<PARAM::ROBOTMAXID;i++)
+        if (sortTemp[PARAM::YELLOW][i].id>=0 && sortTemp[PARAM::YELLOW][i].id<=PARAM::ROBOTMAXID)
+        if (GlobalData::instance()->robotPossible[sortTemp[PARAM::YELLOW][i].id]>0)
         {
-            Robot robot=result.robot[PARAM::YELLOW][i];
-            auto & tempMatrix = _kalmanFilter[PARAM::YELLOW][i].update(robot.pos.x(),robot.pos.y());
-            CGeoPoint filtPoint (tempMatrix(0,0),tempMatrix(1,0));
-            robot.pos=filtPoint;
-            robot.velocity.setVector(tempMatrix(2, 0)*FRAME_RATE, tempMatrix(3, 0)*FRAME_RATE);
-            CGeoPoint predictPos=filtPoint+robot.velocity;
-            result.robot[PARAM::YELLOW][i].fillPredictPos(predictPos);
+            result.addRobot(PARAM::YELLOW,sortTemp[PARAM::YELLOW][i]);
         }
-        // filteRobot(result.robot[PARAM::YELLOW][i]);
-        GlobalData::instance()->processRobot.push(result);
+    //滤波和线性预测
+    for (int i=0;i<result.robotSize[PARAM::BLUE];i++)
+    {
+        Robot robot=result.robot[PARAM::BLUE][i];
+        auto & tempMatrix = _kalmanFilter[PARAM::BLUE][i].update(robot.pos.x(),robot.pos.y());
+        CGeoPoint filtPoint (tempMatrix(0,0),tempMatrix(1,0));
+        robot.pos=filtPoint;
+        robot.velocity.setVector(tempMatrix(2, 0)*FRAME_RATE, tempMatrix(3, 0)*FRAME_RATE);
+        CGeoPoint predictPos=filtPoint+robot.velocity;
+        result.robot[PARAM::BLUE][i].fillPredictPos(predictPos);
     }
-    else{
-//        for(int i=0;i<PARAM::CAMERA;i++){
-//            GlobalData::instance()->processRobot[i].push(GlobalData::instance()->camera[i][0]);
-//            ReceiveVisionMessage test=GlobalData::instance()->processRobot[i][0];
-//        }
+    for (int i=0;i<result.robotSize[PARAM::YELLOW];i++)
+    {
+        Robot robot=result.robot[PARAM::YELLOW][i];
+        auto & tempMatrix = _kalmanFilter[PARAM::YELLOW][i].update(robot.pos.x(),robot.pos.y());
+        CGeoPoint filtPoint (tempMatrix(0,0),tempMatrix(1,0));
+        robot.pos=filtPoint;
+        robot.velocity.setVector(tempMatrix(2, 0)*FRAME_RATE, tempMatrix(3, 0)*FRAME_RATE);
+        CGeoPoint predictPos=filtPoint+robot.velocity;
+        result.robot[PARAM::YELLOW][i].fillPredictPos(predictPos);
     }
+    // filteRobot(result.robot[PARAM::YELLOW][i]);
+    GlobalData::instance()->processRobot.push(result);
 }

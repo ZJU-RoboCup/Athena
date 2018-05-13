@@ -1,9 +1,27 @@
 <RCC>
     <qresource prefix="/">
         <file>src/qml/main.qml</file>
+        <file>src/qml/ControlBoard.qml</file>
+        <file>src/qml/Settings.qml</file>
         <file>graph/shaders/line.fsh</file>
         <file>graph/shaders/line.vsh</file>
         <file>graph/shaders/noisy.fsh</file>
         <file>graph/shaders/noisy.vsh</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>source/connect.png</file>
+        <file>source/access.png</file>
+        <file>source/radio.png</file>
+        <file>source/disconnect.png</file>
+        <file>source/settings.png</file>
+        <file>source/joy.png</file>
+        <file>source/joy2.png</file>
+        <file>source/joy3.png</file>
+        <file>source/camera.png</file>
+        <file>src/qml/ZGroupBox.qml</file>
+        <file>source/start.png</file>
+        <file>source/start2.png</file>
+        <file>source/stop.png</file>
+        <file>source/stop2.png</file>
+        <file>src/qml/ZSwitch.qml</file>
     </qresource>
 </RCC>

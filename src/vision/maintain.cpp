@@ -89,17 +89,23 @@ void CMaintain::init(){
     detectionFrame.clear_robots_yellow();
 }
 
-void CMaintain::run(bool sw){
-    if (sw){
-        init();
-        //CollisionDetect::instance()->visionAlart();
-        //Ball Statemachine
-        if (CollisionDetect::instance()->ballCloseEnough2Analyze(PARAM::BLUE) ||
-                CollisionDetect::instance()->ballCloseEnough2Analyze(PARAM::YELLOW) ||
-                CollisionDetect::instance()->ballIsOnEdge(GlobalData::instance()->maintain[0].ball[0].pos))
-            //离车近，判断碰撞
-            CollisionDetect::instance()->analyzeData();
-        else
+void CMaintain::run(){
+    init();
+    //CollisionDetect::instance()->visionAlart();
+    //Ball Statemachine
+    if (CollisionDetect::instance()->ballCloseEnough2Analyze(PARAM::BLUE) ||
+            CollisionDetect::instance()->ballCloseEnough2Analyze(PARAM::YELLOW) ||
+            CollisionDetect::instance()->ballIsOnEdge(GlobalData::instance()->maintain[0].ball[0].pos))
+        //离车近，判断碰撞
+        CollisionDetect::instance()->analyzeData();
+    else
+    {
+        //离车远，判断挑球
+        CGeoLine line(GlobalData::instance()->maintain[0].ball[0].pos,GlobalData::instance()->maintain[-7].ball[0].pos);
+        CGeoPoint middlePoint(GlobalData::instance()->maintain[-4].ball[0].pos);
+        if(line.projection(middlePoint).dist(middlePoint)>1.0)
+            std::cout<<"now its chip dist="<<line.projection(middlePoint).dist(middlePoint)<<std::endl;
+        if (line.projection(middlePoint).dist(middlePoint)>CHIP_DIS)
         {
             //离车远，判断挑球
             CGeoLine line(GlobalData::instance()->maintain[0].ball[0].pos,GlobalData::instance()->maintain[-7].ball[0].pos);
@@ -113,9 +119,7 @@ void CMaintain::run(bool sw){
             else
                 GlobalData::instance()->ballStateMachine=flat_pass;
         }
-        //std::cout << "state machine"<< GlobalData::instance()->ballStateMachine<< std::endl;
-    }
-    else{
-
+        else
+            GlobalData::instance()->ballStateMachine=flat_pass;
     }
 }

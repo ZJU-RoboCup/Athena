@@ -24,7 +24,6 @@ CVisionModule::CVisionModule(QObject *parent)
     std::fill_n(GlobalData::instance()->cameraControl,PARAM::CAMERA,true);
     std::fill_n(GlobalData::instance()->processControl,3,true);
     zpm->loadParam(saoAction,"field/saoAction",0);
-    std::cout<<"SAO="<<saoAction;
 }
 void CVisionModule::udpSocketConnect(){
     QString groupAddress;
@@ -100,7 +99,6 @@ void CVisionModule::parse(void * ptr,int size){
             const SSL_DetectionRobot& robot = detection.robots_blue(i);
             if (Field::inChosenArea(saoConvert(CGeoPoint(robot.x(),robot.y())))){
                 message.addRobot(BLUE,robot.robot_id(),saoConvert(CGeoPoint(robot.x(),robot.y())),saoConvert(robot.orientation()));
-                // std::cout<<"id:"<<robot.robot_id()<<"\t"<<robot.orientation()<<std::endl;
             }
             //qDebug() << "BLUE : " << robot.robot_id() << robot.orientation();
         }
@@ -125,9 +123,9 @@ bool CVisionModule::collectNewVision(){
 
 bool CVisionModule::dealWithData(){
     counter++;
-    Dealball::instance()->run(GlobalData::instance()->processControl[0]);
-    Dealrobot::instance()->run(GlobalData::instance()->processControl[1]);
-    Maintain::instance()->run(GlobalData::instance()->processControl[2]);
+    Dealball::instance()->run();
+    Dealrobot::instance()->run();
+    Maintain::instance()->run();
     return true;
 }
 quint16 CVisionModule::getFPS(){
