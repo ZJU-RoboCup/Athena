@@ -104,20 +104,10 @@ void CMaintain::run(){
         CGeoLine line(GlobalData::instance()->maintain[0].ball[0].pos,GlobalData::instance()->maintain[-7].ball[0].pos);
         CGeoPoint middlePoint(GlobalData::instance()->maintain[-4].ball[0].pos);
         if(line.projection(middlePoint).dist(middlePoint)>1.0)
-            std::cout<<"now its chip dist="<<line.projection(middlePoint).dist(middlePoint)<<std::endl;
+//            std::cout<<"now its chip dist="<<line.projection(middlePoint).dist(middlePoint)<<std::endl;
         if (line.projection(middlePoint).dist(middlePoint)>CHIP_DIS)
         {
-            //离车远，判断挑球
-            CGeoLine line(GlobalData::instance()->maintain[0].ball[0].pos,GlobalData::instance()->maintain[-7].ball[0].pos);
-            CGeoPoint middlePoint(GlobalData::instance()->maintain[-4].ball[0].pos);
-            if(line.projection(middlePoint).dist(middlePoint)>1.0)
-//                std::cout<<"now its chip dist="<<line.projection(middlePoint).dist(middlePoint)<<std::endl;
-            if (line.projection(middlePoint).dist(middlePoint)>CHIP_DIS)
-            {
-                GlobalData::instance()->ballStateMachine=chip_pass;
-            }
-            else
-                GlobalData::instance()->ballStateMachine=flat_pass;
+            GlobalData::instance()->ballStateMachine=chip_pass;
         }
         else
             GlobalData::instance()->ballStateMachine=flat_pass;
