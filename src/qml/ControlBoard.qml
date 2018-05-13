@@ -108,10 +108,7 @@ Page{
                         }
                     }
                     Button{
-                        width:100;
-                        height:40;
-                        anchors.right: parent.right;
-                        anchors.rightMargin: 20;
+                        width:parent.itemWidth;
                         icon.source:visionControls.ifConnected ? "/source/connect.png" : "/source/disconnect.png";
                         onClicked: {
                             visionControls.ifConnected = !visionControls.ifConnected;

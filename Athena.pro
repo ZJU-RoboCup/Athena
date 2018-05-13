@@ -104,10 +104,10 @@ macx {
 win32 {
     PROTOBUF_INCLUDE_DIR = C:\usr\local\protobuf\2.6.1\include
     CONFIG(release,debug|release){
-        LIBPROTOBUF = $$PWD\lib\libprotobuf.lib
+        LIBPROTOBUF = C:\usr\local\protobuf\2.6.1\lib\vs14.0\libprotobuf.lib
     }
     CONFIG(debug,debug|release){
-        LIBPROTOBUF = $$PWD\lib\libprotobufD.lib
+        LIBPROTOBUF = C:\usr\local\protobuf\2.6.1\lib\vs14.0\libprotobufD.lib
     }
 }
 unix:!macx{
