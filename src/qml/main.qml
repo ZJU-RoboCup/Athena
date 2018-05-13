@@ -42,23 +42,31 @@ Window {
                 Tab{
                     anchors.fill: parent;
                     title:modelData;
-                    ZSS.Field{
-                        type:index+1;
+                    Rectangle{
+                        border.color: "#555";
+                        border.width: 1;
+                        color: "transparent";
+                        anchors.fill: parent;
+                        ZSS.Field{
+                            type:index+1;
+                        }
                     }
+
+
                 }
             }
             style: TabViewStyle {
                 frameOverlap: 0
                 tabOverlap: 0
                 tab: Rectangle {
-                    color: styleData.selected ? "grey" : "lightgrey"
+                    color: styleData.selected ? "#303030" : "grey"
                     implicitWidth: fields.width/fields.count;
                     implicitHeight: 20
                     Text {
                         id: text
                         anchors.centerIn: parent
                         text: styleData.title
-                        color: styleData.selected ? "black" : "grey"
+                        color: styleData.selected ? "#dddddd" : "black"
                     }
                 }
             }
@@ -89,12 +97,13 @@ Window {
                height:parent.height - 20;
                x:10;
                y:10;
-               color:"#33ffffff";
+               color:"#11ffffff";
            }
            MouseArea{
                property int startX : 0;
                property int startY : 0;
                anchors.fill: parent;
+               acceptedButtons: Qt.RightButton
                onPressed: {
                    startX = mouseX;
                    startY = mouseY;

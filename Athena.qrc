@@ -17,5 +17,11 @@
         <file>source/joy2.png</file>
         <file>source/joy3.png</file>
         <file>source/camera.png</file>
+        <file>src/qml/ZGroupBox.qml</file>
+        <file>source/start.png</file>
+        <file>source/start2.png</file>
+        <file>source/stop.png</file>
+        <file>source/stop2.png</file>
+        <file>src/qml/ZSwitch.qml</file>
     </qresource>
 </RCC>

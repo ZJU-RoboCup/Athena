@@ -1,11 +1,15 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 import ZSS 1.0 as ZSS
 import Graph 1.0
 Page{
     id:control;
     property bool socketConnect : false;
+    property bool radioConnect : false;
+    property bool medusaConnect : false;
+    property bool simConnect : false;
     ZSS.Interaction{
         id:interaction;
     }
@@ -49,7 +53,7 @@ Page{
             radioComboBox.updateModel();
         }
     }
-    property bool radioConnect : false;
+
     StackLayout {
         id:controlLayout;
         width: parent.width;
@@ -60,54 +64,63 @@ Page{
             width:parent.width;
             height:parent.height;
             columnSpacing: 0;
-            rowSpacing: 0;
-            topPadding: 10;
-            Column{
-                id:visionControls;
-                width:parent.width;
-                height:parent.height;
-                spacing: 0;
-                padding:0;
-                property int itemWidth : width - 2*padding;
-                property bool ifConnected : false;
-                Grid{
-                    id:cameraControls;
-                    width:parent.itemWidth - 10;
-                    columns:8;
-                    columnSpacing: 0;
-                    rowSpacing: 0;
-                    horizontalItemAlignment: Grid.AlignHCenter;
-                    verticalItemAlignment: Grid.AlignVCenter;
-                    anchors.horizontalCenter: parent.horizontalCenter;
-                    property int itemWidth : (width - (columns-1) * columnSpacing)/columns;
-                    Repeater{
-                        model:interaction.getCameraNumber();
-                        CheckBox{
-                            property int itemIndex : index;
-                            property bool itemChecked : true;
-                            checked: true
-                            width:cameraControls.itemWidth;
-                            height:40;
-                            //anchors.fill: parent;
-                            onCheckStateChanged: {
-                                interaction.controlCamera(itemIndex,checked);
+            rowSpacing: 14;
+            padding: 5;
+            columns: 1;
+            topPadding: 15;
+            horizontalItemAlignment: Grid.AlignHCenter;
+            verticalItemAlignment: Grid.AlignVCenter;
+            anchors.horizontalCenter: parent.horizontalCenter;
+            property int itemWidth : width - 2*padding;
+            ZGroupBox{
+                title: qsTr("Vision")
+                Column{
+                    id:visionControls;
+                    width:parent.width;
+                    height:parent.height;
+                    spacing: 0;
+                    padding:0;
+                    property int itemWidth : width - 2*padding;
+                    property bool ifConnected : false;
+                    Grid{
+                        id:cameraControls;
+                        width:parent.itemWidth - 10;
+                        columns:8;
+                        columnSpacing: 0;
+                        rowSpacing: 0;
+                        horizontalItemAlignment: Grid.AlignHCenter;
+                        verticalItemAlignment: Grid.AlignVCenter;
+                        anchors.horizontalCenter: parent.horizontalCenter;
+                        property int itemWidth : (width - (columns-1) * columnSpacing)/columns;
+                        Repeater{
+                            model:interaction.getCameraNumber();
+                            CheckBox{
+                                property int itemIndex : index;
+                                property bool itemChecked : true;
+                                checked: true
+                                width:cameraControls.itemWidth;
+                                height:40;
+                                //anchors.fill: parent;
+                                onCheckStateChanged: {
+                                    interaction.controlCamera(itemIndex,checked);
+                                }
                             }
                         }
                     }
-                }
-                Button{
-                    width:100;
-                    height:40;
-                    anchors.right: parent.right;
-                    anchors.rightMargin: 20;
-                    icon.source:visionControls.ifConnected ? "/source/connect.png" : "/source/disconnect.png";
-                    onClicked: {
-                        visionControls.ifConnected = !visionControls.ifConnected;
-                        interaction.setVision(visionControls.ifConnected);
+                    Button{
+                        width:100;
+                        height:40;
+                        anchors.right: parent.right;
+                        anchors.rightMargin: 20;
+                        icon.source:visionControls.ifConnected ? "/source/connect.png" : "/source/disconnect.png";
+                        onClicked: {
+                            visionControls.ifConnected = !visionControls.ifConnected;
+                            interaction.setVision(visionControls.ifConnected);
+                        }
                     }
                 }
-
-
+            }
+/*
 //                Graph {
 //                    id: graph
 //                    anchors.bottomMargin: 50
@@ -125,20 +138,9 @@ Page{
 //                    property int offset: 100;
 //                    scale:1
 //                }
-            }
-
-        }
-        Grid {
-            id: radio;
-            width: parent.width;
-            padding:10;
-            verticalItemAlignment: Grid.AlignVCenter;
-            horizontalItemAlignment: Grid.AlignHCenter;
-            spacing: 0;
-            columns:1;
-            property int itemWidth : width - 2*padding;
-            GroupBox{
-                width:parent.itemWidth;
+*/
+            ZGroupBox{
+                title: qsTr("Radio")
                 Grid{
                     width:parent.width;
                     verticalItemAlignment: Grid.AlignVCenter;
@@ -181,6 +183,75 @@ Page{
                     }
                 }
             }
+            ZGroupBox{
+                title: qsTr("Medusa")
+                Grid{
+                    width:parent.width;
+                    verticalItemAlignment: Grid.AlignVCenter;
+                    horizontalItemAlignment: Grid.AlignHCenter;
+                    spacing: 0;
+                    rowSpacing: 5;
+                    columns:1;
+                    property int itemWidth : width - 2*padding;
+                    ZSwitch{
+                        id:medusaColor;
+                        width:parent.itemWidth;
+                        leftText:qsTr("Blue");
+                        rightText:qsTr("Yellow");
+                    }
+                    ZSwitch{
+                        id:medusaSide;
+                        width:parent.itemWidth;
+                        leftText:qsTr("Left");
+                        rightText:qsTr("Right");
+                    }
+                    ZSwitch{
+                        id:medusaVersion;
+                        width:parent.itemWidth;
+                        leftText:qsTr("Release");
+                        rightText:qsTr("Debug");
+                    }
+                    Button{
+                        width:parent.itemWidth;
+                        icon.source:control.medusaConnect ? "/source/stop.png" : "/source/start.png";
+                        onClicked: {
+                            control.medusaConnect = !control.medusaConnect;
+                            interaction.controlMedusa(control.medusaConnect,medusaColor.checked,medusaSide.checked,medusaVersion.checked)
+                        }
+                    }
+                }
+            }
+            ZGroupBox{
+                title: qsTr("ZSimulator")
+                Grid{
+                    width:parent.width;
+                    verticalItemAlignment: Grid.AlignVCenter;
+                    horizontalItemAlignment: Grid.AlignHCenter;
+                    spacing: 0;
+                    rowSpacing: 5;
+                    columns:1;
+                    property int itemWidth : width - 2*padding;
+                    Button{
+                        width:parent.itemWidth;
+                        icon.source:control.simConnect ? "/source/stop.png" : "/source/start.png";
+                        onClicked: {
+                            control.simConnect = !control.simConnect;
+                            interaction.controlSim(control.simConnect);
+                        }
+                    }
+                }
+            }
+        }
+        Grid {
+            id: radio;
+            width: parent.width;
+            padding:10;
+            verticalItemAlignment: Grid.AlignVCenter;
+            horizontalItemAlignment: Grid.AlignHCenter;
+            spacing: 0;
+            columns:1;
+            property int itemWidth : width - 2*padding;
+
         }
         /*****************************************/
         /*                  UDP                  */

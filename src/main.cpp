@@ -24,6 +24,7 @@ int main(int argc, char *argv[]){
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
     qmlRegister();
+    app.setFont(QFont("Microsoft YaHei",9));
     QQmlApplicationEngine engine;
     engine.load(QUrl(QLatin1String("qrc:/src/qml/main.qml")));
 

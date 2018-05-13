@@ -49,7 +49,7 @@ public:
     }
     bool setData(const QModelIndex &index, const QVariant &value,
                  int role = Qt::EditRole) override{
-        qDebug() << index.row() << index.column() << value;
+        qDebug() << keys[index.row()] << value.toString();
         ZSS::ZParamManager::instance()->changeParam(keys[index.row()],value);
         emit dataChanged(index, index);
         return true;

@@ -12,7 +12,8 @@ class Interaction : public QObject
     Q_OBJECT
 public:
     explicit Interaction(QObject *parent = 0);
-
+    Q_INVOKABLE bool controlMedusa(bool,bool,bool,bool);
+    Q_INVOKABLE bool controlSim(bool);
     Q_INVOKABLE bool connectSerialPort(bool);
     Q_INVOKABLE bool changeSerialFrequency(int);
     Q_INVOKABLE bool changeSerialPort(int);
@@ -42,9 +43,8 @@ public:
         ZCommunicator::instance()->changeNetworkInterface(index);
     }
     ~Interaction();
-public:
-signals:
 public slots:
+    void medusaPrint();
 };
 
 #endif // __INTERACTION_H__

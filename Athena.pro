@@ -4,7 +4,18 @@ CONFIG += c++11
 
 QT += qml quick serialport
 
-TARGET = Athena
+CONFIG(debug, debug|release) {
+    TARGET = AthenaD
+    DESTDIR = $$PWD/../ZJUNlictSoftwareD
+    MOC_DIR = ./temp
+    OBJECTS_DIR = ./temp
+}
+CONFIG(release, debug|release) {
+    TARGET = Athena
+    DESTDIR = $$PWD/../ZJUNlict
+    MOC_DIR = ./temp
+    OBJECTS_DIR = ./temp
+}
 
 SOURCES += \
     src/main.cpp \
@@ -40,7 +51,6 @@ SOURCES += \
     graph/linenode.cpp \
     src/utils/parammanager.cpp \
     src/test.cpp \
-    src/paraminterface.cpp \
     src/communicator.cpp \
     src/proto/cpp/zss_cmd.pb.cc \
     src/radio/actionmodule.cpp \
@@ -134,10 +144,6 @@ defineTest(copyToDestdir) {
     }
     export(QMAKE_POST_LINK)
 }
-
-DESTDIR = ./bin
-MOC_DIR = .
-OBJECTS_DIR = .
 LIBS += $$LIBPROTOBUF
 INCLUDEPATH += $$PROTOBUF_INCLUDE_DIR
 

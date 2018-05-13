@@ -25,7 +25,6 @@ CVisionModule::CVisionModule(QObject *parent)
     std::fill_n(GlobalData::instance()->cameraControl,PARAM::CAMERA,true);
     std::fill_n(GlobalData::instance()->processControl,3,true);
     zpm->loadParam(saoAction,"field/saoAction",0);
-    std::cout<<"SAO="<<saoAction;
 }
 void CVisionModule::udpSocketConnect(){
     QString groupAddress;
