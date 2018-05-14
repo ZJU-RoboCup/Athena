@@ -33,6 +33,7 @@ void CMaintain::udpSocketDisconnect(){
 void CMaintain::init(){
     result.init();
     result.addBall(GlobalData::instance()->processBall[0].ball[0]);
+//     std::cout<<" "<<GlobalData::instance()->processRobot[0].robotSize[0]<<" "<<GlobalData::instance()->processRobot[0].robotSize[0]<<std::endl;
     for (int i=0;i<GlobalData::instance()->processRobot[0].robotSize[PARAM::BLUE];i++)
         result.addRobot(PARAM::BLUE,GlobalData::instance()->processRobot[0].robot[PARAM::BLUE][i]);
     for (int i=0;i<GlobalData::instance()->processRobot[0].robotSize[PARAM::YELLOW];i++)

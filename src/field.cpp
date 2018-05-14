@@ -173,14 +173,21 @@ void Field::drawMaintainVision(int index){
     }
     drawVision(GlobalData::instance()->maintain[index]);
     const OriginMessage &vision = GlobalData::instance()->maintain[index];
-    if (GlobalData::instance()->lastTouch!=-1){
-        if (GlobalData::instance()->lastTouch<PARAM::ROBOTMAXID){
-            auto& robot = vision.robot[BLUE][GlobalData::instance()->lastTouch];
-            paintCar(CAR_COLOR[BLUE],robot.id,robot.pos.x(),robot.pos.y(),robot.angel,true,FONT_COLOR[BLUE],true);
-        }
-        else{
-            auto& robot = vision.robot[YELLOW][GlobalData::instance()->lastTouch-PARAM::ROBOTMAXID];
-            paintCar(CAR_COLOR[YELLOW],robot.id,robot.pos.x(),robot.pos.y(),robot.angel,true,FONT_COLOR[YELLOW],true);
+//    if (GlobalData::instance()->lastTouch!=-1){
+//        if (GlobalData::instance()->lastTouch<PARAM::ROBOTMAXID){
+//            auto& robot = vision.robot[BLUE][GlobalData::instance()->lastTouch];
+//            paintCar(CAR_COLOR[BLUE],robot.id,robot.pos.x(),robot.pos.y(),robot.angel,true,FONT_COLOR[BLUE],true);
+//        }
+//        else{
+//            auto& robot = vision.robot[YELLOW][GlobalData::instance()->lastTouch-PARAM::ROBOTMAXID];
+//            paintCar(CAR_COLOR[YELLOW],robot.id,robot.pos.x(),robot.pos.y(),robot.angel,true,FONT_COLOR[YELLOW],true);
+//        }
+//    }
+    for(int color=BLUE;color<=YELLOW;color++){
+        for(int j=0;j<vision.robotSize[color];j++){
+            auto& robot = vision.robot[color][j];
+            if (GlobalData::instance()->lastTouch==color*PARAM::ROBOTMAXID+j)
+                paintCar(CAR_COLOR[color],robot.id,robot.pos.x(),robot.pos.y(),robot.angel,true,FONT_COLOR[color],true);
         }
     }
 }

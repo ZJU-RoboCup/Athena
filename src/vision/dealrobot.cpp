@@ -33,7 +33,6 @@ void CDealrobot::MergeRobot(){
             if(robotSeqence[PARAM::BLUE][roboId][camId].pos.x() > -30000 && robotSeqence[PARAM::BLUE][roboId][camId].pos.y() > -30000 && (!foundBlue ||
               (foundBlue && robotSeqence[PARAM::BLUE][roboId][camId].pos.dist(CGeoPoint(blueAverage.x() /blueWeight,blueAverage.y() /blueWeight))<PARAM::ROBOTMERGEDOSTANCE)))
             {
-                //std::cout<<"blueFound:"<<foundBlue;
                 foundBlue=true;
                 _weight=std::pow(posDist(robotSeqence[PARAM::BLUE][roboId][camId].pos,GlobalData::instance()->cameraMatrix[camera.id].pos)/100.0,-2.0);
                 blueWeight+=_weight;
@@ -46,7 +45,6 @@ void CDealrobot::MergeRobot(){
             if(robotSeqence[PARAM::YELLOW][roboId][camId].pos.x() >-30000 && robotSeqence[PARAM::YELLOW][roboId][camId].pos.y() >-30000 &&(!foundYellow ||
             (foundYellow && robotSeqence[PARAM::YELLOW][roboId][camId].pos.dist(CGeoPoint(yellowAverage.x()/yellowWeight,yellowAverage.y()/yellowWeight))<PARAM::ROBOTMERGEDOSTANCE)))
             {
-//                std::cout<<"yellowFound:"<<foundYellow;
                 foundYellow=true;
                 _weight=std::pow(posDist(robotSeqence[PARAM::YELLOW][roboId][camId].pos,GlobalData::instance()->cameraMatrix[camera.id].pos)/100.0,-2.0);
                 yellowWeight+=_weight;
@@ -148,13 +146,6 @@ void CDealrobot::sortRobot(int color){
     }
 }
 
-//void CDealrobot::filteRobot(Robot& robot){
-//    auto & tempMatrix = _kalmanFilter.update(robot.pos.x(),robot.pos.y());
-//    CGeoPoint filtPoint (tempMatrix(0,0),tempMatrix(1,0));
-//    robot.pos=filtPoint;
-//    robot.velocity.setVector(tempMatrix(2, 0)*FRAME_RATE, tempMatrix(3, 0)*FRAME_RATE);
-//}
-
 void CDealrobot::run(){
     init();
     MergeRobot();
@@ -170,7 +161,7 @@ void CDealrobot::run(){
         }
     for (int i=0;i<PARAM::ROBOTMAXID;i++)
         if (sortTemp[PARAM::YELLOW][i].id>=0 && sortTemp[PARAM::YELLOW][i].id<=PARAM::ROBOTMAXID)
-        if (GlobalData::instance()->robotPossible[PARAM::BLUE][sortTemp[PARAM::YELLOW][i].id]>0)
+        if (GlobalData::instance()->robotPossible[PARAM::YELLOW][sortTemp[PARAM::YELLOW][i].id]>0)
         {
             result.addRobot(PARAM::YELLOW,sortTemp[PARAM::YELLOW][i]);
         }
