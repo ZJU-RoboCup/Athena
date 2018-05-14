@@ -28,6 +28,5 @@ public:
     int lastTouch;
     ballState ballStateMachine;
 };
-
 typedef Singleton<CGlobalData> GlobalData;
 #endif // __GLOBAL_DATA__

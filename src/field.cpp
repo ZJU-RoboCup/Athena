@@ -3,6 +3,7 @@
 #include "transform.h"
 #include "globaldata.h"
 #include "parammanager.h"
+#include "globalsettings.h"
 #include <QColor>
 #include <QtMath>
 #include <QtDebug>
@@ -24,6 +25,8 @@ namespace{
     const static QColor COLOR_TRANSORANGE(255,170,85,100);
     const static QColor COLOR_DARKGREEN(48,48,48);
     const static QColor COLOR_RED(220,53,47);
+    const static QColor COLOR_LIGHTWHITE(255,255,255,20);
+    const static qreal zoomStep = 0.05;
     int canvasHeight;
     int canvasWidth;
     int param_width;
@@ -65,6 +68,15 @@ namespace{
     int carDiameter;
     int carFaceWidth;
     int numberSize;
+    qreal zoomRatio;
+    QPoint zoomStart;
+    QRect area;
+    QSize size;
+    template<typename T>
+    T limitRange(T value,T minValue,T maxValue){
+        return value > maxValue ? maxValue : (value < minValue) ? minValue : value;
+    }
+    auto GS = GlobalSettings::instance();
 }
 Field::Field(QQuickItem *parent)
     : QQuickPaintedItem(parent)
@@ -79,19 +91,45 @@ Field::Field(QQuickItem *parent)
     setImplicitHeight(canvasHeight);
     pixmap = new QPixmap(QSize(canvasWidth,canvasHeight));
     pixmapPainter.begin(pixmap);
-    changeMode(cameraMode);
+    init();
     zpm->loadParam(ballDiameter   ,"size/ballDiameter",100);
     zpm->loadParam(shadowDiameter ,"size/shadowDiameter",30);
     zpm->loadParam(carDiameter    ,"size/carDiameter",180);
     zpm->loadParam(carFaceWidth   ,"size/carFaceWidth",120);
     zpm->loadParam(numberSize     ,"size/numberSize",200);
+    setAcceptedMouseButtons(Qt::LeftButton | Qt::RightButton);
+    connect(GS,SIGNAL(needRepaint()),this,SLOT(repaint()));
 }
 
 void Field::paint(QPainter* painter){
-    painter->drawPixmap(area,*pixmap);
+    painter->drawPixmap(area,*pixmap,QRect(zoomStart,::size*zoomRatio));
+}
+void Field::mousePressEvent(QMouseEvent *e)
+{
+    qDebug() << "Press  : " << (e->buttons() == Qt::LeftButton);
+}
+void Field::mouseMoveEvent(QMouseEvent *e){
+    //if(e->buttons() == Qt::LeftButton)
+        qDebug() << "Move  : " << e->localPos();
+}
+void Field::mouseReleaseEvent(QMouseEvent *e)
+{
+    qDebug() << "Release : " << (e->buttons() == Qt::LeftButton);
 }
 
-void Field::changeMode(bool ifBig){
+#if QT_CONFIG(wheelevent)
+void Field::wheelEvent (QWheelEvent *e)
+{
+    qreal oldRatio = zoomRatio;
+    zoomRatio += (e->delta() < 0 ? zoomStep : -zoomStep);
+    zoomRatio = limitRange(zoomRatio,zoomStep,1.0);
+    zoomStart -= e->pos()*(zoomRatio-oldRatio);
+    zoomStart.setX(limitRange(zoomStart.x(),0,int(area.width()*(1-zoomRatio))));
+    zoomStart.setY(limitRange(zoomStart.y(),0,int(area.height()*(1-zoomRatio))));
+    this->update(area);
+}
+#endif
+void Field::init(){
     pen.setWidth(2);
     zpm->loadParam(param_width             , "field/width"             ,12000);
     zpm->loadParam(param_height            , "field/height"            , 9000);
@@ -102,17 +140,27 @@ void Field::changeMode(bool ifBig){
     zpm->loadParam(param_penaltyWidth      , "field/penaltyWidth"      , 1200);
     zpm->loadParam(param_penaltyLength     , "field/penaltyLength"     , 2400);
     zpm->loadParam(param_centerCircleRadius, "field/centerCircleRadius",  500);
-    area = QRect(0,0,this->property("width").toReal(),this->property("height").toReal());
+    ::area = QRect(0,0,this->property("width").toReal(),this->property("height").toReal());
+    ::size = QSize(this->property("width").toReal(),this->property("height").toReal());
+    ::zoomStart = QPoint(0,0);
+    ::zoomRatio = 1;
     painterPath = QPainterPath();
     initPainterPath();
-    pixmap->fill(COLOR_DARKGREEN);
-    pixmapPainter.strokePath(painterPath, pen);
+    repaint();
+}
+void Field::repaint(){
+    paintInit();
     this->update(area);
 }
-
-void Field::draw(){                     //change here!!!!!!!
+void Field::paintInit(){
     pixmap->fill(COLOR_DARKGREEN);
     pixmapPainter.strokePath(painterPath, pen);
+    pixmapPainter.setBrush(QBrush(COLOR_LIGHTWHITE));
+    pixmapPainter.setPen(Qt::NoPen);
+    pixmapPainter.drawRect(QRect(QPoint(::x(GS->minimumX),::y(GS->minimumY)),QPoint(::x(GS->maximumX),::y(GS->maximumY))));
+}
+void Field::draw(){                     //change here!!!!!!!
+    paintInit();
     switch(_type){
     case 1:
         drawOriginVision(0);break;
@@ -173,21 +221,14 @@ void Field::drawMaintainVision(int index){
     }
     drawVision(GlobalData::instance()->maintain[index]);
     const OriginMessage &vision = GlobalData::instance()->maintain[index];
-//    if (GlobalData::instance()->lastTouch!=-1){
-//        if (GlobalData::instance()->lastTouch<PARAM::ROBOTMAXID){
-//            auto& robot = vision.robot[BLUE][GlobalData::instance()->lastTouch];
-//            paintCar(CAR_COLOR[BLUE],robot.id,robot.pos.x(),robot.pos.y(),robot.angel,true,FONT_COLOR[BLUE],true);
-//        }
-//        else{
-//            auto& robot = vision.robot[YELLOW][GlobalData::instance()->lastTouch-PARAM::ROBOTMAXID];
-//            paintCar(CAR_COLOR[YELLOW],robot.id,robot.pos.x(),robot.pos.y(),robot.angel,true,FONT_COLOR[YELLOW],true);
-//        }
-//    }
-    for(int color=BLUE;color<=YELLOW;color++){
-        for(int j=0;j<vision.robotSize[color];j++){
-            auto& robot = vision.robot[color][j];
-            if (GlobalData::instance()->lastTouch==color*PARAM::ROBOTMAXID+j)
-                paintCar(CAR_COLOR[color],robot.id,robot.pos.x(),robot.pos.y(),robot.angel,true,FONT_COLOR[color],true);
+    if (GlobalData::instance()->lastTouch!=-1){
+        if (GlobalData::instance()->lastTouch<PARAM::ROBOTMAXID){
+            auto& robot = vision.robot[BLUE][GlobalData::instance()->lastTouch];
+            paintCar(CAR_COLOR[BLUE],robot.id,robot.pos.x(),robot.pos.y(),robot.angel,true,FONT_COLOR[BLUE],true);
+        }
+        else{
+            auto& robot = vision.robot[YELLOW][GlobalData::instance()->lastTouch-PARAM::ROBOTMAXID];
+            paintCar(CAR_COLOR[YELLOW],robot.id,robot.pos.x(),robot.pos.y(),robot.angel,true,FONT_COLOR[YELLOW],true);
         }
     }
 }
@@ -263,19 +304,9 @@ void Field::drawVision(const OriginMessage &vision,bool shadow){
         }
     }
 }
-float Field::minimumX = -999999;
-float Field::minimumY = -999999;
-float Field::maximumX =  999999;
-float Field::maximumY =  999999;
-void Field::setArea(int sx,int ex,int sy,int ey){
-    minimumX = ::rx(sx);
-    minimumY = ::ry(sy);
-    maximumX = ::rx(ex);
-    maximumY = ::ry(ey);
+float Field::fieldXFromCoordinate(int x){
+    return ::rx(zoomStart.x() + x*zoomRatio);
 }
-bool Field::inChosenArea(float x, float y){
-    return (x >= minimumX && x <= maximumX && y >= minimumY && y <= maximumY);
-}
-bool Field::inChosenArea(CGeoPoint point){
-    return (point.x() >= minimumX && point.x() <= maximumX && point.y() >= minimumY && point.y() <= maximumY);
+float Field::fieldYFromCoordinate(int y){
+    return ::ry(zoomStart.y() + y*zoomRatio);
 }

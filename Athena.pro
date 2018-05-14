@@ -48,7 +48,8 @@ SOURCES += \
     src/proto/cpp/zss_cmd.pb.cc \
     src/radio/actionmodule.cpp \
     src/radio/crc.cpp \
-    src/interaction4field.cpp
+    src/interaction4field.cpp \
+    src/utils/globalsettings.cpp
 
 RESOURCES += \
     Athena.qrc
@@ -88,7 +89,8 @@ HEADERS += \
     src/proto/cpp/zss_cmd.pb.h \
     src/radio/actionmodule.h \
     src/radio/crc.h \
-    src/interaction4field.h
+    src/interaction4field.h \
+    src/utils/globalsettings.h
 
 INCLUDEPATH += \
     $$PWD/src/utils \

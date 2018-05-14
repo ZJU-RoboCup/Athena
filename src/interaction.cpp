@@ -3,6 +3,7 @@
 #include "globaldata.h"
 #include "maintain.h"
 #include "actionmodule.h"
+#include "globalsettings.h"
 #include <QProcess>
 namespace{
     QProcess *medusaProcess = nullptr;

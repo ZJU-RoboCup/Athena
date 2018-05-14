@@ -9,6 +9,7 @@
 #include "messages_robocup_ssl_wrapper.pb.h"
 #include "field.h"
 #include "parammanager.h"
+#include "globalsettings.h"
 #include <QElapsedTimer>
 #include <QtDebug>
 namespace{
@@ -31,7 +32,6 @@ void CVisionModule::udpSocketConnect(){
     zpm->loadParam(port,"vision/port",10005);
     udpSocket.bind(QHostAddress::AnyIPv4, port, QUdpSocket::ShareAddress);
     udpSocket.joinMulticastGroup(QHostAddress(groupAddress));
-    zpm->loadParam(saoAction,"field/saoAction",0);
     connect(&udpSocket,SIGNAL(readyRead()),this,SLOT(storeData()),Qt::DirectConnection);
 }
 void CVisionModule::udpSocketDisconnect(){
@@ -92,20 +92,20 @@ void CVisionModule::parse(void * ptr,int size){
         int yellowSize = detection.robots_yellow_size();
         for (int i = 0; i < ballSize; i++) {
             const SSL_DetectionBall& ball = detection.balls(i);
-            if (Field::inChosenArea(saoConvert(CGeoPoint(ball.x(),ball.y())))){
+            if (GlobalSettings::instance()->inChosenArea(saoConvert(CGeoPoint(ball.x(),ball.y())))){
                 message.addBall(saoConvert(CGeoPoint(ball.x(),ball.y())));
             }
         }
         for (int i = 0; i < blueSize; i++) {
             const SSL_DetectionRobot& robot = detection.robots_blue(i);
-            if (Field::inChosenArea(saoConvert(CGeoPoint(robot.x(),robot.y())))){
+            if (GlobalSettings::instance()->inChosenArea(saoConvert(CGeoPoint(robot.x(),robot.y())))){
                 message.addRobot(BLUE,robot.robot_id(),saoConvert(CGeoPoint(robot.x(),robot.y())),saoConvert(robot.orientation()));
             }
             //qDebug() << "BLUE : " << robot.robot_id() << robot.orientation();
         }
         for (int i = 0; i < yellowSize; i++) {
             const SSL_DetectionRobot& robot = detection.robots_yellow(i);
-            if (Field::inChosenArea(robot.x(),robot.y())){
+            if (GlobalSettings::instance()->inChosenArea(robot.x(),robot.y())){
                 message.addRobot(YELLOW,robot.robot_id(),saoConvert(CGeoPoint(robot.x(),robot.y())),saoConvert(robot.orientation()));
             }
             //qDebug() << "YELL : " << robot.robot_id() << robot.orientation();

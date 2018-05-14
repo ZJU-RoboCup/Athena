@@ -93,18 +93,20 @@ Window {
 
            Rectangle{
                id:areaRectangle;
-               width:parent.width - 20;
-               height:parent.height - 20;
-               x:10;
-               y:10;
+               width:parent.width;
+               height:parent.height;
+               x:0;
+               y:0;
                color:"#11ffffff";
            }
            MouseArea{
                property int startX : 0;
                property int startY : 0;
                anchors.fill: parent;
-               acceptedButtons: Qt.RightButton
+               acceptedButtons: Qt.MiddleButton
                onPressed: {
+                   interaction.setArea(0,0,0,0);
+                   areaRectangle.visible = true;
                    startX = mouseX;
                    startY = mouseY;
                    areaRectangle.width = 0;
@@ -120,11 +122,12 @@ Window {
                }
                onReleased: {
                    if(areaRectangle.width < 100 && areaRectangle.height < 100){
-                       areaRectangle.x = areaRectangle.y = 10;
-                       areaRectangle.width = areaRectangle.parent.width - 20;
-                       areaRectangle.height = areaRectangle.parent.height - 20;
+                       areaRectangle.x = areaRectangle.y = 0;
+                       areaRectangle.width = areaRectangle.parent.width;
+                       areaRectangle.height = areaRectangle.parent.height;
                    }
                    interaction.setArea(areaRectangle.x,areaRectangle.width + areaRectangle.x,areaRectangle.height + areaRectangle.y,areaRectangle.y);
+                   areaRectangle.visible = false;
                }
            }
         }
