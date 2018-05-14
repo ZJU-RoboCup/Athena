@@ -12,27 +12,27 @@ class Field : public QQuickPaintedItem{
 public:
     void paint(QPainter* painter) override;
     Field(QQuickItem *parent = 0);
-    void changeMode(bool ifBig);
     inline int type() { return this->_type; }
     inline void setType(int t) { this->_type = t; }
-    static bool inChosenArea(float,float);
-    static bool inChosenArea(CGeoPoint);
-    static void setArea(int,int,int,int);
     void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
+    static float fieldXFromCoordinate(int);
+    static float fieldYFromCoordinate(int);
 //    void mouseDoubleClickEvent(QMouseEvent *event) override;
 #if QT_CONFIG(wheelevent)
     void wheelEvent(QWheelEvent * event) override;
 #endif
     virtual ~Field() {}
-signals:
-
 public slots:
     void draw();
+private slots:
+    void repaint();
 private:
+    void init();
     void initPainterPath();
     void initField();
+    void paintInit();
     void paintCar(const QColor& color,quint8 num,qreal x,qreal y,qreal radian
                   ,bool ifDrawNum = true,const QColor& textColor = Qt::white,bool needCircle = false);
     void paintBall(const QColor& color,qreal x,qreal y);
@@ -51,8 +51,6 @@ private:
     QPen pen;
     bool cameraMode;
     int _type;
-    QRect area;
-    static float minimumX,maximumX,minimumY,maximumY;
 };
 
 #endif // __FIELD_H__

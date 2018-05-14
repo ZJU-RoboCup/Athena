@@ -105,6 +105,8 @@ Window {
                anchors.fill: parent;
                acceptedButtons: Qt.MiddleButton
                onPressed: {
+                   interaction.setArea(0,0,0,0);
+                   areaRectangle.visible = true;
                    startX = mouseX;
                    startY = mouseY;
                    areaRectangle.width = 0;
@@ -125,6 +127,7 @@ Window {
                        areaRectangle.height = areaRectangle.parent.height;
                    }
                    interaction.setArea(areaRectangle.x,areaRectangle.width + areaRectangle.x,areaRectangle.height + areaRectangle.y,areaRectangle.y);
+                   areaRectangle.visible = false;
                }
            }
         }

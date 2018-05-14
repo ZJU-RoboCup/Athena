@@ -10,7 +10,7 @@ class Interaction4Field : public QObject
 public:
     explicit Interaction4Field(QObject *parent = 0);
     Q_INVOKABLE int getFPS(){ return VisionModule::instance()->getFPS();}
-    Q_INVOKABLE void setArea(int a,int b,int c,int d){Field::setArea(a,b,c,d); }
+    Q_INVOKABLE void setArea(int a,int b,int c,int d);
     ~Interaction4Field();
 public:
 signals:
