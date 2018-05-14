@@ -31,6 +31,7 @@ void CVisionModule::udpSocketConnect(){
     zpm->loadParam(port,"vision/port",10005);
     udpSocket.bind(QHostAddress::AnyIPv4, port, QUdpSocket::ShareAddress);
     udpSocket.joinMulticastGroup(QHostAddress(groupAddress));
+    zpm->loadParam(saoAction,"field/saoAction",0);
     connect(&udpSocket,SIGNAL(readyRead()),this,SLOT(storeData()),Qt::DirectConnection);
 }
 void CVisionModule::udpSocketDisconnect(){
