@@ -45,11 +45,16 @@ SOURCES += \
     src/utils/parammanager.cpp \
     src/test.cpp \
     src/communicator.cpp \
-    src/proto/cpp/zss_cmd.pb.cc \
     src/radio/actionmodule.cpp \
     src/radio/crc.cpp \
     src/interaction4field.cpp \
-    src/utils/globalsettings.cpp
+    src/utils/globalsettings.cpp \
+    src/simulator.cpp \
+    src/proto/cpp/grSim_Commands.pb.cc \
+    src/proto/cpp/grSim_Packet.pb.cc \
+    src/proto/cpp/grSim_Replacement.pb.cc \
+    src/proto/cpp/zss_cmd.pb.cc \
+    src/proto/cpp/zss_debug.pb.cc
 
 RESOURCES += \
     Athena.qrc
@@ -86,11 +91,16 @@ HEADERS += \
     src/utils/translator.hpp \
     src/paraminterface.h \
     src/communicator.h \
-    src/proto/cpp/zss_cmd.pb.h \
     src/radio/actionmodule.h \
     src/radio/crc.h \
     src/interaction4field.h \
-    src/utils/globalsettings.h
+    src/utils/globalsettings.h \
+    src/simulator.h \
+    src/proto/cpp/grSim_Commands.pb.h \
+    src/proto/cpp/grSim_Packet.pb.h \
+    src/proto/cpp/grSim_Replacement.pb.h \
+    src/proto/cpp/zss_cmd.pb.h \
+    src/proto/cpp/zss_debug.pb.h
 
 INCLUDEPATH += \
     $$PWD/src/utils \

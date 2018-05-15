@@ -26,7 +26,6 @@ Window {
             fps.text = (interaction.getFPS()).toString();
         }
     }
-
     ZSS.Interaction4Field { id : interaction }
 
     Row {
@@ -51,8 +50,6 @@ Window {
                             type:index+1;
                         }
                     }
-
-
                 }
             }
             style: TabViewStyle {
@@ -78,8 +75,8 @@ Window {
                color:"white";
                font.pointSize: (Qt.platform.os == "windows") ? 10 : 14;
                font.weight:  Font.Bold;
-           }
-           Text{
+            }
+            Text{
                id : fps;
                text : "";
                anchors.top: parent.top;
@@ -89,47 +86,63 @@ Window {
                color:"white";
                font.pointSize: (Qt.platform.os == "windows") ? 10 : 14;
                font.weight:  Font.Bold;
-           }
+            }
 
-           Rectangle{
+            Rectangle{
                id:areaRectangle;
                width:parent.width;
                height:parent.height;
                x:0;
                y:0;
                color:"#11ffffff";
-           }
-           MouseArea{
-               property int startX : 0;
-               property int startY : 0;
-               anchors.fill: parent;
-               acceptedButtons: Qt.MiddleButton
-               onPressed: {
-                   interaction.setArea(0,0,0,0);
-                   areaRectangle.visible = true;
-                   startX = mouseX;
-                   startY = mouseY;
-                   areaRectangle.width = 0;
-                   areaRectangle.height = 0;
-                   areaRectangle.x = startX;
-                   areaRectangle.y = startY;
-               }
-               onPositionChanged: {
-                   areaRectangle.x = Math.min(mouseX,startX);
-                   areaRectangle.y = Math.min(mouseY,startY);
-                   areaRectangle.width = Math.abs(mouseX - startX);
-                   areaRectangle.height = Math.abs(mouseY - startY);
-               }
-               onReleased: {
-                   if(areaRectangle.width < 100 && areaRectangle.height < 100){
-                       areaRectangle.x = areaRectangle.y = 0;
-                       areaRectangle.width = areaRectangle.parent.width;
-                       areaRectangle.height = areaRectangle.parent.height;
-                   }
-                   interaction.setArea(areaRectangle.x,areaRectangle.width + areaRectangle.x,areaRectangle.height + areaRectangle.y,areaRectangle.y);
-                   areaRectangle.visible = false;
-               }
-           }
+               visible: false;
+            }
+            MouseArea{
+                property int startX : 0;
+                property int startY : 0;
+                anchors.fill: parent;
+                acceptedButtons: Qt.MiddleButton
+                property bool controlMode : false
+                onPressed: {
+                    controlMode = (mouse.modifiers === Qt.ControlModifier)
+                    startX = mouseX;
+                    startY = mouseY;
+                    if(controlMode){
+                        interaction.setArea(0,0,0,0);
+                        areaRectangle.visible = true;
+                        areaRectangle.width = 0;
+                        areaRectangle.height = 0;
+                        areaRectangle.x = startX;
+                        areaRectangle.y = startY;
+                    }
+                }
+                onPositionChanged: {
+                    if(controlMode){
+                        areaRectangle.x = Math.min(mouseX,startX);
+                        areaRectangle.y = Math.min(mouseY,startY);
+                        areaRectangle.width = Math.abs(mouseX - startX);
+                        areaRectangle.height = Math.abs(mouseY - startY);
+                    }else{
+                        interaction.moveField(mouseX - startX,mouseY - startY)
+                        startX = mouseX;
+                        startY = mouseY;
+                    }
+                }
+                onReleased: {
+                    if(controlMode){
+                        if(areaRectangle.width < 100 && areaRectangle.height < 100){
+                            areaRectangle.x = areaRectangle.y = 0;
+                            areaRectangle.width = areaRectangle.parent.width;
+                            areaRectangle.height = areaRectangle.parent.height;
+                            interaction.resetArea();
+                        }else{
+                            interaction.setArea(areaRectangle.x,areaRectangle.width + areaRectangle.x,areaRectangle.height + areaRectangle.y,areaRectangle.y);
+                        }
+                        areaRectangle.visible = false;
+                    }
+                    controlMode = false
+                }
+            }
         }
         ControlBoard{
             id:controlBoard;

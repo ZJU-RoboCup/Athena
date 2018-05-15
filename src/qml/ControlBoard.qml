@@ -13,7 +13,6 @@ Page{
     ZSS.Interaction{
         id:interaction;
     }
-
     header:TabBar {
         id: bar
         width:parent.width;
@@ -24,7 +23,7 @@ Page{
             icon.source:"/source/camera.png";
         }
         TabButton {
-            icon.source:"/source/radio.png";
+            icon.source:"/source/referee.png";
         }
         TabButton {
             icon.source:"/source/joy3.png";
@@ -240,7 +239,7 @@ Page{
             }
         }
         Grid {
-            id: radio;
+            id: refereebox;
             width: parent.width;
             padding:10;
             verticalItemAlignment: Grid.AlignVCenter;
@@ -248,13 +247,12 @@ Page{
             spacing: 0;
             columns:1;
             property int itemWidth : width - 2*padding;
-
         }
         /*****************************************/
         /*                  UDP                  */
         /*****************************************/
         Grid {
-            id: settings;
+            id: radio;
             width: parent.itemWidth;
             padding:10;
             verticalItemAlignment: Grid.AlignVCenter;
