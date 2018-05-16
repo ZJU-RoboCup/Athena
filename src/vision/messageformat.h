@@ -54,12 +54,12 @@ namespace {
         CVector velocity;
         Robot():id(-1){}
         Robot(double _x,double _y,double _angle, double _id=-1){pos.setX(_x);pos.setY(_y);angel=_angle;id=_id;}
-        bool fill(unsigned short id,double _x,double _y,double angel){
-            this->id = id; pos.setX(_x);pos.setY(_y); this->angel = angel;
+        bool fill(unsigned short id,double _x,double _y,double angel,CVector vel=CVector(0,0)){
+            this->id = id; pos.setX(_x);pos.setY(_y); this->angel = angel;this->velocity=vel;
             return true;
         }
         bool fill(const Robot& robot){
-            return fill(robot.id,robot.pos.x(),robot.pos.y(),robot.angel);
+            return fill(robot.id,robot.pos.x(),robot.pos.y(),robot.angel,robot.velocity);
         }
         bool fillPredictPos(CGeoPoint prePos){
             this->predict_pos=prePos;

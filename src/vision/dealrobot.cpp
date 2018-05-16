@@ -171,7 +171,7 @@ void CDealrobot::run(){
         auto & tempMatrix = _kalmanFilter[PARAM::BLUE][i].update(robot.pos.x(),robot.pos.y());
         CGeoPoint filtPoint (tempMatrix(0,0),tempMatrix(1,0));
         robot.pos=filtPoint;
-        robot.velocity.setVector(tempMatrix(2, 0)*FRAME_RATE, tempMatrix(3, 0)*FRAME_RATE);
+        result.robot[PARAM::BLUE][i].velocity.setVector(tempMatrix(2, 0)*FRAME_RATE, tempMatrix(3, 0)*FRAME_RATE);
         CGeoPoint predictPos=filtPoint+robot.velocity;
         result.robot[PARAM::BLUE][i].fillPredictPos(predictPos);
     }
@@ -181,7 +181,7 @@ void CDealrobot::run(){
         auto & tempMatrix = _kalmanFilter[PARAM::YELLOW][i].update(robot.pos.x(),robot.pos.y());
         CGeoPoint filtPoint (tempMatrix(0,0),tempMatrix(1,0));
         robot.pos=filtPoint;
-        robot.velocity.setVector(tempMatrix(2, 0)*FRAME_RATE, tempMatrix(3, 0)*FRAME_RATE);
+        result.robot[PARAM::YELLOW][i].velocity.setVector(tempMatrix(2, 0)*FRAME_RATE, tempMatrix(3, 0)*FRAME_RATE);
         CGeoPoint predictPos=filtPoint+robot.velocity;
         result.robot[PARAM::YELLOW][i].fillPredictPos(predictPos);
     }
