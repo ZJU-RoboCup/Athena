@@ -8,8 +8,8 @@ import Graph 1.0
 Window {
     id:root;
     visible: true;
-    width: 1300;
-    height: 740;
+    width: 1800;
+    height: 960;
     minimumHeight: height;
     minimumWidth: width;
     maximumHeight: height;
@@ -33,8 +33,8 @@ Window {
 
         TabView{
             id:fields;
-            width:960;
-            height:740;
+            width:1280;
+            height:960;
             currentIndex:1;
             Repeater{
                 model:["Origin","Filtered"];
@@ -146,7 +146,7 @@ Window {
         }
         ControlBoard{
             id:controlBoard;
-            width:340;
+            width:root.width - fields.width;
             height:parent.height;
         }
     }

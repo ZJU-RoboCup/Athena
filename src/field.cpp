@@ -97,9 +97,12 @@ Field::Field(QQuickItem *parent)
     , pen(QColor(150,150,150),1)
     , cameraMode(true)
     , _type(-1){
+    pixmapPainter.setRenderHint(QPainter::Antialiasing, true);
+    pixmapPainter.setRenderHint(QPainter::TextAntialiasing, true);
+    pixmapPainter.setRenderHint(QPainter::SmoothPixmapTransform, true);
     setFillColor(COLOR_DARKGREEN);
-    zpm->loadParam(canvasHeight,"canvas/height",720);
-    zpm->loadParam(canvasWidth ,"canvas/width" ,960);
+    zpm->loadParam(canvasHeight,"canvas/height",960);
+    zpm->loadParam(canvasWidth ,"canvas/width" ,1280);
     connect(VisionModule::instance(),SIGNAL(needDraw()),this,SLOT(draw()));
     setImplicitWidth(canvasWidth);
     setImplicitHeight(canvasHeight);
