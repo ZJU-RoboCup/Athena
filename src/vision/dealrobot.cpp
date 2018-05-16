@@ -154,13 +154,13 @@ void CDealrobot::run(){
     //重新加入概率排序后的车
     for (int i=0;i<PARAM::ROBOTMAXID;i++)
         if (sortTemp[PARAM::BLUE][i].id>=0 && sortTemp[PARAM::BLUE][i].id<=PARAM::ROBOTMAXID)
-        if (GlobalData::instance()->robotPossible[sortTemp[PARAM::BLUE][i].id]>0)
+        if (GlobalData::instance()->robotPossible[PARAM::BLUE][sortTemp[PARAM::BLUE][i].id]>0)
         {
             result.addRobot(PARAM::BLUE,sortTemp[PARAM::BLUE][i]);
         }
     for (int i=0;i<PARAM::ROBOTMAXID;i++)
         if (sortTemp[PARAM::YELLOW][i].id>=0 && sortTemp[PARAM::YELLOW][i].id<=PARAM::ROBOTMAXID)
-        if (GlobalData::instance()->robotPossible[sortTemp[PARAM::YELLOW][i].id]>0)
+        if (GlobalData::instance()->robotPossible[PARAM::YELLOW][sortTemp[PARAM::YELLOW][i].id]>0)
         {
             result.addRobot(PARAM::YELLOW,sortTemp[PARAM::YELLOW][i]);
         }

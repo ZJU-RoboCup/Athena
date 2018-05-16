@@ -69,7 +69,7 @@ private:
     double displayData;
 private:
     void checkClosestRobot(double,double);
-    void Field::resetAfterMouseEvent();
+    void resetAfterMouseEvent();
     void drawBallLine();
 };
 

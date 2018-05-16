@@ -109,8 +109,8 @@ INCLUDEPATH += \
     $$PWD/src/radio \
     $$PWD/src
 macx {
-    PROTOBUF_INCLUDE_DIR = /usr/local/include
-    LIBPROTOBUF = /usr/local/lib/libprotobuf.a
+    PROTOBUF_INCLUDE_DIR = /usr/local/Cellar/protobuf/2.6.1/include
+    LIBPROTOBUF = /usr/local/Cellar/protobuf/2.6.1/lib
 }
 
 win32 {
