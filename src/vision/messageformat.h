@@ -34,8 +34,12 @@ namespace {
             pos.setX(x); pos.setY(y); this->height = height;this->cameraID=id;
             return true;
         }
+        bool fill(double x,double y,double height,CVector vel=CVector(0,0)){
+            pos.setX(x); pos.setY(y); this->height = height;this->velocity=vel;
+            return true;
+        }
         bool fill(const Ball& ball){
-            return fill(ball.pos.x(),ball.pos.y(),ball.height);
+            return fill(ball.pos.x(),ball.pos.y(),ball.height,ball.velocity);
         }
         bool fillPredictPos(CGeoPoint prePos){
             this->predict_pos=prePos;

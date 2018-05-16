@@ -7,7 +7,7 @@
 #include "dealball.h"
 CMaintain::CMaintain()
 {
-    detectionBall= detectionFrame.mutable_balls();
+    detectionBall=detectionFrame.mutable_balls();
 //    for (int i=0;i<PARAM::ROBOTMAXID;i++){
 //       // detectionRobot[PARAM::BLUE][i]=detectionFrame.add_robots_blue();
 //       // detectionRobot[PARAM::YELLOW][i]=detectionFrame.add_robots_yellow();
