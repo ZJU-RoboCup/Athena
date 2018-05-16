@@ -23,5 +23,6 @@
         <file>source/stop.png</file>
         <file>source/stop2.png</file>
         <file>src/qml/ZSwitch.qml</file>
+        <file>source/referee.png</file>
     </qresource>
 </RCC>

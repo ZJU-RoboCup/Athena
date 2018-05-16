@@ -8,6 +8,7 @@
 #include "parammanager.h"
 #include "translator.hpp"
 #include "paraminterface.h"
+#include "simulator.h"
 #include "test.h"
 void qmlRegister(){
     qmlRegisterType<Field>("ZSS", 1, 0, "Field");
@@ -18,6 +19,7 @@ void qmlRegister(){
     qmlRegisterType<Interaction>("ZSS", 1, 0, "Interaction");
     //qmlRegisterType<Test>("ZSS", 1, 0, "Test");
     qmlRegisterType<ParamInterface>("ZSS", 1, 0, "ParamModel");
+    Simulator::instance();
 }
 
 int main(int argc, char *argv[]){

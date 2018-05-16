@@ -12,14 +12,14 @@ namespace{
 Interaction::Interaction(QObject *parent) : QObject(parent) {
 }
 Interaction::~Interaction() {
-    if (simProcess != nullptr) {
-        if (simProcess->isOpen()) {
-            simProcess->close();
-        }
-        delete simProcess;
-        simProcess = nullptr;
-        QTextStream(stdout) << "\n------------------------------------\nexit Sim\n------------------------------------\n";
-    }
+//    if (simProcess != nullptr) {
+//        if (simProcess->isOpen()) {
+//            simProcess->close();
+//        }
+//        delete simProcess;
+//        simProcess = nullptr;
+//        QTextStream(stdout) << "\n------------------------------------\nexit Sim\n------------------------------------\n";
+//    }
     if (medusaProcess != nullptr) {
         if (medusaProcess->isOpen()) {
             medusaProcess->close();

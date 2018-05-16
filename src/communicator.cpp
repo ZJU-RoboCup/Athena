@@ -10,8 +10,8 @@ Communicator::Communicator(QObject *parent) : QObject(parent){
 }
 bool Communicator::connect(){
     if (
-            receiveSocket.bind(QHostAddress::AnyIPv4,ZSS::Jupyter::UDP_RECEIVE_PORT, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint) &&
-            receiveSocket.joinMulticastGroup(QHostAddress(ZSS::Jupyter::UDP_ADDRESS),QNetworkInterface::interfaceFromName(networkInterfaceNames[networkInterfaceIndex]))
+            receiveSocket.bind(QHostAddress::AnyIPv4,ZSS::Athena::CONTROL_BACK_RECEIVE, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint) &&
+            receiveSocket.joinMulticastGroup(QHostAddress(ZSS::ZSS_ADDRESS),QNetworkInterface::interfaceFromName(networkInterfaceNames[networkInterfaceIndex]))
             ){
         sendSocket.setSocketOption(QAbstractSocket::MulticastTtlOption, 1);
         return true;
@@ -41,7 +41,7 @@ void Communicator::changeNetworkInterface(int index){
 bool Communicator::testSend(const QString& message){
     qDebug() << "try to send : " << message;
     QByteArray data = message.toLatin1();
-    sendSocket.writeDatagram(data,QHostAddress(ZSS::Jupyter::UDP_ADDRESS),ZSS::Jupyter::UDP_SEND_PORT);
+    sendSocket.writeDatagram(data,QHostAddress(ZSS::ZSS_ADDRESS),ZSS::Athena::CONTROL_SEND);
     return true;
 }
 void Communicator::testReceive(){

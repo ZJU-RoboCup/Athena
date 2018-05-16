@@ -11,6 +11,7 @@ public:
     bool inChosenArea(float x, float y);
     bool inChosenArea(CGeoPoint);
     void setArea(int,int,int,int);
+    void resetArea();
 signals:
     void needRepaint();
 };

@@ -4,20 +4,11 @@
 #include "globaldata.h"
 #include "parammanager.h"
 #include "globalsettings.h"
+#include "simulator.h"
 #include <QColor>
 #include <QtMath>
 #include <QtDebug>
 namespace{
-//    const static QColor COLOR_BLUE(19,49,137);//QColor(16,86,151)
-//    const static QColor COLOR_TRANSBLUE(19,49,137,25);
-//    const static QColor COLOR_YELLOW(241,231,36);
-//    const static QColor COLOR_TRANSYELLOW(241,231,36,25);
-//    const static QColor COLOR_PINK(255,63,149);
-//    const static QColor COLOR_GREEN(105,255,0);
-//    const static QColor COLOR_ORANGE(255,170,85);
-//    const static QColor COLOR_TRANSORANGE(255,170,85,25);
-//    const static QColor COLOR_DARKGREEN(Qt::darkGreen);
-//    const static QColor COLOR_TRANSPARENT(Qt::transparent);
     const static QColor CAR_COLOR[2]  = {QColor(25,30,150),QColor(241,201,50)};
     const static QColor CAR_SHADOW[2] = {QColor(25,30,150,30),QColor(241,201,50,30)};
     const static QColor FONT_COLOR[2] = {Qt::white,Qt::white};
@@ -38,11 +29,25 @@ namespace{
     int param_penaltyWidth;
     int param_penaltyLength;
     int param_centerCircleRadius;
+
+    auto zpm = ZSS::ZParamManager::instance();
+    int ballDiameter;
+    int shadowDiameter;
+    int carDiameter;
+    int carFaceWidth;
+    int numberSize;
+    qreal zoomRatio;
+    QPoint zoomStart;
+    QRect area;
+    QSize size;
     double x(double _x){
         return _x*canvasWidth/param_canvas_width+canvasWidth/2;
     }
     double y(double _y){
         return -_y*canvasHeight/param_canvas_height+canvasHeight/2;
+    }
+    QPointF p(QPointF& _p){
+        return QPointF(x(_p.x()),y(_p.y()));
     }
     double w(double _w){
         return _w*canvasWidth/param_canvas_width;
@@ -56,22 +61,30 @@ namespace{
     double r(double _r){
         return _r*16;
     }
-    double rx(double _x){
+    double orx(double _x){
         return (_x-canvasWidth/2)*param_canvas_width/canvasWidth;
     }
-    double ry(double _y){
+    double ory(double _y){
         return -(_y-canvasHeight/2)*param_canvas_height/canvasHeight;
     }
-    auto zpm = ZSS::ZParamManager::instance();
-    int ballDiameter;
-    int shadowDiameter;
-    int carDiameter;
-    int carFaceWidth;
-    int numberSize;
-    qreal zoomRatio;
-    QPoint zoomStart;
-    QRect area;
-    QSize size;
+    double orw(double _w){
+        return (_w)*param_canvas_width/canvasWidth;
+    }
+    double orh(double _h){
+        return -(_h)*param_canvas_height/canvasHeight;
+    }
+    double rx(double x){
+        return ::orx(zoomStart.x() + x*zoomRatio);
+    }
+    double ry(double y){
+        return ::ory(zoomStart.y() + y*zoomRatio);
+    }
+    QPointF rp(const QPointF& p){
+        return QPointF(rx(p.x()),ry(p.y()));
+    }
+    double distance2(double dx,double dy){
+        return dx*dx + dy*dy;
+    }
     template<typename T>
     T limitRange(T value,T minValue,T maxValue){
         return value > maxValue ? maxValue : (value < minValue) ? minValue : value;
@@ -84,6 +97,7 @@ Field::Field(QQuickItem *parent)
     , pen(QColor(150,150,150),1)
     , cameraMode(true)
     , _type(-1){
+    setFillColor(COLOR_DARKGREEN);
     zpm->loadParam(canvasHeight,"canvas/height",720);
     zpm->loadParam(canvasWidth ,"canvas/width" ,960);
     connect(VisionModule::instance(),SIGNAL(needDraw()),this,SLOT(draw()));
@@ -99,24 +113,113 @@ Field::Field(QQuickItem *parent)
     zpm->loadParam(numberSize     ,"size/numberSize",200);
     setAcceptedMouseButtons(Qt::LeftButton | Qt::RightButton);
     connect(GS,SIGNAL(needRepaint()),this,SLOT(repaint()));
+    resetAfterMouseEvent();
 }
 
 void Field::paint(QPainter* painter){
     painter->drawPixmap(area,*pixmap,QRect(zoomStart,::size*zoomRatio));
 }
+
 void Field::mousePressEvent(QMouseEvent *e)
 {
-    qDebug() << "Press  : " << (e->buttons() == Qt::LeftButton);
+    pressed = e->buttons();
+    checkClosestRobot(rx(e->x()),ry(e->y()));
+    start = end = rp(e->pos());
+    switch(pressed){
+    case Qt::LeftButton:
+        leftPressEvent(e);
+        break;
+    case Qt::RightButton:
+        rightPressEvent(e);
+        break;
+    default:
+        break;
+    }
 }
 void Field::mouseMoveEvent(QMouseEvent *e){
-    //if(e->buttons() == Qt::LeftButton)
-        qDebug() << "Move  : " << e->localPos();
+    end = rp(e->pos());
+    switch(pressed){
+    case Qt::LeftButton:
+        leftMoveEvent(e);
+        break;
+    case Qt::RightButton:
+        rightMoveEvent(e);
+        break;
+    default:
+        break;
+    }
 }
-void Field::mouseReleaseEvent(QMouseEvent *e)
-{
-    qDebug() << "Release : " << (e->buttons() == Qt::LeftButton);
+void Field::mouseReleaseEvent(QMouseEvent *e){
+    switch(pressed){
+    case Qt::LeftButton:
+        leftReleaseEvent(e);
+        break;
+    case Qt::RightButton:
+        rightReleaseEvent(e);
+        break;
+    default:
+        break;
+    }
+    resetAfterMouseEvent();
+    //Simulator::instance()->setBall(rx(e->x())/1000.0,ry(e->y())/1000.0);
 }
+void Field::resetAfterMouseEvent(){
+    pressed = 0;
+    pressedRobot = false;
+    start = end = QPoint(-9999,-9999);
+}
+void Field::checkClosestRobot(double x,double y){
+    double limit = carDiameter*carDiameter/4;
+    auto& vision = GlobalData::instance()->maintain[0];
+    for(int color=BLUE;color<=YELLOW;color++){
+        for(int j=0;j<vision.robotSize[color];j++){
+            auto& robot = vision.robot[color][j];
+            if(distance2(robot.pos.x()-x,robot.pos.y()-y)<limit){
+                robotID = robot.id;
+                robotTeam = color;
+                pressedRobot = true;
+                return;
+            }
+        }
+    }
+    pressedRobot = false;
+}
+void Field::leftMoveEvent(QMouseEvent *e){
+    if(pressedRobot){
+        Simulator::instance()->setRobot(rx(e->x())/1000.0,ry(e->y())/1000.0,robotID,robotTeam == YELLOW);
+    }else{
+        Simulator::instance()->setBall(rx(e->x())/1000.0,ry(e->y())/1000.0);
+    }
+}
+void Field::leftPressEvent(QMouseEvent *e){
+    if(pressedRobot){
+        Simulator::instance()->setRobot(rx(e->x())/1000.0,ry(e->y())/1000.0,robotID,robotTeam == YELLOW);
+    }else{
+        Simulator::instance()->setBall(rx(e->x())/1000.0,ry(e->y())/1000.0);
+    }
+}
+void Field::leftReleaseEvent(QMouseEvent *e){
 
+}
+void Field::rightMoveEvent(QMouseEvent *e){
+    QLineF line(start,end);
+    if(pressedRobot){
+        displayData = -line.angle();
+        if(displayData<-180) displayData += 360;
+        Simulator::instance()->setRobot(start.x()/1000.0,start.y()/1000.0,robotID,robotTeam == YELLOW,displayData);
+    }else{
+        displayData = line.length()/1000.0;
+    }
+}
+void Field::rightPressEvent(QMouseEvent *e){
+
+}
+void Field::rightReleaseEvent(QMouseEvent *e){
+    QLineF line(start,end);
+    if(!pressedRobot){
+        Simulator::instance()->setBall(start.x()/1000.0,start.y()/1000.0,line.dx()/1000.0,line.dy()/1000.0);
+    }
+}
 #if QT_CONFIG(wheelevent)
 void Field::wheelEvent (QWheelEvent *e)
 {
@@ -129,6 +232,11 @@ void Field::wheelEvent (QWheelEvent *e)
     this->update(area);
 }
 #endif
+void Field::moveField(int dx,int dy){
+    zoomStart -= QPoint(dx,dy)*zoomRatio;
+    zoomStart.setX(limitRange(zoomStart.x(),0,int(area.width()*(1-zoomRatio))));
+    zoomStart.setY(limitRange(zoomStart.y(),0,int(area.height()*(1-zoomRatio))));
+}
 void Field::init(){
     pen.setWidth(2);
     zpm->loadParam(param_width             , "field/width"             ,12000);
@@ -144,6 +252,7 @@ void Field::init(){
     ::size = QSize(this->property("width").toReal(),this->property("height").toReal());
     ::zoomStart = QPoint(0,0);
     ::zoomRatio = 1;
+    pressedRobot = false;
     painterPath = QPainterPath();
     initPainterPath();
     repaint();
@@ -167,7 +276,16 @@ void Field::draw(){                     //change here!!!!!!!
     case 2:
         drawMaintainVision(0);break;
     }
+    drawBallLine();
     this->update(area);
+}
+void Field::drawBallLine(){
+    if(pressed == Qt::RightButton){
+        pixmapPainter.setBrush(QBrush(FONT_COLOR[0]));
+        pixmapPainter.setPen(QPen(FONT_COLOR[0],2,Qt::DashLine));
+        pixmapPainter.drawLine(p(start),p(end));
+        pixmapPainter.drawText(p(end),QString::fromStdString(std::to_string(displayData)));
+    }
 }
 void Field::initPainterPath(){
     painterPath.addRect(::x(-param_width/2),::y(-param_height/2),::w(param_width),::h(param_height));
@@ -178,18 +296,6 @@ void Field::initPainterPath(){
     painterPath.moveTo(::x(0),::y(param_height/2));
     painterPath.lineTo(::x(0),::y(-param_height/2));
     painterPath.addEllipse(::x(-param_centerCircleRadius),::y(-param_centerCircleRadius),::w(2*param_centerCircleRadius),::h(2*param_centerCircleRadius));
-
-    // old method
-    //addQuarterCirclePath(painterPath,::x(param_width/2),::y(-param_penaltyCenterLength/2),::w(param_penaltyRadius),90);
-    //addQuarterCirclePath(painterPath,::x(param_width/2),::y(param_penaltyCenterLength/2),::w(param_penaltyRadius),180);
-    //addQuarterCirclePath(painterPath,::x(-param_width/2),::y(param_penaltyCenterLength/2),::w(param_penaltyRadius),-90);
-    //addQuarterCirclePath(painterPath,::x(-param_width/2),::y(-param_penaltyCenterLength/2),::w(param_penaltyRadius),0);
-    //painterPath.moveTo(::x(param_width/2-param_penaltyRadius),::y(param_penaltyCenterLength/2));
-    //painterPath.lineTo(::x(param_width/2-param_penaltyRadius),::y(-param_penaltyCenterLength/2));
-    //painterPath.moveTo(::x(-(param_width/2-param_penaltyRadius)),::y(param_penaltyCenterLength/2));
-    //painterPath.lineTo(::x(-(param_width/2-param_penaltyRadius)),::y(-param_penaltyCenterLength/2));
-
-    // new method
     painterPath.addRect(::x(-param_width/2),::y(-param_penaltyLength/2),::w(param_penaltyWidth),::h(param_penaltyLength));
     painterPath.addRect(::x(param_width/2),::y(-param_penaltyLength/2),::w(-param_penaltyWidth),::h(param_penaltyLength));
 
@@ -199,21 +305,22 @@ void Field::drawOriginVision(int index){
         drawVision(GlobalData::instance()->camera[i][index]);
     }
 }
-void Field::drawTransformedVision(int index){
-    for(int i=0;i<PARAM::CAMERA;i++){
-        drawVision(GlobalData::instance()->transformed[i][index]);
-    }
-}
-void Field::drawBallFixedVision(int index){
-    for(int i=-99;i<0;i++){
-        drawVision(GlobalData::instance()->processBall[index + i],true);
-    }
-    drawVision(GlobalData::instance()->processBall[index]);
-}
-void Field::drawRobotFixedVision(int index){
-    drawVision(GlobalData::instance()->processRobot[index]);
-}
-
+/*
+//void Field::drawTransformedVision(int index){
+//    for(int i=0;i<PARAM::CAMERA;i++){
+//        drawVision(GlobalData::instance()->transformed[i][index]);
+//    }
+//}
+//void Field::drawBallFixedVision(int index){
+//    for(int i=-99;i<0;i++){
+//        drawVision(GlobalData::instance()->processBall[index + i],true);
+//    }
+//    drawVision(GlobalData::instance()->processBall[index]);
+//}
+//void Field::drawRobotFixedVision(int index){
+//    drawVision(GlobalData::instance()->processRobot[index]);
+//}
+//*/
 void Field::drawMaintainVision(int index){
     //drawVision(GlobalData::instance()->maintain[index]);
     for(int i=-99;i<0;i++){
@@ -232,22 +339,23 @@ void Field::drawMaintainVision(int index){
         }
     }
 }
-
-void Field::drawModelFixedVision(int index) {
-    float x = GlobalData::instance()->montageMaxX;
-    float y = GlobalData::instance()->montageMaxY;
-    pixmapPainter.setPen(QPen(COLOR_RED));
-    pixmapPainter.drawLine(::x(x),::y(-::param_height/2),::x(x),::y(::param_height/2));
-    pixmapPainter.drawLine(::x(-x),::y(-::param_height/2),::x(-x),::y(::param_height/2));
-    pixmapPainter.drawLine(::x(::param_width/2),::y(y),::x(-::param_width/2),::y(y));
-    pixmapPainter.drawLine(::x(::param_width/2),::y(-y),::x(-::param_width/2),::y(-y));
-    for(int i=0;i<PARAM::CAMERA;i++){
-        drawVision(GlobalData::instance()->modelFixed[i][index]);
-    }
-}
-void Field::drawProcessedVision(int index){
-    drawVision(GlobalData::instance()->vision[index]);
-}
+/*
+//void Field::drawModelFixedVision(int index) {
+//    float x = GlobalData::instance()->montageMaxX;
+//    float y = GlobalData::instance()->montageMaxY;
+//    pixmapPainter.setPen(QPen(COLOR_RED));
+//    pixmapPainter.drawLine(::x(x),::y(-::param_height/2),::x(x),::y(::param_height/2));
+//    pixmapPainter.drawLine(::x(-x),::y(-::param_height/2),::x(-x),::y(::param_height/2));
+//    pixmapPainter.drawLine(::x(::param_width/2),::y(y),::x(-::param_width/2),::y(y));
+//    pixmapPainter.drawLine(::x(::param_width/2),::y(-y),::x(-::param_width/2),::y(-y));
+//    for(int i=0;i<PARAM::CAMERA;i++){
+//        drawVision(GlobalData::instance()->modelFixed[i][index]);
+//    }
+//}
+//void Field::drawProcessedVision(int index){
+//    drawVision(GlobalData::instance()->vision[index]);
+//}
+//*/
 void Field::paintCar(const QColor& color,quint8 num,qreal x,qreal y,qreal radian,bool ifDrawNum,const QColor& textColor,bool needCircle){
     static qreal radius = carDiameter/2;
     static qreal chordAngel = qRadiansToDegrees(qAcos(1.0*carFaceWidth/carDiameter));
@@ -305,8 +413,8 @@ void Field::drawVision(const OriginMessage &vision,bool shadow){
     }
 }
 float Field::fieldXFromCoordinate(int x){
-    return ::rx(zoomStart.x() + x*zoomRatio);
+    return ::rx(x);
 }
 float Field::fieldYFromCoordinate(int y){
-    return ::ry(zoomStart.y() + y*zoomRatio);
+    return ::ry(y);
 }
