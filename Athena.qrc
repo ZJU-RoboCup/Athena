@@ -24,5 +24,7 @@
         <file>source/stop2.png</file>
         <file>src/qml/ZSwitch.qml</file>
         <file>source/referee.png</file>
+        <file>src/qml/RefereeBox.qml</file>
+        <file>src/qml/ZRefButton.qml</file>
     </qresource>
 </RCC>

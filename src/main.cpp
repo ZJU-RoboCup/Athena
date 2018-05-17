@@ -9,6 +9,8 @@
 #include "translator.hpp"
 #include "paraminterface.h"
 #include "simulator.h"
+#include "refereebox.h"
+#include "translator.hpp"
 #include "test.h"
 void qmlRegister(){
     qmlRegisterType<Field>("ZSS", 1, 0, "Field");
@@ -17,8 +19,12 @@ void qmlRegister(){
     qmlRegisterType<Graph>("Graph", 1, 0, "Graph");
     qmlRegisterType<Translator>("ZSS", 1, 0, "Translator");
     qmlRegisterType<Interaction>("ZSS", 1, 0, "Interaction");
-    //qmlRegisterType<Test>("ZSS", 1, 0, "Test");
+    qmlRegisterType<RefBoxCommand>("ZSS", 1, 0, "RefBoxCommand");
+    qmlRegisterType<GameState>("ZSS", 1, 0, "GameState");
+    qmlRegisterType<RefereeBox>("ZSS", 1, 0, "RefereeBox");
     qmlRegisterType<ParamInterface>("ZSS", 1, 0, "ParamModel");
+    qmlRegisterType<Translator>("ZSS", 1, 0, "Translator");
+    //qmlRegisterType<Test>("ZSS", 1, 0, "Test");
     Simulator::instance();
 }
 

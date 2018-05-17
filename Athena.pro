@@ -54,7 +54,10 @@ SOURCES += \
     src/proto/cpp/grSim_Packet.pb.cc \
     src/proto/cpp/grSim_Replacement.pb.cc \
     src/proto/cpp/zss_cmd.pb.cc \
-    src/proto/cpp/zss_debug.pb.cc
+    src/proto/cpp/zss_debug.pb.cc \
+    src/refereebox.cpp \
+    src/proto/cpp/game_event.pb.cc \
+    src/proto/cpp/referee.pb.cc
 
 RESOURCES += \
     Athena.qrc
@@ -100,7 +103,10 @@ HEADERS += \
     src/proto/cpp/grSim_Packet.pb.h \
     src/proto/cpp/grSim_Replacement.pb.h \
     src/proto/cpp/zss_cmd.pb.h \
-    src/proto/cpp/zss_debug.pb.h
+    src/proto/cpp/zss_debug.pb.h \
+    src/refereebox.h \
+    src/proto/cpp/game_event.pb.h \
+    src/proto/cpp/referee.pb.h
 
 INCLUDEPATH += \
     $$PWD/src/utils \

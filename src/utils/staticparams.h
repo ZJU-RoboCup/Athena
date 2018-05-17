@@ -18,6 +18,7 @@ namespace PARAM{
 namespace ZSS{
     const QString ZSS_ADDRESS = "233.233.233.233";
     const QString SSL_ADDRESS = "224.5.23.2";
+    const QString REF_ADDRESS = "224.5.23.1";
     const QString LOCAL_ADDRESS = "127.0.0.1";
 namespace Jupyter {
     const int CONTROL_BACK_SEND = 10002;

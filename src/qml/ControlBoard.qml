@@ -33,6 +33,7 @@ Page{
         }
 
     }
+/*
 //    Timer {
 //        id: ballspeedtimer
 //        interval: 50
@@ -43,6 +44,7 @@ Page{
 //            graph.appendSample(graph.newSample(++graph.offset));
 //        }
 //    }
+//*/
     Timer{
         id:oneSecond;
         interval:1000;
@@ -90,7 +92,7 @@ Page{
                         horizontalItemAlignment: Grid.AlignHCenter;
                         verticalItemAlignment: Grid.AlignVCenter;
                         anchors.horizontalCenter: parent.horizontalCenter;
-                        property int itemWidth : (width - (columns-1) * columnSpacing)/columns;
+                        property int itemWidth : (width - (columns-1) * columnSpacing - 2*padding)/columns;
                         Repeater{
                             model:interaction.getCameraNumber();
                             CheckBox{
@@ -238,15 +240,17 @@ Page{
                 }
             }
         }
-        Grid {
-            id: refereebox;
-            width: parent.width;
-            padding:10;
-            verticalItemAlignment: Grid.AlignVCenter;
-            horizontalItemAlignment: Grid.AlignHCenter;
-            spacing: 0;
-            columns:1;
-            property int itemWidth : width - 2*padding;
+//        Grid {
+//            id: refereebox;
+//            width: parent.width;
+//            padding:10;
+//            verticalItemAlignment: Grid.AlignVCenter;
+//            horizontalItemAlignment: Grid.AlignHCenter;
+//            spacing: 0;
+//            columns:1;
+//            property int itemWidth : width - 2*padding;
+//        }
+        RefereeBox{
         }
         /*****************************************/
         /*                  UDP                  */

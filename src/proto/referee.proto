@@ -1,3 +1,7 @@
+syntax = "proto2";
+
+import "game_event.proto";
+
 // Each UDP packet contains one of these messages.
 message SSL_Referee {
 	// The UNIX timestamp when the packet was sent, in microseconds.
@@ -148,4 +152,13 @@ message SSL_Referee {
 		required float y = 2;
 	}
 	optional Point designated_position = 9;
+
+	// Information about the direction of play.
+	// True, if the blue team will have it's goal on the positive x-axis of the ssl-vision coordinate system
+	// Obviously, the yellow team will play on the opposide half
+	// For compatibility, this field is optional
+	optional bool blueTeamOnPositiveHalf = 10;
+
+	// The game event that caused the referee command
+	optional SSL_Referee_Game_Event gameEvent = 11;
 }

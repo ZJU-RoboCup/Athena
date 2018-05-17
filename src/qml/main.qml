@@ -10,7 +10,8 @@ Window {
         if(Screen.desktopAvailableWidth < 1800 || Screen.desktopAvailableHeight < 960){
             fields.visible = false;
             root.height = Screen.desktopAvailableHeight;
-            root.width = controlBoard.width = 400;
+            root.width = 400;
+            fields.width = 0;
         }
         console.log(Screen.desktopAvailableWidth,Screen.desktopAvailableHeight)
     }
