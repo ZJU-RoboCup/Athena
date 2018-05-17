@@ -6,14 +6,23 @@ import QtQuick.Layouts 1.0
 import ZSS 1.0 as ZSS
 import Graph 1.0
 Window {
+    Component.onCompleted: {
+        if(Screen.desktopAvailableWidth < 1800 || Screen.desktopAvailableHeight < 960){
+            fields.visible = false;
+            root.height = Screen.desktopAvailableHeight;
+            root.width = controlBoard.width = 400;
+        }
+        console.log(Screen.desktopAvailableWidth,Screen.desktopAvailableHeight)
+    }
+
     id:root;
     visible: true;
     width: 1800;
     height: 960;
-    minimumHeight: height;
-    minimumWidth: width;
-    maximumHeight: height;
-    maximumWidth: width;
+//    minimumHeight: height;
+//    minimumWidth: width;
+//    maximumHeight: height;
+//    maximumWidth: width;
     color:"#e8e8e8";
     //flags:Qt.FramelessWindowHint
 

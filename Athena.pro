@@ -110,7 +110,7 @@ INCLUDEPATH += \
     $$PWD/src
 macx {
     PROTOBUF_INCLUDE_DIR = /usr/local/Cellar/protobuf/2.6.1/include
-    LIBPROTOBUF = /usr/local/Cellar/protobuf/2.6.1/lib
+    LIBPROTOBUF = /usr/local/Cellar/protobuf/2.6.1/lib/libprotobuf.a
 }
 
 win32 {

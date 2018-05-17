@@ -97,9 +97,6 @@ Field::Field(QQuickItem *parent)
     , pen(QColor(150,150,150),1)
     , cameraMode(true)
     , _type(-1){
-    pixmapPainter.setRenderHint(QPainter::Antialiasing, true);
-    pixmapPainter.setRenderHint(QPainter::TextAntialiasing, true);
-    pixmapPainter.setRenderHint(QPainter::SmoothPixmapTransform, true);
     setFillColor(COLOR_DARKGREEN);
     zpm->loadParam(canvasHeight,"canvas/height",960);
     zpm->loadParam(canvasWidth ,"canvas/width" ,1280);
@@ -108,6 +105,9 @@ Field::Field(QQuickItem *parent)
     setImplicitHeight(canvasHeight);
     pixmap = new QPixmap(QSize(canvasWidth,canvasHeight));
     pixmapPainter.begin(pixmap);
+    pixmapPainter.setRenderHint(QPainter::Antialiasing, true);
+    pixmapPainter.setRenderHint(QPainter::TextAntialiasing, true);
+    pixmapPainter.setRenderHint(QPainter::SmoothPixmapTransform, true);
     init();
     zpm->loadParam(ballDiameter   ,"size/ballDiameter",100);
     zpm->loadParam(shadowDiameter ,"size/shadowDiameter",30);
